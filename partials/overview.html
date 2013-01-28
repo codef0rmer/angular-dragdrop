@@ -1,0 +1,171 @@
+<div class="container">
+
+  <!-- Main hero unit for a primary marketing message or call to action -->
+  <div class="hero-unit pagination-centered">
+    <h1>Drag and Drop for AngularJS</h1>
+    <p><br/>Implementing jQueryUI Drag and Drop functionality in <a href="http://angularjs.org">AngularJS</a> is easier than ever by <a href="http://gplus.to/codef0rmer">codef0rmer</a></p>
+    <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=codef0rmer&amp;repo=angular-dragdrop&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+    <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=codef0rmer&amp;repo=angular-dragdrop&amp;type=fork&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="102px" height="20px"></iframe>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="codef0rmer">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  <!-- Place this tag where you want the share button to render. -->
+  <div class="g-plus" data-action="share" data-annotation="bubble"></div>
+
+  <!-- Place this tag after the last share tag. -->
+  <script type="text/javascript">
+    (function() {
+      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+      po.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+  </script>
+  </div>
+
+  <h3>Angular Draggable options</h3>
+  <table class="table table-bordered table-striped">
+    <thead>
+     <tr>
+       <th style="width: 150px;">Name</th>
+       <th style="width: 50px;">type</th>
+       <th style="width: 50px;">default</th>
+       <th>description</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr>
+       <td>jqyoui-draggable</td>
+       <td>object</td>
+       <td></td>
+       <td>A custom angular attribute to make any element draggable. It holds more settings such as:</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index</td>
+       <td>Number</td>
+       <td></td>
+       <td>$index of an item of a model (if it is an array) associated with it</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;placeholder</td>
+       <td>boolean</td>
+       <td>false</td>
+       <td>If true, the place will be occupied even though a dragggable is moved/dropped somewhere else</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;animate</td>
+       <td>boolean</td>
+       <td>false</td>
+       <td>If true, draggable will be animated towards droppable when dropped. If multiple is not set to true on droppable then its draggable will swap its position.</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStart</td>
+       <td>string</td>
+       <td></td>
+       <td>callback method to be invoked (has to be defined in a controller) when dragging starts</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onStop</td>
+       <td>string</td>
+       <td></td>
+       <td>callback method to be invoked when dragging stops</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onDrag</td>
+       <td>string</td>
+       <td></td>
+       <td>callback method to be invoked while the mouse is moved during the dragging</td>
+     </tr>
+     <tr>
+       <td>data-drag</td>
+       <td>boolean</td>
+       <td>true</td>
+       <td>If true, element can be draggable. Disabled otherwise.</td>
+     </tr>
+     <tr>
+       <td>data-jqyoui-options</td>
+       <td>object</td>
+       <td></td>
+       <td>should hold all the valid options supported by <a href="http://api.jqueryui.com/draggable">jQueryUI Draggable</a></td>
+     </tr>
+     <tr>
+       <td>ng-model</td>
+       <td>string</td>
+       <td></td>
+       <td>An angular model defined in a controller. Should be a JS array or object</td>
+     </tr>
+    </tbody>
+  </table>
+
+  <h3>Angular Droppable options</h3>
+  <table class="table table-bordered table-striped">
+    <thead>
+     <tr>
+       <th style="width: 150px;">Name</th>
+       <th style="width: 50px;">type</th>
+       <th style="width: 50px;">default</th>
+       <th>description</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr>
+       <td>jqyoui-droppable</td>
+       <td>object</td>
+       <td></td>
+       <td>A custom angular attribute to make any element droppable. It holds more settings such as:</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index</td>
+       <td>Number</td>
+       <td></td>
+       <td>$index of an item of a model (if it is an array) associated with it</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiple</td>
+       <td>boolean</td>
+       <td>false</td>
+       <td>Requires to be true only if animate is set to true for draggable and to avoid swapping.</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stack</td>
+       <td>boolean</td>
+       <td>false</td>
+       <td>Requires if animate is set to true on draggable and if multiple draggables positioned one below the other</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onDrop</td>
+       <td>string</td>
+       <td></td>
+       <td>callback method to be invoked a draggable is dropped into the droppable</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onOver</td>
+       <td>string</td>
+       <td></td>
+       <td>callback method to be invoked when an accepted draggable is dragged over the droppable</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onOut</td>
+       <td>string</td>
+       <td></td>
+       <td>callback method to be invoked when an accepted draggable is dragged out of the droppable</td>
+     </tr>
+     <tr>
+       <td>data-drag</td>
+       <td>boolean</td>
+       <td>true</td>
+       <td>If true, element can be droppable. Disabled otherwise.</td>
+     </tr>
+     <tr>
+       <td>data-jqyoui-options</td>
+       <td>object</td>
+       <td></td>
+       <td>should hold all the valid options supported by <a href="http://api.jqueryui.com/droppable">jQueryUI Droppable</a></td>
+     </tr>
+     <tr>
+       <td>ng-model</td>
+       <td>string</td>
+       <td></td>
+       <td>An angular model defined in a controller. Should be a JS array or object</td>
+     </tr>
+    </tbody>
+  </table>
+</div> <!-- /container -->

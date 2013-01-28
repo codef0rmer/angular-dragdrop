@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="ghpages">
+  <head>
+    <meta charset="utf-8">
+    <title>Drag and Drop for AngularJS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+    <link src="assets/prettify.css">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">angular-dragdrop</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="#">Overview</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#/list">Multiple Lists with Animation</a></li>
+                  <li><a href="#/mvc">Connect Frameworks</a></li>
+                  <li><a href="#/cart">Shopping Cart with cloning enabled</a></li>
+                </ul>
+              </li>
+            </ul>
+            <div style="float: right;">
+              <a href="https://github.com/codef0rmer/angular-dragdrop" class="btn primary">Fork me on Github</a>
+            </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    <div ng-view></div>
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+    <script src="assets/prettify.js"></script>
+    <script> 
+      var App = angular.module('ghpages', []).config(['$routeProvider', function($routeProvider) {
+        $routeProvider
+          .when('/', { templateUrl: 'partials/overview.html'})
+          .when('/list', { templateUrl: 'partials/list.html'})
+          .when('/mvc', { templateUrl: 'partials/mvc.html'})
+          .when('/cart', { templateUrl: 'partials/cart.html'})
+          .otherwise({ redirectTo: '/' });
+      }]);
+    </script>
+  </body>
+</html>
