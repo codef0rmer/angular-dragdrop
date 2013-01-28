@@ -1,0 +1,10 @@
+{
+  "author": "Amit Gharat a.k.a codef0rmer",
+  "name": "AngularJS Drag and Drop",
+  "version": "1.0.0",
+  "dependencies": {
+    "AngularJS": ">= 1.0.1",
+    "jQuery UI": ">= 1.8.23",
+  },
+  "devDependencies": {}
+}

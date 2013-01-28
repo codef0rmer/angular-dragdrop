@@ -1,0 +1,75 @@
+<!doctype html> 
+<html lang="en" ng-app="drag-and-drop">
+<head>
+    <meta charset="utf-8" />
+    <title>Drag & Drop - Shopping Cart</title>
+    <script src="../lib/jquery.min.js"></script>
+    <script src="../lib/jquery-ui.min.js"></script> 
+    <script src="../lib/angular.min.js"></script>
+    <script src="../src/angular-dragdrop.min.js"></script>
+    <link href="assets/css/jquery-ui.css" rel="stylesheet">
+    <style>
+      .thumbnail { height: 280px !important; }
+      .btn-droppable { width: 180px; height: 30px; padding-left: 4px; }
+      .btn-draggable { width: 160px; }
+      .emage { height: 215px; }
+      h1 { padding: .2em; margin: 0; }
+      #products { float:left; width: 500px; margin-right: 2em; }
+      #cart { width: 200px; float: left; margin-top: 1em; }
+      #cart ol { margin: 0; padding: 1em 0 1em 3em; }
+    </style>
+    <script>
+      $(function() {
+        $("#catalog").accordion();
+      });
+      var App = angular.module('drag-and-drop', ['jqyoui']);
+
+      App.controller('oneCtrl', function($scope, $timeout) {
+        $scope.list1 = [{'title': 'Lolcat Shirt'},{'title': 'Cheezeburger Shirt'},{'title': 'Buckit Shirt'}];
+        $scope.list2 = [{'title': 'Zebra Striped'},{'title': 'Black Leather'},{'title': 'Alligator Leather'}];
+        $scope.list3 = [{'title': 'iPhone'},{'title': 'iPod'},{'title': 'iPad'}];
+
+        $scope.list4 = [];
+
+        $scope.hideMe = function() {
+          return $scope.list4.length > 0;
+        }
+      });
+    </script>
+</head>
+<body ng-controller="oneCtrl">
+ 
+<div id="products">
+  <h1 class="ui-widget-header">Products</h1>
+  <div id="catalog">
+    <h2><a href="#">T-Shirts</a></h2>
+    <div data-drop="true" ng-model='list1' jqyoui-droppable="{multiple:true}">
+      <ul>
+        <li ng-repeat='item in list1' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list1" jqyoui-draggable="{index: {{$index}}, animate: true}">{{item.title}}</li>
+      </ul>
+    </div>
+    <h2><a href="#">Bags</a></h2>
+    <div data-drop="true" ng-model='list2' jqyoui-droppable="{multiple:true}">
+      <ul>
+        <li ng-repeat='item in list2' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list2" jqyoui-draggable="{index: {{$index}}}">{{item.title}}</li>
+      </ul>
+    </div>
+    <h2><a href="#">Gadgets</a></h2>
+    <div data-drop="true" ng-model='list3' jqyoui-droppable="{multiple:true}">
+      <ul>
+        <li ng-repeat='item in list3' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list3" jqyoui-draggable="{index: {{$index}}}">{{item.title}}</li>
+      </ul>
+    </div>
+  </div>
+</div> 
+<div id="cart">
+    <h1 class="ui-widget-header">Shopping Cart</h1>
+    <div class="ui-widget-content">
+        <ol data-drop="true" ng-model='list4' jqyoui-droppable="{multiple:true}">
+            <li ng-repeat="item in list4" ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list4" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</li>
+            <li class="placeholder" ng-hide="hideMe()">Add your items here</li>
+        </ol>
+    </div>
+</div>
+</body>
+</html>

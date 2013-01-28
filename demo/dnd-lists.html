@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html ng-app="drag-and-drop">  
+  <head lang="en">
+    <meta charset="utf-8">
+    <title>Drag & Drop: Multiple lists</title>
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.1/angular.min.js"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css" rel="stylesheet"> -->
+    <script src="../lib/jquery.min.js"></script>
+    <script src="../lib/jquery-ui.min.js"></script> 
+    <script src="../lib/angular.min.js"></script>
+    <script src="../src/angular-dragdrop.min.js"></script>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .thumbnail { height: 280px !important; }
+      .btn-droppable { width: 180px; height: 30px; padding-left: 4px; }
+      .btn-draggable { width: 160px; }
+    </style>
+
+    <script type="text/javascript">
+      var App = angular.module('drag-and-drop', ['jqyoui']);
+
+      App.controller('oneCtrl', function($scope, $timeout) {
+        $scope.list1 = [];
+        $scope.list2 = [];
+        $scope.list3 = [];
+        $scope.list4 = [];
+        
+        $scope.list5 = [
+          { 'title': 'Item 1', 'drag': true },
+          { 'title': 'Item 2', 'drag': true },
+          { 'title': 'Item 3', 'drag': true },
+          { 'title': 'Item 4', 'drag': true },
+          { 'title': 'Item 5', 'drag': true },
+          { 'title': 'Item 6', 'drag': true },
+          { 'title': 'Item 7', 'drag': true },
+          { 'title': 'Item 8', 'drag': true }
+        ];
+
+        // Limit items to be dropped in list1
+        $scope.optionsList1 = {
+          accept: function(dragEl) {
+            if ($scope.list1.length >= 2) {
+              return false;
+            } else {
+              return true;
+            }
+          }
+        };
+      });
+    </script>
+  </head>  
+  <body>
+    <div ng-controller="oneCtrl">
+      <div class='contentWrapper ng-cloak'>
+        <div class='content'>
+          <div class="row-fluid">
+            <ul class="thumbnails">
+              <li class="span3" style='margin-left:10px;'>
+                <div class="thumbnail" data-drop="true" ng-model='list1' data-jqyoui-options="optionsList1" jqyoui-droppable="{multiple:true}">
+                  <div class="caption">
+                    <div class="btn btn-info btn-draggable" ng-repeat="item in list1" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
+                  </div>
+                </div>
+              </li>
+              <li class="span3" style='margin-left:10px;'>
+                <div class="thumbnail" data-drop="true" ng-model='list2' data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list2])'}"  jqyoui-droppable="{multiple:true}">
+                  <div class="caption">
+                    <div class="btn btn-info btn-draggable" ng-repeat="item in list2" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
+                  </div>
+                </div>
+              </li>
+              <li class="span3" style='margin-left:10px;'>
+                <div class="thumbnail" data-drop="true" ng-model='list3' data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list3])'}"  jqyoui-droppable="{multiple:true}">
+                  <div class="caption">
+                    <div class="btn btn-info btn-draggable" ng-repeat="item in list3" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list3" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
+                  </div>
+                </div>
+              </li>
+              <li class="span3" style='margin-left:10px;'>
+                <div class="thumbnail" data-drop="true" ng-model='list4' data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list4])'}"  jqyoui-droppable="{multiple:true}">
+                  <div class="caption">
+                    <div class="btn btn-info btn-draggable" ng-repeat="item in list4" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list4" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-inner">
+        <div class="container form-inline" style="text-align: center;">
+          <div class="btn btn-droppable" ng-repeat="item in list5" data-drop="true" ng-model='list5' data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list5])'}"  jqyoui-droppable="{index: {{$index}}}">
+            <div class="btn btn-info btn-draggable" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list5" jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true}" ng-hide="!item.title">{{item.title}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
