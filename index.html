@@ -54,11 +54,13 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
     <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+    <script src="https://raw.github.com/codef0rmer/angular-dragdrop/master/src/angular-dragdrop.min.js" type='text/javascript'></script>
     <script src="assets/prettify.js"></script>
     <script> 
-      var App = angular.module('ghpages', []).config(['$routeProvider', function($routeProvider) {
+      var App = angular.module('ghpages', ['jqyoui']).config(['$routeProvider', function($routeProvider) {
         $routeProvider
           .when('/', { templateUrl: 'partials/overview.html'})
           .when('/list', { templateUrl: 'partials/list.html'})
@@ -66,6 +68,10 @@
           .when('/cart', { templateUrl: 'partials/cart.html'})
           .otherwise({ redirectTo: '/' });
       }]);
+      App.controller('OverviewCtrl', function($scope) {
+        $scope.list1 = {title: 'AngularJS - Drag Me'};
+        $scope.list2 = {};
+      });
     </script>
   </body>
 </html>

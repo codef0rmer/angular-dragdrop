@@ -21,6 +21,44 @@
   </script>
   </div>
 
+
+  <h3>Quick Demo</h3>
+  <div class="row show-grid" ng-controller="OverviewCtrl">
+    <div class="span3" data-original-title="">
+      <div class="btn btn-primary" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{animate:true}" ng-hide="!list1.title">{{list1.title}}</div>
+    </div>
+    <div class="span9">
+<pre class="prettyprint linenums languague-html" ng-non-bindable>
+&lt;div class=&quot;btn btn-primary&quot; data-drag=&quot;true&quot; data-jqyoui-options=&quot;{revert: 'invalid'}&quot; ng-model=&quot;list1&quot; jqyoui-draggable=&quot;{animate:true}&quot; ng-hide=&quot;!list1.title&quot;&gt;{{list1.title}}&lt;/div&gt;
+</pre>   
+    </div>
+    <div class="span3" data-original-title="">
+      Drop below:
+      <div class="thumbnail" data-drop="true" data-jqyoui-options ng-model="list2" jqyoui-droppable style='height:50px;'>
+        <div class="btn btn-success" data-drag="false" data-jqyoui-options ng-model="list2" jqyoui-draggable ng-hide="!list2.title">{{list2.title}}</div>
+      </div>
+    </div>
+    <div class="span9">
+<pre class="prettyprint linenums languague-html" ng-non-bindable>
+&lt;div class=&quot;thumbnail&quot; data-drop=&quot;true&quot; data-jqyoui-options ng-model=&quot;list2&quot; jqyoui-droppable style='height:50px;'&gt;
+  &lt;div class=&quot;btn btn-success&quot; data-drag=&quot;false&quot; data-jqyoui-options ng-model=&quot;list2&quot; jqyoui-draggable ng-hide=&quot;!list2.title&quot;&gt;{{list2.title}}&lt;/div&gt;
+&lt;/div&gt;
+</pre>   
+    </div>
+    <div class="span3" data-original-title="">
+      List1 Model: {{list1}}<br/>
+      List2 Model: {{list2}}
+    </div>
+    <div class="span9">
+<pre class="prettyprint linenums languague-javascript" ng-non-bindable>
+App.controller('OverviewCtrl', function($scope) {
+  $scope.list1 = {title: 'AngularJS - Drag Me'};
+  $scope.list2 = {};
+});
+</pre>   
+    </div>
+  </div>
+
   <h3>Angular Draggable options</h3>
   <table class="table table-bordered table-striped">
     <thead>
@@ -169,3 +207,10 @@
     </tbody>
   </table>
 </div> <!-- /container -->
+<script>
+  !function ($) {
+    $(function(){
+      window.prettyPrint && prettyPrint();
+    })
+  }(window.jQuery);
+</script>
