@@ -64,7 +64,7 @@ var jqyoui = angular.module('jqyoui', []).directive('jqyouiDraggable', function(
       updateDraggable();
     }
   };
-}).directive('jqyouiDroppable', function($timeout) {
+}).directive('jqyouiDroppable', ['$timeout',function($timeout) {
   return {
     restrict: 'A',
     priority: 1,
@@ -100,7 +100,7 @@ var jqyoui = angular.module('jqyoui', []).directive('jqyouiDraggable', function(
       updateDroppable();
     }
   };
-});
+}]);
 
 jqyoui.invokeDrop = function($draggable, $droppable, scope, $timeout, event, ui) {
   var dragModel = '',
