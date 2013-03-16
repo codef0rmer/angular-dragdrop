@@ -26,7 +26,7 @@
  *
  * (c) 2013 Amit Gharat a.k.a codef0rmer <amit.2006.it@gmail.com> - amitgharat.wordpress.com
  */
-var jqyoui = angular.module('jqyoui', []).directive('jqyouiDraggable', function() {
+var jqyoui = angular.module('ngDragDrop', []).directive('jqyouiDraggable', function() {
   return {
     require: '?jqyouiDroppable',
     restrict: 'A',

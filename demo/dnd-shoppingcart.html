@@ -22,7 +22,7 @@
       $(function() {
         $("#catalog").accordion();
       });
-      var App = angular.module('drag-and-drop', ['jqyoui']);
+      var App = angular.module('drag-and-drop', ['ngDragDrop']);
 
       App.controller('oneCtrl', function($scope, $timeout) {
         $scope.list1 = [{'title': 'Lolcat Shirt'},{'title': 'Cheezeburger Shirt'},{'title': 'Buckit Shirt'}];
