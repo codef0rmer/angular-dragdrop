@@ -60,7 +60,7 @@
     <script src="https://raw.github.com/codef0rmer/angular-dragdrop/master/src/angular-dragdrop.min.js" type='text/javascript'></script>
     <script src="assets/prettify.js"></script>
     <script> 
-      var App = angular.module('ghpages', ['jqyoui']).config(['$routeProvider', function($routeProvider) {
+      var App = angular.module('ghpages', ['ngDragDrop']).config(['$routeProvider', function($routeProvider) {
         $routeProvider
           .when('/', { templateUrl: 'partials/overview.html'})
           .when('/list', { templateUrl: 'partials/list.html'})
