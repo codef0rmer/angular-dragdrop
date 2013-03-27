@@ -71,7 +71,7 @@ var jqyoui = angular.module('ngDragDrop', []).directive('jqyouiDraggable', funct
     restrict: 'A',
     priority: 1,
     link: function(scope, element, attrs) {
-      var updateDroppable = function(oldValue, newValue) {
+      var updateDroppable = function(newValue, oldValue) {
         if (newValue) {
           element
             .droppable({disabled: false})
