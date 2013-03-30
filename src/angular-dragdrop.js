@@ -211,26 +211,18 @@ jqyoui.mutateDraggable = function(scope, dropSettings, dragSettings, dragModel, 
   var isEmpty = $.isEmptyObject(dropItem);
 
   if (dragSettings && dragSettings.placeholder) {
-    if (angular.isArray(scope[dragModel]) && !angular.isArray(scope[dropModel])) {
-      scope[dragModel][dragSettings.index] = dropItem;
-    } else if (!angular.isArray(scope[dropModel])) {
-      scope[dragModel] = dropItem;
-    } else if (dragSettings.index !== undefined) {
+    if (angular.isArray(scope[dragModel]) && dragSettings.index !== undefined) {
       scope[dragModel][dragSettings.index] = dropItem;
     } else {
       scope[dragModel] = dropItem;
     }
   } else {
-    if (angular.isArray(scope[dragModel]) && $.isEmptyObject(dropItem)) {
-      scope[dragModel].splice(dragSettings.index, 1);
-    } else if (angular.isArray(scope[dragModel]) && angular.isArray(scope[dragModel])) {
+    if (angular.isArray(scope[dragModel])) {
       if (isEmpty) {
         scope[dragModel].splice(dragSettings.index, 1);
       } else {
         scope[dragModel][dragSettings.index] = dropItem;
       }
-    } else if (angular.isArray(scope[dragModel]) && !angular.isArray(scope[dragModel])) {
-      scope[dragModel][dragSettings.index] = dropItem;
     } else {
       // Fix: LIST(object) to LIST(array) - model does not get updated using just scope[dragModel] = {...}
       // P.S.: Could not figure out why it happened
