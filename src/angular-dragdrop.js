@@ -219,7 +219,9 @@ jqyoui.mutateDraggable = function(scope, dropSettings, dragSettings, dragModel, 
   } else {
     if (angular.isArray(scope[dragModel])) {
       if (isEmpty) {
-        scope[dragModel].splice(dragSettings.index, 1);
+        if (dragSettings && !(dragSettings.immutable)){
+          scope[dragModel].splice(dragSettings.index, 1);
+        }
       } else {
         scope[dragModel][dragSettings.index] = dropItem;
       }

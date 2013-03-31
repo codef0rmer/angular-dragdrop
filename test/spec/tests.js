@@ -158,5 +158,21 @@ describe('jQueryUI Drag and Drop Directive', function() {
       expect(scope.list1[0].title).toBe('Item 1');
       expect(scope.list4.title).toBe('Item 2');
     });
+    it('should keep the original items on list1(array) when immutable is true', function(){
+      // Move item1 from list1 to list2
+      jqyoui.invokeDrop(
+        $draggableList1.attr('jqyoui-draggable', '{index: 0, immutable: true}'),
+        $droppableList2.attr('jqyoui-droppable', '{}'),
+        scope,
+        timeout,
+        null,
+        null
+      );
+      timeout.flush(); // http://goo.gl/XEss1
+      expect(scope.list1.length).toBe(4);
+      expect(scope.list2.length).toBe(1);
+      expect(scope.list1[0].title).toBe('Item 1');
+      expect(scope.list2[0].title).toBe('Item 1');
+    });
   });
 });

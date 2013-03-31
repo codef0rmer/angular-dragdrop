@@ -6,6 +6,7 @@
     * **index** – number – $index of an item of a model (if it is an array) associated with it
     * **placeholder** – boolean – If true, the place will be occupied even though a dragggable is moved/dropped somewhere else
     * **animate** – boolean – If true, draggable will be animated towards droppable when dropped. If multiple is not set to true on droppable then its draggable will swap its position.
+    * **immutable** – boolean – If true, draggable will keep its original elements when they're dropped into droppable.
     * **onStart** – string – callback method to be invoked (has to be defined in a controller) when dragging starts
     * **onStop** – string – callback method to be invoked when dragging stops
     * **onDrag** – string – callback method to be invoked while the mouse is moved during the dragging
