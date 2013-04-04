@@ -44,17 +44,41 @@ var jqyoui = angular.module('ngDragDrop', []).directive('jqyouiDraggable', funct
                 jqyoui.startXY = $(this).offset();
 
                 if (dragSettings.onStart) {
-                  scope[dragSettings.onStart](event, ui);
+                  if (/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/.test(dragSettings.onStart)) {
+                    dragSettings.startFunc = dragSettings.onStart.match(/^[a-zA-Z0-9_\$]*\(/);
+                    dragSettings.startFunc = dragSettings.startFunc[0].substr(0, dragSettings.startFunc[0].length - 1);
+                    dragSettings.startInput = dragSettings.onStart.match(/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/).toString().replace(/\(/, '').replace(/\)/, '');
+                    eval('scope[dragSettings.startFunc](event, ui, ' + dragSettings.startInput + ')');
+                  }
+                  else {
+                    scope[dragSettings.onStart](event, ui);
+                  }
                 }
               },
               stop: function(event, ui) {
                 if (dragSettings.onStop) {
-                  scope[dragSettings.onStop](event, ui);
+                  if (/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/.test(dragSettings.onStop)) {
+                    dragSettings.stopFunc = dragSettings.onStop.match(/^[a-zA-Z0-9_\$]*\(/);
+                    dragSettings.stopFunc = dragSettings.stopFunc[0].substr(0, dragSettings.stopFunc[0].length - 1);
+                    dragSettings.stopInput = dragSettings.onStop.match(/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/).toString().replace(/\(/, '').replace(/\)/, '');
+                    eval('scope[dragSettings.stopFunc](event, ui, ' + dragSettings.stopInput + ')');
+                  }
+                  else {
+                    scope[dragSettings.onStop](event, ui);
+                  }
                 }
               },
               drag: function(event, ui) {
                 if (dragSettings.onDrag) {
-                  scope[dragSettings.onDrag](event, ui);
+                  if (/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/.test(dragSettings.onDrag)) {
+                    dragSettings.dragFunc = dragSettings.onDrag.match(/^[a-zA-Z0-9_\$]*\(/);
+                    dragSettings.dragFunc = dragSettings.dragFunc[0].substr(0, dragSettings.dragFunc[0].length - 1);
+                    dragSettings.dragInput = dragSettings.onDrag.match(/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/).toString().replace(/\(/, '').replace(/\)/, '');
+                    eval('scope[dragSettings.dragFunc](event, ui, ' + dragSettings.dropInput + ')');
+                  }
+                  else {
+                    scope[dragSettings.onDrag](event, ui);
+                  }
                 }
               }
             });
@@ -80,13 +104,29 @@ var jqyoui = angular.module('ngDragDrop', []).directive('jqyouiDraggable', funct
               over: function(event, ui) {
                 var dropSettings = scope.$eval(angular.element(this).attr('jqyoui-droppable')) || [];
                 if (dropSettings.onOver) {
-                  scope[dropSettings.onOver](event, ui);
+                  if (/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/.test(dropSettings.onOver)) {
+                    dropSettings.overFunc = dropSettings.onOver.match(/^[a-zA-Z0-9_\$]*\(/);
+                    dropSettings.overFunc = dropSettings.overFunc[0].substr(0, dropSettings.overFunc[0].length - 1);
+                    dropSettings.overInput = dropSettings.onOver.match(/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/).toString().replace(/\(/, '').replace(/\)/, '');
+                    eval('scope[dropSettings.overFunc](event, ui, ' + dropSettings.overInput + ')');
+                  }
+                  else {
+                    scope[dropSettings.onOver](event, ui);
+                  }
                 }
               },
               out: function(event, ui) {
                 var dropSettings = scope.$eval(angular.element(this).attr('jqyoui-droppable')) || [];
                 if (dropSettings.onOut) {
-                  scope[dropSettings.onOut](event, ui);
+                  if (/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/.test(dropSettings.onOut)) {
+                    dropSettings.outFunc = dropSettings.onOut.match(/^[a-zA-Z0-9_\$]*\(/);
+                    dropSettings.outFunc = dropSettings.outFunc[0].substr(0, dropSettings.outFunc[0].length - 1);
+                    dropSettings.outInput = dropSettings.onOut.match(/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/).toString().replace(/\(/, '').replace(/\)/, '');
+                    eval('scope[dropSettings.outFunc](event, ui, ' + dropSettings.outInput + ')');
+                  }
+                  else {
+                    scope[dropSettings.onOut](event, ui);
+                  }
                 }
               },
               drop: function(event, ui) {
@@ -139,7 +179,15 @@ jqyoui.invokeDrop = function($draggable, $droppable, scope, $timeout, event, ui)
         jqyoui.mutateDraggable(scope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
         jqyoui.mutateDroppable(scope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
         if (dropSettings.onDrop) {
-          scope[dropSettings.onDrop](event, ui);
+          if (/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/.test(dropSettings.onDrop)) {
+            dropSettings.dropFunc = dropSettings.onDrop.match(/^[a-zA-Z0-9_\$]*\(/);
+            dropSettings.dropFunc = dropSettings.dropFunc[0].substr(0, dropSettings.dropFunc[0].length - 1);
+            dropSettings.dropInput = dropSettings.onDrop.match(/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/).toString().replace(/\(/, '').replace(/\)/, '');
+            eval('scope[dropSettings.dropFunc](event, ui, ' + dropSettings.dropInput + ')');
+          }
+          else {
+            scope[dropSettings.onDrop](event, ui);
+          }
         }
       });
     });
@@ -148,7 +196,15 @@ jqyoui.invokeDrop = function($draggable, $droppable, scope, $timeout, event, ui)
       jqyoui.mutateDraggable(scope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
       jqyoui.mutateDroppable(scope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
       if (dropSettings.onDrop) {
-        scope[dropSettings.onDrop](event, ui);
+        if (/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/.test(dropSettings.onDrop)) {
+          dropSettings.dropFunc = dropSettings.onDrop.match(/^[a-zA-Z0-9_\$]*\(/);
+          dropSettings.dropFunc = dropSettings.dropFunc[0].substr(0, dropSettings.dropFunc[0].length - 1);
+          dropSettings.dropInput = dropSettings.onDrop.match(/\([a-zA-Z0-9_,:\'\s\$\[\]\{\}\.]*\)/).toString().replace(/\(/, '').replace(/\)/, '');
+          eval('scope[dropSettings.dropFunc](event, ui, ' + dropSettings.dropInput + ')');
+        }
+        else {
+          scope[dropSettings.onDrop](event, ui);
+        }
       }
     });
   }
