@@ -196,12 +196,12 @@ jqyoui.mutateDroppable = function(scope, dropSettings, dragSettings, dropModel, 
     } else {
       scope[dropModel].push(dragItem);
     }
-    if (dragSettings && dragSettings.placeholder) {
+    if (dragSettings && dragSettings.placeholder === true) {
       scope[dropModel][scope[dropModel].length - 1]['jqyoui_pos'] = jqyoui_pos;
     }
   } else {
     scope[dropModel] = dragItem;
-    if (dragSettings && dragSettings.placeholder) {
+    if (dragSettings && dragSettings.placeholder === true) {
       scope[dropModel]['jqyoui_pos'] = jqyoui_pos;
     }
   }
@@ -211,15 +211,19 @@ jqyoui.mutateDraggable = function(scope, dropSettings, dragSettings, dragModel, 
   var isEmpty = $.isEmptyObject(dropItem);
 
   if (dragSettings && dragSettings.placeholder) {
-    if (angular.isArray(scope[dragModel]) && dragSettings.index !== undefined) {
-      scope[dragModel][dragSettings.index] = dropItem;
-    } else {
-      scope[dragModel] = dropItem;
+    if (dragSettings.placeholder != 'keep'){
+      if (angular.isArray(scope[dragModel]) && dragSettings.index !== undefined) {
+        scope[dragModel][dragSettings.index] = dropItem;
+      } else {
+        scope[dragModel] = dropItem;
+      }
     }
   } else {
     if (angular.isArray(scope[dragModel])) {
       if (isEmpty) {
-        scope[dragModel].splice(dragSettings.index, 1);
+        if (dragSettings && !(dragSettings.immutable)){
+          scope[dragModel].splice(dragSettings.index, 1);
+        }
       } else {
         scope[dragModel][dragSettings.index] = dropItem;
       }
