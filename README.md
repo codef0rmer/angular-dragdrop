@@ -4,7 +4,7 @@
 ##Angular Draggable options
 * **jqyoui-draggable** – A custom angular attribute to make any element draggable. It holds more settings such as:
     * **index** – number – $index of an item of a model (if it is an array) associated with it
-    * **placeholder** – boolean – If true, the place will be occupied even though a dragggable is moved/dropped somewhere else
+    * **placeholder** – boolean/string – If true, the place will be occupied even though a dragggable is moved/dropped somewhere else. If 'keep' is supplied, the original item won't be removed from the draggable.
     * **animate** – boolean – If true, draggable will be animated towards droppable when dropped. If multiple is not set to true on droppable then its draggable will swap its position.
     * **onStart** – string – callback method to be invoked (has to be defined in a controller) when dragging starts
     * **onStop** – string – callback method to be invoked when dragging stops
