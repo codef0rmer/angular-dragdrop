@@ -45,19 +45,19 @@
     <h2><a href="#">T-Shirts</a></h2>
     <div data-drop="true" ng-model='list1' jqyoui-droppable="{multiple:true}">
       <ul>
-        <li ng-repeat='item in list1' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list1" jqyoui-draggable="{index: {{$index}}, animate: true}">{{item.title}}</li>
+        <li ng-repeat='item in list1' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list1" jqyoui-draggable="{index: {{$index}}, animate: true, placeholder: 'keep'}">{{item.title}}</li>
       </ul>
     </div>
     <h2><a href="#">Bags</a></h2>
     <div data-drop="true" ng-model='list2' jqyoui-droppable="{multiple:true}">
       <ul>
-        <li ng-repeat='item in list2' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list2" jqyoui-draggable="{index: {{$index}}}">{{item.title}}</li>
+        <li ng-repeat='item in list2' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list2" jqyoui-draggable="{index: {{$index}}, placeholder: 'keep'}">{{item.title}}</li>
       </ul>
     </div>
     <h2><a href="#">Gadgets</a></h2>
     <div data-drop="true" ng-model='list3' jqyoui-droppable="{multiple:true}">
       <ul>
-        <li ng-repeat='item in list3' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list3" jqyoui-draggable="{index: {{$index}}}">{{item.title}}</li>
+        <li ng-repeat='item in list3' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list3" jqyoui-draggable="{index: {{$index}}, placeholder: 'keep'}">{{item.title}}</li>
       </ul>
     </div>
   </div>
