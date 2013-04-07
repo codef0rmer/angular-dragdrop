@@ -139,7 +139,7 @@ jqyoui.invokeDrop = function($draggable, $droppable, scope, $timeout, event, ui)
         jqyoui.mutateDraggable(scope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
         jqyoui.mutateDroppable(scope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
         if (dropSettings.onDrop) {
-          scope[dropSettings.onDrop](event, ui);
+          scope[dropSettings.onDrop](event, ui, dragItem);
         }
       });
     });
@@ -148,7 +148,7 @@ jqyoui.invokeDrop = function($draggable, $droppable, scope, $timeout, event, ui)
       jqyoui.mutateDraggable(scope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
       jqyoui.mutateDroppable(scope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
       if (dropSettings.onDrop) {
-        scope[dropSettings.onDrop](event, ui);
+        scope[dropSettings.onDrop](event, ui, dragItem);
       }
     });
   }
