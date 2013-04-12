@@ -201,12 +201,14 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     }
   };
 }]).directive('jqyouiDroppable', ['ngDragDropService', function(ngDragDropService) {
+  console.log("droppable directive");
   return {
     restrict: 'A',
     priority: 1,
     link: function(scope, element, attrs) {
       var updateDroppable = function(newValue, oldValue) {
         if (newValue) {
+          console.log("droppable directive element setting");
           element
             .droppable({disabled: false})
             .droppable(scope.$eval(attrs.jqyouiOptions) || {})

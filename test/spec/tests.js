@@ -36,9 +36,11 @@
 //
 
 describe('jQueryUI Drag and Drop Directive', function() {
-  var scope, rootScope, timeout, jqyoui_pos, $draggable, dropSettings, dragSettings, dragModel, dropModel, dropItem;
+  var scope, rootScope, timeout, jqyoui_pos, $compile, $draggable, dropSettings, dragSettings, dragModel, dropModel, dropItem, ui;
 
-  beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $timeout) {
+  beforeEach(module('ngDragDrop'));
+  beforeEach(inject(function(_$httpBackend_, $rootScope, _$compile_, $controller, $timeout) {
+    $compile = _$compile_;
     scope = $rootScope.$new();
     rootScope = $rootScope;
     scope['list1'] = [
@@ -51,112 +53,193 @@ describe('jQueryUI Drag and Drop Directive', function() {
     scope['list4'] = {};
     scope['list3'] = { 'title': 'Item 1', 'drag': true};
     timeout = $timeout;
-    $draggableList1 = $('<div class="draggable" />').attr('ng-model', 'list1');
-    $droppableList1 = $('<div class="droppable" />').attr('ng-model', 'list1');
-    $draggableList2 = $('<div class="draggable" />').attr('ng-model', 'list2');
-    $droppableList2 = $('<div class="droppable" />').attr('ng-model', 'list2');
-    $draggableList4 = $('<div class="draggable" />').attr('ng-model', 'list4');
-    $droppableList4 = $('<div class="droppable" />').attr('ng-model', 'list4');
+    ui = {};
+    $draggableList1 = $('<div></div>').attr('ng-model', 'list1').attr('data-drag', 'true');
+    $droppableList1 = $('<div></div>').attr('ng-model', 'list1').attr('data-drop', 'true');
+    $draggableList2 = $('<div></div>').attr('ng-model', 'list2').attr('data-drag', 'true');
+    $droppableList2 = $('<div></div>').attr('ng-model', 'list2').attr('data-drop', 'true');
+    $draggableList4 = $('<div></div>').attr('ng-model', 'list4').attr('data-drag', 'true');
+    $droppableList4 = $('<div></div>').attr('ng-model', 'list4').attr('data-drop', 'true');
+
+    var dragElems = [
+      $draggableList1,
+      $draggableList2,
+      $draggableList4
+    ];
+
+    var dropElems = [
+      $droppableList1,
+      $droppableList2,
+      $droppableList4
+    ];
+
+    for (var i = 0; i < dragElems.length; i++) {
+      var offset = {left: 0, top: 150};
+      var proportions = {width: 50, height: 50};
+      var elem = dragElems[i];
+      elem.offset(offset);
+    }
+
+    for (var i = 0; i < dropElems.length; i++) {
+      offset = {left: 100 * i, top: 0}
+      elem = dropElems[i];
+    }
   }));
 
-  describe('Drag and Drop', function() {
-    it('should move items from list1(array) to list2(array)', function() {
-      // Move item1 from list1 to list2
-      jqyoui.invokeDrop(
-        $draggableList1.attr('jqyoui-draggable', '{index: 0, placeholder: true}'),
-        $droppableList2.attr('jqyoui-droppable', '{}'),
-        scope,
-        timeout,
-        null,
-        null
-      );
-      timeout.flush(); // http://goo.gl/XEss1
-      expect(scope.list1[0]).toEqual({});
-      expect(scope.list2.length).toBe(1);
-      expect(scope.list2[0].title).toBe('Item 1');
+  it('should move items from list1(array) to list2(array)', function() {
+    // Move item1 from list1 to list2
+    $draggableList1.attr('jqyoui-draggable', '{index: 0, placeholder: true}');
+    $droppableList2.attr('jqyoui-droppable', true);
 
-      // Move item2 from list1 to list2
-      jqyoui.invokeDrop(
-        $draggableList1.attr('jqyoui-draggable', '{index: 1, placeholder: true}'),
-        $droppableList2.attr('jqyoui-droppable', '{}'),
-        scope,
-        timeout,
-        null,
-        null
-      );
-      timeout.flush();
-      expect(scope.list1[1]).toEqual({});
-      expect(scope.list2.length).toBe(2);
-      expect(scope.list2[1].title).toBe('Item 2');
+    $compile($draggableList1)(scope);
+    $compile($droppableList2)(scope);
 
-      // Move item2 from list2 to list1 at 0th position
-      jqyoui.invokeDrop(
-        $draggableList2.attr('jqyoui-draggable', '{index: 1}'),
-        $droppableList1.attr('jqyoui-droppable', '{index: 0}'),
-        scope,
-        timeout,
-        null,
-        null
-      );
-      timeout.flush();
-      expect(scope.list1[0].title).toBe('Item 2');
-      expect(scope.list2.length).toBe(1);
+    scope.$digest();
 
-      // Switch items between list2 and list1 at 0th position
-      jqyoui.invokeDrop(
-        $draggableList2.attr('jqyoui-draggable', '{index: 0}'),
-        $droppableList1.attr('jqyoui-droppable', '{index: 0}'),
-        scope,
-        timeout,
-        null,
-        null
-      );
-      timeout.flush();
-      expect(scope.list1[0].title).toBe('Item 1');
-      expect(scope.list2.length).toBe(1);
-      expect(scope.list2[0].title).toBe('Item 2');
-
-      // Switch items within same list at 0th & 2nd positions
-      jqyoui.invokeDrop(
-        $draggableList1.attr('jqyoui-draggable', '{index: 0}'),
-        $droppableList1.attr('jqyoui-droppable', '{index: 2}'),
-        scope,
-        timeout,
-        null,
-        null
-      );
-      timeout.flush();
-      expect(scope.list1[0].title).toBe('Item 3');
-      expect(scope.list1[2].title).toBe('Item 1');
+    // $draggableList1 has offset {left: 0, top: 150}, $droppableList2 has offset {left: 100, top: 0}
+    $draggableList1.simulate('drag', {
+      dx: 150,
+      dy: 0
+    }).simulate('drag', {
+      dx: 0,
+      dy: -100
     });
 
-    it('should move items from list1(array) to list4(object)', function() {
-      // Move item1 from list1 to list4 without placeholder
-      jqyoui.invokeDrop(
-        $draggableList1.attr('jqyoui-draggable', '{index: 0}'),
-        $droppableList4.attr('jqyoui-droppable', '{}'),
-        scope,
-        timeout,
-        null,
-        null
-      );
-      timeout.flush();
-      expect(scope.list1.length).toBe(3);
-      expect(scope.list4.title).toBe('Item 1');
+    timeout.flush(); // http://goo.gl/XEss1
+    expect(scope.list1[0]).toEqual({});
+    expect(scope.list2.length).toBe(1);
+    expect(scope.list2[0].title).toBe('Item 1');
 
-      // Move item1 from list1 to list4 with placeholder
-      jqyoui.invokeDrop(
-        $draggableList1.attr('jqyoui-draggable', '{index: 0, placeholder: true}'),
-        $droppableList4.attr('jqyoui-droppable', '{}'),
-        scope,
-        timeout,
-        null,
-        null
-      );
-      timeout.flush();
-      expect(scope.list1.length).toBe(3);
-      expect(scope.list1[0].title).toBe('Item 1');
-      expect(scope.list4.title).toBe('Item 2');
+    // Move item2 from list1 to list2
+    $draggableList1.attr('jqyoui-draggable', '{index: 1, placeholder: true}');
+    $droppableList2.attr('jqyoui-droppable', '{}');
+
+    $compile($draggableList1)(scope);
+    $compile($droppableList2)(scope);
+
+    // $draggableList1 has offset {left: 150, top: 50}, $droppableList2 has offset {left: 100, top: 0}
+    $draggableList1.simulate('drag', {
+      dx: 1,
+      dy: 1
     });
+
+    timeout.flush();
+    expect(scope.list1[2]).toEqual({});
+    expect(scope.list2.length).toBe(2);
+    expect(scope.list2[0].title).toBe('Item 2');
+
+    // Move item2 from list2 to list1 at 0th position
+    $draggableList2.attr('jqyoui-draggable', '{index: 1, placeholder: true}');
+    $droppableList1.attr('jqyoui-droppable', '{}');
+    
+    $compile($draggableList2)(scope);
+    $compile($droppableList1)(scope)
+
+    // $draggableList2 has offset {left: 0, top: 150}, $droppableList1 has offset {left: 0, top: 0}
+    $draggableList2.simulate('drag', {
+      dx: 0,
+      dy: -100
+    });
+
+    timeout.flush();
+    expect(scope.list1[2]).toEqual({});
+    expect(scope.list2.length).toBe(2);
+    expect(scope.list2[0].title).toBe('Item 2');
+
+    // Switch items between list2 and list1 at 0th position
+    $draggableList1.attr('jqyoui-draggable', '{index: 0}');
+    $droppableList1.attr('jqyoui-droppable', '{index: 0}');
+    
+    // Reset $draggableList1 offset to {left: 0, top: 150}
+    $draggableList1.offset({left: 0, top: 150});
+
+    // $droppableList1 has offset {left: 0, top: 0}
+    $draggableList1.simulate('drag', {
+      dx: 0,
+      dy: -100
+    });
+
+    timeout.flush();
+    expect(scope.list1[0].title).toBe('Item 1');
+    expect(scope.list2.length).toBe(1);
+    expect(scope.list2[0].title).toBe('Item 2');
+
+    // Switch items between same list at 0th and 2nd positions
+    $draggableList1.attr('jqyoui-draggable', '{index: 0}');
+    $droppableList1.attr('jqyoui-droppable', '{index: 2}');
+    
+    // $draggableList1 has offset {left: 0, top: 50}, $droppableList has offset {left: 0, top: 0}
+    $draggableList1.simulate('drag', {
+      dx: 1,
+      dy: 1
+    });
+
+    timeout.flush();
+    expect(scope.list1[0].title).toBe('Item 3');
+    expect(scope.list1[2].title).toBe('Item 1');
+  });
+  it('should move items from list1(array) to list4(object)', function() {
+    // Move item1 from list1 to list4 without placeholder
+    $draggableList1.attr('jqyoui-draggable', '{index: 0}');
+    $droppableList4.attr('jqyoui-droppable', '{}');
+    
+    $compile($draggableList1)(scope);
+    $compile($droppableList4)(scope);
+
+    // $draggableList1 has offset {left: 0, top: 150}, $droppableList4 has offset {left: 300, top: 0}
+    $draggableList1.simulate('drag', {
+      dx: 350,
+      dy: 0
+    }).simulate('drag', {
+      dx: 0,
+      dy: -100
+    });
+
+    timeout.flush();
+    expect(scope.list1.length).toBe(3);
+    expect(scope.list4.title).toBe('Item 1');
+
+    // Move item1 from list1 to list4 with placeholder
+    $draggableList1.attr('jqyoui-draggable', '{index: 0, placeholder: true}');
+    $droppableList4.attr('jqyoui-droppable', '{}');
+    
+    $compile($draggableList1)(scope);
+
+    // $draggableList1 has offset {left: 350, top: 50}, $droppableList4 has offset {left: 300, top: 0}
+    $draggableList1.simulate('drag', {
+      dx: 1,
+      dy: 1
+    });
+
+    timeout.flush();
+    expect(scope.list1.length).toBe(3);
+    expect(scope.list4.title).toBe('Item 1');
+    expect(scope.list4.title).toBe('Item 2');
+  });
+
+  it('should fire a callback when drop is triggered', function() {
+    var dropTrigger = false;
+
+    scope.dropCallback = function(event, ui, val) {
+      dropTrigger = val;
+    };
+
+    $draggableList1.attr('jqyoui-draggable', '{index: 0}')
+    $droppableList2.attr('jqyoui-droppable', '{onDrop:dropCallback(true)}');
+    
+    $compile($draggableList1)(scope);
+    $compile($droppableList2)(scope);
+
+    // $draggableList1 has offset {left: 0, top: 150}, $droppableList2 has offset {left: 100, top: 0}
+    $draggableList1.simulate('drag', {
+      dx: 150,
+      dy: 0
+    }).simulate('drag', {
+      dx: 0,
+      dy: -100
+    });
+
+    timeout.flush();
+    expect(dropTrigger).toBe(true);
   });
 });
