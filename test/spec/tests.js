@@ -86,162 +86,222 @@ describe('jQueryUI Drag and Drop Directive', function() {
     }
   }));
 
-  it('should move items from list1(array) to list2(array)', function() {
-    // Move item1 from list1 to list2
-    $draggableList1.attr('jqyoui-draggable', '{index: 0, placeholder: true}');
-    $droppableList2.attr('jqyoui-droppable', true);
+  it('should iterate over an array of objects', function() {
+    element = $compile('<div><div ng-repeat="item in list1" ng-model="list1"jqyoui-draggable="{index: {{$index}}, onStart: \'startCallback\', onStop: \'stopCallback\'}" data-drag="{{item.drag}}">{{item.name}}</div></div>')(scope);
 
-    $compile($draggableList1)(scope);
-    $compile($droppableList2)(scope);
-
+    // Array.prototype.extraProperty = "should be ignored";
+    // INIT
+    scope.list1 = [{name: 'amit', drag: true}, {name:'gharat', drag: true}];
+    scope.startCallback = function(event, ui) {
+      console.log('amit');
+    };
+    scope.stopCallback = function(event, ui, val) {
+      console.log('amar');
+    };
+    // spyOn(scope, 'startCallback').andCallThrough();
+    // spyOn(scope, 'stopCallback').andCallThrough();
     scope.$digest();
 
-    // $draggableList1 has offset {left: 0, top: 150}, $droppableList2 has offset {left: 100, top: 0}
-    $draggableList1.simulate('drag', {
+    $(element).children(':first').simulate('drag', {
       dx: 150,
       dy: 0
-    }).simulate('drag', {
-      dx: 0,
-      dy: -100
     });
+    expect(scope.startCallback).toHaveBeenCalled();
+    expect(scope.stopCallback).toHaveBeenCalled();
+    // console.log($(element).html());
+    // expect(element.find('li').length).toEqual(2);
+    // expect(element.text()).toEqual('misko;shyam;');
+    // delete Array.prototype.extraProperty;
 
-    timeout.flush(); // http://goo.gl/XEss1
-    expect(scope.list1[0]).toEqual({});
-    expect(scope.list2.length).toBe(1);
-    expect(scope.list2[0].title).toBe('Item 1');
+    // // GROW
+    // scope.items.push({name: 'adam'});
+    // scope.$digest();
+    // expect(element.find('li').length).toEqual(3);
+    // expect(element.text()).toEqual('misko;shyam;adam;');
 
-    // Move item2 from list1 to list2
-    $draggableList1.attr('jqyoui-draggable', '{index: 1, placeholder: true}');
-    $droppableList2.attr('jqyoui-droppable', '{}');
-
-    $compile($draggableList1)(scope);
-    $compile($droppableList2)(scope);
-
-    // $draggableList1 has offset {left: 150, top: 50}, $droppableList2 has offset {left: 100, top: 0}
-    $draggableList1.simulate('drag', {
-      dx: 1,
-      dy: 1
-    });
-
-    timeout.flush();
-    expect(scope.list1[2]).toEqual({});
-    expect(scope.list2.length).toBe(2);
-    expect(scope.list2[0].title).toBe('Item 2');
-
-    // Move item2 from list2 to list1 at 0th position
-    $draggableList2.attr('jqyoui-draggable', '{index: 1, placeholder: true}');
-    $droppableList1.attr('jqyoui-droppable', '{}');
-    
-    $compile($draggableList2)(scope);
-    $compile($droppableList1)(scope)
-
-    // $draggableList2 has offset {left: 0, top: 150}, $droppableList1 has offset {left: 0, top: 0}
-    $draggableList2.simulate('drag', {
-      dx: 0,
-      dy: -100
-    });
-
-    timeout.flush();
-    expect(scope.list1[2]).toEqual({});
-    expect(scope.list2.length).toBe(2);
-    expect(scope.list2[0].title).toBe('Item 2');
-
-    // Switch items between list2 and list1 at 0th position
-    $draggableList1.attr('jqyoui-draggable', '{index: 0}');
-    $droppableList1.attr('jqyoui-droppable', '{index: 0}');
-    
-    // Reset $draggableList1 offset to {left: 0, top: 150}
-    $draggableList1.offset({left: 0, top: 150});
-
-    // $droppableList1 has offset {left: 0, top: 0}
-    $draggableList1.simulate('drag', {
-      dx: 0,
-      dy: -100
-    });
-
-    timeout.flush();
-    expect(scope.list1[0].title).toBe('Item 1');
-    expect(scope.list2.length).toBe(1);
-    expect(scope.list2[0].title).toBe('Item 2');
-
-    // Switch items between same list at 0th and 2nd positions
-    $draggableList1.attr('jqyoui-draggable', '{index: 0}');
-    $droppableList1.attr('jqyoui-droppable', '{index: 2}');
-    
-    // $draggableList1 has offset {left: 0, top: 50}, $droppableList has offset {left: 0, top: 0}
-    $draggableList1.simulate('drag', {
-      dx: 1,
-      dy: 1
-    });
-
-    timeout.flush();
-    expect(scope.list1[0].title).toBe('Item 3');
-    expect(scope.list1[2].title).toBe('Item 1');
-  });
-  it('should move items from list1(array) to list4(object)', function() {
-    // Move item1 from list1 to list4 without placeholder
-    $draggableList1.attr('jqyoui-draggable', '{index: 0}');
-    $droppableList4.attr('jqyoui-droppable', '{}');
-    
-    $compile($draggableList1)(scope);
-    $compile($droppableList4)(scope);
-
-    // $draggableList1 has offset {left: 0, top: 150}, $droppableList4 has offset {left: 300, top: 0}
-    $draggableList1.simulate('drag', {
-      dx: 350,
-      dy: 0
-    }).simulate('drag', {
-      dx: 0,
-      dy: -100
-    });
-
-    timeout.flush();
-    expect(scope.list1.length).toBe(3);
-    expect(scope.list4.title).toBe('Item 1');
-
-    // Move item1 from list1 to list4 with placeholder
-    $draggableList1.attr('jqyoui-draggable', '{index: 0, placeholder: true}');
-    $droppableList4.attr('jqyoui-droppable', '{}');
-    
-    $compile($draggableList1)(scope);
-
-    // $draggableList1 has offset {left: 350, top: 50}, $droppableList4 has offset {left: 300, top: 0}
-    $draggableList1.simulate('drag', {
-      dx: 1,
-      dy: 1
-    });
-
-    timeout.flush();
-    expect(scope.list1.length).toBe(3);
-    expect(scope.list4.title).toBe('Item 1');
-    expect(scope.list4.title).toBe('Item 2');
+    // // SHRINK
+    // scope.items.pop();
+    // scope.items.shift();
+    // scope.$digest();
+    // expect(element.find('li').length).toEqual(1);
+    // expect(element.text()).toEqual('shyam;');
   });
 
-  it('should fire a callback when drop is triggered', function() {
-    var dropTrigger = false;
+  // it('should fire a callback when drop is triggered', function() {
+  //   var dropTrigger = false;
 
-    scope.dropCallback = function(event, ui, val) {
-      dropTrigger = val;
-    };
+  //   scope.dropCallback = function(event, ui, val) {
+  //     dropTrigger = val;
+  //   };
+  //   scope.startCallback = function(event, ui, val) {
+  //     // alert('amit');
+  //   };
+  //   scope.drag = 'true';
 
-    $draggableList1.attr('jqyoui-draggable', '{index: 0}')
-    $droppableList2.attr('jqyoui-droppable', '{onDrop:dropCallback(true)}');
+  //   $draggableList1.attr({
+  //     'jqyoui-draggable': '{index: 0, onStart: startCallback(true)}',
+  //     'data-drag': "true"
+  //   });
+  //   // $droppableList2.attr('jqyoui-droppable', '{onDrop:dropCallback(true)}');
+
     
-    $compile($draggableList1)(scope);
-    $compile($droppableList2)(scope);
+  //   // spyOn(scope, 'startCallback').andCallThrough();
 
-    // $draggableList1 has offset {left: 0, top: 150}, $droppableList2 has offset {left: 100, top: 0}
-    $draggableList1.simulate('drag', {
-      dx: 150,
-      dy: 0
-    }).simulate('drag', {
-      dx: 0,
-      dy: -100
-    });
+  //   $compile($draggableList1)(scope);
+  //   // $compile($droppableList2)(scope);
 
-    timeout.flush();
-    expect(dropTrigger).toBe(true);
-  });
+
+  //   // $draggableList1 has offset {left: 0, top: 150}, $droppableList2 has offset {left: 100, top: 0}
+  //   // $draggableList1.simulate('drag', {
+  //   //   dx: 150,
+  //   //   dy: 0
+  //   // });
+
+
+  //   // var $draggables = $(
+  //   //   '<div ng-repeat="item in list1" data-drag="{{item.drag}}">{{item.title}}</div>'
+  //   // );
+  //   // console.log(scope);
+  //   // $compile($draggables)(scope);
+
+  //   console.log($('<div/>').html($draggableList1).html());
+  //   // expect(scope.startCallback).toHaveBeenCalled();
+
+  //   // timeout.flush();
+  //   // expect(dropTrigger).toBe(true);
+  // });
+
+  // it('should move items from list1(array) to list2(array)', function() {
+  //   // Move item1 from list1 to list2
+  //   $draggableList1.attr('jqyoui-draggable', '{index: 0, placeholder: true}');
+  //   $droppableList2.attr('jqyoui-droppable', true);
+
+  //   $compile($draggableList1)(scope);
+  //   $compile($droppableList2)(scope);
+
+  //   scope.$digest();
+
+  //   // $draggableList1 has offset {left: 0, top: 150}, $droppableList2 has offset {left: 100, top: 0}
+  //   $draggableList1.simulate('drag', {
+  //     dx: 150,
+  //     dy: 0
+  //   }).simulate('drag', {
+  //     dx: 0,
+  //     dy: -100
+  //   });
+
+  //   timeout.flush(); // http://goo.gl/XEss1
+  //   expect(scope.list1[0]).toEqual({});
+  //   expect(scope.list2.length).toBe(1);
+  //   expect(scope.list2[0].title).toBe('Item 1');
+
+  //   // Move item2 from list1 to list2
+  //   $draggableList1.attr('jqyoui-draggable', '{index: 1, placeholder: true}');
+  //   $droppableList2.attr('jqyoui-droppable', '{}');
+
+  //   $compile($draggableList1)(scope);
+  //   $compile($droppableList2)(scope);
+
+  //   // $draggableList1 has offset {left: 150, top: 50}, $droppableList2 has offset {left: 100, top: 0}
+  //   $draggableList1.simulate('drag', {
+  //     dx: 1,
+  //     dy: 1
+  //   });
+
+  //   timeout.flush();
+  //   expect(scope.list1[2]).toEqual({});
+  //   expect(scope.list2.length).toBe(2);
+  //   expect(scope.list2[0].title).toBe('Item 2');
+
+  //   // Move item2 from list2 to list1 at 0th position
+  //   $draggableList2.attr('jqyoui-draggable', '{index: 1, placeholder: true}');
+  //   $droppableList1.attr('jqyoui-droppable', '{}');
+    
+  //   $compile($draggableList2)(scope);
+  //   $compile($droppableList1)(scope)
+
+  //   // $draggableList2 has offset {left: 0, top: 150}, $droppableList1 has offset {left: 0, top: 0}
+  //   $draggableList2.simulate('drag', {
+  //     dx: 0,
+  //     dy: -100
+  //   });
+
+  //   timeout.flush();
+  //   expect(scope.list1[2]).toEqual({});
+  //   expect(scope.list2.length).toBe(2);
+  //   expect(scope.list2[0].title).toBe('Item 2');
+
+  //   // Switch items between list2 and list1 at 0th position
+  //   $draggableList1.attr('jqyoui-draggable', '{index: 0}');
+  //   $droppableList1.attr('jqyoui-droppable', '{index: 0}');
+    
+  //   // Reset $draggableList1 offset to {left: 0, top: 150}
+  //   $draggableList1.offset({left: 0, top: 150});
+
+  //   // $droppableList1 has offset {left: 0, top: 0}
+  //   $draggableList1.simulate('drag', {
+  //     dx: 0,
+  //     dy: -100
+  //   });
+
+  //   timeout.flush();
+  //   expect(scope.list1[0].title).toBe('Item 1');
+  //   expect(scope.list2.length).toBe(1);
+  //   expect(scope.list2[0].title).toBe('Item 2');
+
+  //   // Switch items between same list at 0th and 2nd positions
+  //   $draggableList1.attr('jqyoui-draggable', '{index: 0}');
+  //   $droppableList1.attr('jqyoui-droppable', '{index: 2}');
+    
+  //   // $draggableList1 has offset {left: 0, top: 50}, $droppableList has offset {left: 0, top: 0}
+  //   $draggableList1.simulate('drag', {
+  //     dx: 1,
+  //     dy: 1
+  //   });
+
+  //   timeout.flush();
+  //   expect(scope.list1[0].title).toBe('Item 3');
+  //   expect(scope.list1[2].title).toBe('Item 1');
+  // });
+  // it('should move items from list1(array) to list4(object)', function() {
+  //   // Move item1 from list1 to list4 without placeholder
+  //   $draggableList1.attr('jqyoui-draggable', '{index: 0}');
+  //   $droppableList4.attr('jqyoui-droppable', '{}');
+    
+  //   $compile($draggableList1)(scope);
+  //   $compile($droppableList4)(scope);
+
+  //   // $draggableList1 has offset {left: 0, top: 150}, $droppableList4 has offset {left: 300, top: 0}
+  //   $draggableList1.simulate('drag', {
+  //     dx: 350,
+  //     dy: 0
+  //   }).simulate('drag', {
+  //     dx: 0,
+  //     dy: -100
+  //   });
+
+  //   timeout.flush();
+  //   expect(scope.list1.length).toBe(3);
+  //   expect(scope.list4.title).toBe('Item 1');
+
+  //   // Move item1 from list1 to list4 with placeholder
+  //   $draggableList1.attr('jqyoui-draggable', '{index: 0, placeholder: true}');
+  //   $droppableList4.attr('jqyoui-droppable', '{}');
+    
+  //   $compile($draggableList1)(scope);
+
+  //   // $draggableList1 has offset {left: 350, top: 50}, $droppableList4 has offset {left: 300, top: 0}
+  //   $draggableList1.simulate('drag', {
+  //     dx: 1,
+  //     dy: 1
+  //   });
+
+  //   timeout.flush();
+  //   expect(scope.list1.length).toBe(3);
+  //   expect(scope.list4.title).toBe('Item 1');
+  //   expect(scope.list4.title).toBe('Item 2');
+  // });
+
 
   // NEED TO UPDATE THIS TEST
   // it('should keep the original items on list1(array) when placeholder == "keep"', function(){
