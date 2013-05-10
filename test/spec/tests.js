@@ -120,4 +120,26 @@ describe('Service: ngDragDropService', function() {
     expect(scope.list1).toEqual([{title: 'Item 1', drag: true}]);
     expect(scope.list2).toEqual({title: 'Item 1', drag: true});
   });
+
+  it('should move item from foo.list1[0]:placeholderTrue to foo.list2[0]:dummy', function() {
+    scope.foo = {
+      list1: [{ 'title': 'Item 1', 'drag': true}],
+      list2: [{}]
+    };
+    expect(scope.foo.list1.length).toBe(1);
+    expect(scope.foo.list2.length).toBe(1);
+    ngDragDropService.invokeDrop(
+      $('<div data-drag="' + scope.foo.list1[0].drag + '" ng-model="foo.list1" jqyoui-draggable="{index: 0, placeholder:true}">' + scope.foo.list1[0].title + '</div>'),
+      $('<div data-drop="true" ng-model="foo.list2" jqyoui-droppable="{index: 0}"></div>'),
+      scope,
+      document.createEvent('Event'),
+      {}
+    );
+    timeout.flush(); // http://goo.gl/XEss1
+    expect(scope.foo.list1.length).toBe(1);
+    expect(scope.foo.list1[0]).toEqual({});
+    expect(scope.foo.list2.length).toBe(1);
+    expect(scope.foo.list2[0].title).toBe('Item 1');
+  });
+
 });
