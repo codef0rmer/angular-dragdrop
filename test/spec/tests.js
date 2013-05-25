@@ -16,9 +16,8 @@ describe('Service: ngDragDropService', function() {
     expect(scope.list1.length).toBe(1);
     expect(scope.list2.length).toBe(1);
     ngDragDropService.invokeDrop(
-      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0, placeholder:true}">' + scope.list1[0].title + '</div>'),
-      $('<div data-drop="true" ng-model="list2" jqyoui-droppable="{index: 0}"></div>'),
-      scope,
+      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0, placeholder:true}">' + scope.list1[0].title + '</div>').data('$scope', scope),
+      $('<div data-drop="true" ng-model="list2" jqyoui-droppable="{index: 0}"></div>').data('$scope', scope),
       document.createEvent('Event'),
       {}
     );
@@ -35,9 +34,8 @@ describe('Service: ngDragDropService', function() {
     expect(scope.list1.length).toBe(1);
     expect(scope.list2.length).toBe(0);
     ngDragDropService.invokeDrop(
-      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0, placeholder:true}">' + scope.list1[0].title + '</div>'),
-      $('<div data-drop="true" ng-model="list2" jqyoui-droppable></div>'),
-      scope,
+      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0, placeholder:true}">' + scope.list1[0].title + '</div>').data('$scope', scope),
+      $('<div data-drop="true" ng-model="list2" jqyoui-droppable></div>').data('$scope', scope),
       document.createEvent('Event'),
       {}
     );
@@ -54,9 +52,8 @@ describe('Service: ngDragDropService', function() {
     expect(scope.list1.length).toBe(1);
     expect(scope.list2.length).toBe(1);
     ngDragDropService.invokeDrop(
-      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0}">' + scope.list1[0].title + '</div>'),
-      $('<div data-drop="true" ng-model="list2" jqyoui-droppable="{index: 0}"></div>'),
-      scope,
+      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0}">' + scope.list1[0].title + '</div>').data('$scope', scope),
+      $('<div data-drop="true" ng-model="list2" jqyoui-droppable="{index: 0}"></div>').data('$scope', scope),
       document.createEvent('Event'),
       {}
     );
@@ -72,9 +69,8 @@ describe('Service: ngDragDropService', function() {
     expect(scope.list1.length).toBe(1);
     expect(scope.list2.length).toBe(0);
     ngDragDropService.invokeDrop(
-      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0}">' + scope.list1[0].title + '</div>'),
-      $('<div data-drop="true" ng-model="list2" jqyoui-droppable></div>'),
-      scope,
+      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0}">' + scope.list1[0].title + '</div>').data('$scope', scope),
+      $('<div data-drop="true" ng-model="list2" jqyoui-droppable></div>').data('$scope', scope),
       document.createEvent('Event'),
       {}
     );
@@ -90,9 +86,8 @@ describe('Service: ngDragDropService', function() {
     expect(scope.list1.length).toBe(1);
     expect(scope.list2.length).toBe(1);
     ngDragDropService.invokeDrop(
-      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0}">' + scope.list1[0].title + '</div>'),
-      $('<div data-drop="' + scope.list2[0].drag + '" ng-model="list2" jqyoui-droppable="{index: 0}">' + scope.list2[0].title + '</div>'),
-      scope,
+      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0}">' + scope.list1[0].title + '</div>').data('$scope', scope),
+      $('<div data-drop="' + scope.list2[0].drag + '" ng-model="list2" jqyoui-droppable="{index: 0}">' + scope.list2[0].title + '</div>').data('$scope', scope),
       document.createEvent('Event'),
       {}
     );
@@ -109,9 +104,8 @@ describe('Service: ngDragDropService', function() {
     expect(scope.list1.length).toBe(1);
     expect(scope.list2).toEqual({});
     ngDragDropService.invokeDrop(
-      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0, placeholder: \'keep\'}">' + scope.list1[0].title + '</div>'),
-      $('<div data-drop="true" ng-model="list2" jqyoui-droppable></div>'),
-      scope,
+      $('<div data-drag="' + scope.list1[0].drag + '" ng-model="list1" jqyoui-draggable="{index: 0, placeholder: \'keep\'}">' + scope.list1[0].title + '</div>').data('$scope', scope),
+      $('<div data-drop="true" ng-model="list2" jqyoui-droppable></div>').data('$scope', scope),
       document.createEvent('Event'),
       {}
     );
@@ -129,9 +123,8 @@ describe('Service: ngDragDropService', function() {
     expect(scope.foo.list1.length).toBe(1);
     expect(scope.foo.list2.length).toBe(1);
     ngDragDropService.invokeDrop(
-      $('<div data-drag="' + scope.foo.list1[0].drag + '" ng-model="foo.list1" jqyoui-draggable="{index: 0, placeholder:true}">' + scope.foo.list1[0].title + '</div>'),
-      $('<div data-drop="true" ng-model="foo.list2" jqyoui-droppable="{index: 0}"></div>'),
-      scope,
+      $('<div data-drag="' + scope.foo.list1[0].drag + '" ng-model="foo.list1" jqyoui-draggable="{index: 0, placeholder:true}">' + scope.foo.list1[0].title + '</div>').data('$scope', scope),
+      $('<div data-drop="true" ng-model="foo.list2" jqyoui-droppable="{index: 0}"></div>').data('$scope', scope),
       document.createEvent('Event'),
       {}
     );
@@ -140,6 +133,25 @@ describe('Service: ngDragDropService', function() {
     expect(scope.foo.list1[0]).toEqual({});
     expect(scope.foo.list2.length).toBe(1);
     expect(scope.foo.list2[0].title).toBe('Item 1');
+  });
+
+  it('should move item from scope.list[0]:placeholderFalse to scope2.list[0]:dummy', function() {
+    scope.list = [{'title': 'Item 1', 'drag': true}];
+    scope2 = rootScope.$new();
+    scope2.list = [{}];
+    expect(scope.list.length).toBe(1);
+    expect(scope2.list.length).toBe(1);
+
+     ngDragDropService.invokeDrop(
+      $('<div data-drag="' + scope.list[0].drag + '" ng-model="list" jqyoui-draggable="{index: 0}">' + scope.list[0].title + '</div>').data('$scope', scope),
+      $('<div data-drop="true" ng-model="list" jqyoui-droppable="{index: 0}"></div>').data('$scope', scope2),
+      document.createEvent('Event'),
+      {}
+    );
+     timeout.flush();
+     expect(scope.list.length).toBe(0);
+     expect(scope2.list.length).toBe(1);
+     expect(scope2.list[0].title).toBe('Item 1');
   });
 
 });
