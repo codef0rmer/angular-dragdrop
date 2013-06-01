@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "angular": "~1.x",
+    "jquery": "2.x",
     "jquery-ui": "latest"
   },
   "devDependencies": {
