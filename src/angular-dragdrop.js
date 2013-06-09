@@ -156,7 +156,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     };
 
     this.mutateDraggable = function(scope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable) {
-      var isEmpty = $.isEmptyObject(dropItem),
+      var isEmpty = $.isEmptyObject(angular.copy(dropItem)),
         dragModelValue = scope.$eval(dragModel);
 
       scope.__dropItem = dropItem;
