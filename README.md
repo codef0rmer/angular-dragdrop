@@ -24,3 +24,8 @@
 * **data-drop** – boolean – If true, element can be droppable. Disabled otherwise.
 * **data-jqyoui-options** – object – should hold all the valid options supported by [jQueryUI Droppable](http://api.jqueryui.com/droppable)
 * **ng-model** – string – An angular model defined in a controller. Should be a JS array or object.
+
+## Support
+If you're having problems with using the project, use the support forum at CodersClan.
+
+<a href="http://codersclan.net/forum/index.php?repo_id=17"><img src="http://www.codersclan.net/graphics/getSupport_blue_big.png" width="160"></a>
