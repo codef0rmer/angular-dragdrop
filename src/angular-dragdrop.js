@@ -60,7 +60,9 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       dropModel = $droppable.attr('ng-model');
       dragModelValue = draggableScope.$eval(dragModel);
       dropModelValue = droppableScope.$eval(dropModel);
-
+      
+      if (dragModel === dropModel) return;
+      
       $droppableDraggable = $droppable.find('[jqyoui-draggable]:last');
       dropSettings = droppableScope.$eval($droppable.attr('jqyoui-droppable')) || [];
       dragSettings = draggableScope.$eval($draggable.attr('jqyoui-draggable')) || [];
