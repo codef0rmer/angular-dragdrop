@@ -140,7 +140,14 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
       if (angular.isArray(dropModelValue)) {
         if (dropSettings && dropSettings.index >= 0) {
-          dropModelValue[dropSettings.index] = dragItem;
+            switch(dropSettings.reaction) {
+            case 'insert': // Insert into model, next items slide over
+                dropModelValue.splice(dropSettings.index, 0, dragItem);
+                break;
+            case 'swap': // Swap places with current item
+            default:
+                dropModelValue[dropSettings.index] = dragItem;
+            }
         } else {
           dropModelValue.push(dragItem);
         }

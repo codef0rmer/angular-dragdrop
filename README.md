@@ -18,6 +18,7 @@
     * **index** – number – $index of an item of a model (if it is an array) associated with it
     * **multiple** – boolean – Requires to be true only if animate is set to true for draggable and to avoid swapping.
     * **stack** – boolean – Requires if animate is set to true on draggable and if multiple draggables positioned one below the other
+    * **reaction** – string – specify behavior of set of draggables when draggable is dropped onto them; possible values: 'swap' (default), 'insert'
     * **onDrop** – string – callback method to be invoked a draggable is dropped into the droppable
     * **onOver** – string – callback method to be invoked when an accepted draggable is dragged over the droppable
     * **onOut** – string – callback method to be invoked when an accepted draggable is dragged out of the droppable
