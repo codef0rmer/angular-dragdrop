@@ -22,7 +22,7 @@
  * Implementing Drag and Drop functionality in AngularJS is easier than ever.
  * Demo: http://codef0rmer.github.com/angular-dragdrop/
  *
- * @version 1.0.1
+ * @version 1.0.2
  *
  * (c) 2013 Amit Gharat a.k.a codef0rmer <amit.2006.it@gmail.com> - amitgharat.wordpress.com
  */
