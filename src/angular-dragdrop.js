@@ -158,6 +158,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     this.mutateDraggable = function(scope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable) {
       var isEmpty = $.isEmptyObject(angular.copy(dropItem)),
         dragModelValue = scope.$eval(dragModel);
+      var dragOptions = scope.$eval($draggable.attr('data-jqyoui-options')) || {};
 
       scope.__dropItem = dropItem;
 
@@ -187,8 +188,10 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           }
         }
       }
+      if (dragOptions.helper !== 'clone') {
+        $draggable.css({'z-index': '', 'left': '', 'top': ''});
+      }
 
-      $draggable.css({'z-index': '', 'left': '', 'top': ''});
     };
   }]).directive('jqyouiDraggable', ['ngDragDropService', function(ngDragDropService) {
     return {
