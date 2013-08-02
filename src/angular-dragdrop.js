@@ -73,7 +73,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
               ngFilter = ngFilter.replace(/'/g,"");
               ngFilterParts = ngFilter.split(':');
               ngFilterName = ngFilterParts.shift();
-              dragModelValue = $filter(ngFilterName).apply(this,[dragModelValue].append(ngFilterParts));
+              dragModelValue = $filter(ngFilterName).apply(this,[dragModelValue].concat(ngFilterParts));
           }
       }
       if ($droppable.attr('ng-repeat')) {
@@ -83,7 +83,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
               ngFilter = ngFilter.replace(/'/g,"");
               ngFilterParts = ngFilter.split(':');
               ngFilterName = ngFilterParts.shift();
-              dropModelValue = $filter(ngFilterName).apply(this,[dropModelValue].append(ngFilterParts));
+              dropModelValue = $filter(ngFilterName).apply(this,[dropModelValue].concat(ngFilterParts));
           }
       }
 
@@ -192,10 +192,11 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
             if(ngFilter) {
                 ngFilter = ngFilter.replace(/'/g,"");
                 var ngFilterParts = ngFilter.split(':');
-                console.log(ngFilterParts);
                 var ngFilterName = ngFilterParts.shift();
-                console.log(ngFilterParts,ngFilterName);
-                dragModelFilteredValue = $filter(ngFilterName).apply(this,[dragModelFilteredValue].append(ngFilterParts));
+                dragModelFilteredValue = $filter(ngFilterName).apply(this,[dragModelFilteredValue].concat(ngFilterParts));
+                if (angular.isArray(dragModelValue)) {
+                    dragSettings.index = dragModelValue.indexOf(dragModelFilteredValue[dragSettings.index]);
+                }
             }
         }
 
