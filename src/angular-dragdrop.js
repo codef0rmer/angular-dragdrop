@@ -212,9 +212,6 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         }
       } else {
         if (angular.isArray(dragModelValue)) {
-          if (dragModelFilteredValue) {
-              dragSettings.index = dragModelValue.indexOf(dragModelFilteredValue[dragSettings.index]);
-          }
           if (isEmpty) {
             if (dragSettings && ( dragSettings.placeholder !== true && dragSettings.placeholder !== 'keep' )) {
               dragModelValue.splice(dragSettings.index, 1);
