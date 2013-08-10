@@ -1,13 +1,14 @@
-var scope, rootScope, timeout, $compile, ngDragDropService;
+var scope, rootScope, timeout, $compile, ngDragDropService, orderByFilter;
 
 describe('Service: ngDragDropService', function() {
   beforeEach(module('ngDragDrop'));
-  beforeEach(inject(function(_ngDragDropService_, _$httpBackend_, $rootScope, _$compile_, $controller, $timeout) {
+  beforeEach(inject(function(_ngDragDropService_, _$httpBackend_, $rootScope, _$compile_, $controller, $timeout, $filter) {
     ngDragDropService = _ngDragDropService_;
     $compile = _$compile_;
     scope = $rootScope.$new();
     rootScope = $rootScope;
     timeout = $timeout;
+    orderByFilter = $filter('orderBy');
   }));
 
   it('should move item from list1[0]:placeholderTrue to list2[0]:dummy', function() {
@@ -142,7 +143,7 @@ describe('Service: ngDragDropService', function() {
     expect(scope.list.length).toBe(1);
     expect(scope2.list.length).toBe(1);
 
-     ngDragDropService.invokeDrop(
+    ngDragDropService.invokeDrop(
       $('<div data-drag="' + scope.list[0].drag + '" ng-model="list" jqyoui-draggable="{index: 0}">' + scope.list[0].title + '</div>').data('$scope', scope),
       $('<div data-drop="true" ng-model="list" jqyoui-droppable="{index: 0}"></div>').data('$scope', scope2),
       document.createEvent('Event'),
@@ -154,4 +155,18 @@ describe('Service: ngDragDropService', function() {
      expect(scope2.list[0].title).toBe('Item 1');
   });
 
+  it('should fix the index in case of filters used with ngRepeat such as orderBy', function() {
+    // Applicable only for array models
+    scope.list = [{'title': 'Item 2', 'drag': true}, {'title': 'Item 1', 'drag': true}];
+    scope.filterIt = function() {
+      return orderByFilter(scope.list, 'title');
+    };
+    
+    expect(ngDragDropService.fixIndex(scope, {index: 1, applyFilter: 'filterIt'}, scope.list)).toBe(0);
+    expect(ngDragDropService.fixIndex(scope, {index: 0, applyFilter: 'filterIt'}, scope.list)).toBe(1);
+
+    // Not applicable for object models
+    scope.list = {title: 'Item 1'};
+    expect(ngDragDropService.fixIndex(scope, {applyFilter: 'filterIt'}, scope.list)).toBe(undefined);
+  });
 });

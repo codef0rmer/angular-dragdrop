@@ -65,6 +65,10 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       dropSettings = droppableScope.$eval($droppable.attr('jqyoui-droppable')) || [];
       dragSettings = draggableScope.$eval($draggable.attr('jqyoui-draggable')) || [];
 
+      // Helps pick up the right item
+      dragSettings.index = this.fixIndex(draggableScope, dragSettings, dragModelValue);
+      dropSettings.index = this.fixIndex(droppableScope, dropSettings, dropModelValue);
+
       jqyoui_pos = angular.isArray(dragModelValue) ? dragSettings.index : null;
       dragItem = angular.isArray(dragModelValue) ? dragModelValue[jqyoui_pos] : dragModelValue;
 
@@ -189,6 +193,24 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       }
 
       $draggable.css({'z-index': '', 'left': '', 'top': ''});
+    };
+
+    this.fixIndex = function(scope, settings, modelValue) {
+      if (settings.applyFilter && angular.isArray(modelValue) && modelValue.length > 0) {
+        var dragModelValueFiltered = scope[settings.applyFilter](),
+            lookup = dragModelValueFiltered[settings.index],
+            actualIndex = undefined;
+
+        modelValue.forEach(function(item, i) {
+           if (angular.equals(item, lookup)) {
+             actualIndex = i;
+           }
+        });
+
+        return actualIndex;
+      }
+
+      return settings.index;
     };
   }]).directive('jqyouiDraggable', ['ngDragDropService', function(ngDragDropService) {
     return {

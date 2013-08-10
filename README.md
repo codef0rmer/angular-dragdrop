@@ -9,6 +9,7 @@
     * **onStart** – string – callback method to be invoked (has to be defined in a controller) when dragging starts
     * **onStop** – string – callback method to be invoked when dragging stops
     * **onDrag** – string – callback method to be invoked while the mouse is moved during the dragging
+    * **applyFilter** - string - applies AngularJS $filter on the list before swapping items. Only applicable, if ngRepeat has any filter (such as orderBy, limitTo) associated with it.
 * **data-drag** – boolean – If true, element can be draggable. Disabled otherwise.
 * **data-jqyoui-options** – object – should hold all the valid options supported by [jQueryUI Draggable](http://api.jqueryui.com/draggable)
 * **ng-model** – string – An angular model defined in a controller. Should be a JS array or object
@@ -21,6 +22,7 @@
     * **onDrop** – string – callback method to be invoked a draggable is dropped into the droppable
     * **onOver** – string – callback method to be invoked when an accepted draggable is dragged over the droppable
     * **onOut** – string – callback method to be invoked when an accepted draggable is dragged out of the droppable
+    * **applyFilter** - string - requires if both droppable as well as draggable share the same ngModel.
 * **data-drop** – boolean – If true, element can be droppable. Disabled otherwise.
 * **data-jqyoui-options** – object – should hold all the valid options supported by [jQueryUI Droppable](http://api.jqueryui.com/droppable)
 * **ng-model** – string – An angular model defined in a controller. Should be a JS array or object.
