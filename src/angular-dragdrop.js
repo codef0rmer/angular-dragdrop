@@ -22,7 +22,7 @@
  * Implementing Drag and Drop functionality in AngularJS is easier than ever.
  * Demo: http://codef0rmer.github.com/angular-dragdrop/
  *
- * @version 1.0.2
+ * @version 1.0.3
  *
  * (c) 2013 Amit Gharat a.k.a codef0rmer <amit.2006.it@gmail.com> - amitgharat.wordpress.com
  */
@@ -160,7 +160,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     };
 
     this.mutateDraggable = function(scope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable) {
-      var isEmpty = $.isEmptyObject(angular.copy(dropItem)),
+      var isEmpty = angular.equals(angular.copy(dropItem), {}),
         dragModelValue = scope.$eval(dragModel);
 
       scope.__dropItem = dropItem;
@@ -226,13 +226,13 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
               .draggable(scope.$eval(attrs.jqyouiOptions) || {})
               .draggable({
                 start: function(event, ui) {
-                  zIndex = $(this).css('z-index');
-                  $(this).css('z-index', 99999);
-                  jqyoui.startXY = $(this).offset();
+                  zIndex = angular.element(this).css('z-index');
+                  angular.element(this).css('z-index', 99999);
+                  jqyoui.startXY = angular.element(this).offset();
                   ngDragDropService.callEventCallback(scope, dragSettings.onStart, event, ui);
                 },
                 stop: function(event, ui) {
-                  $(this).css('z-index', zIndex);
+                  angular.element(this).css('z-index', zIndex);
                   ngDragDropService.callEventCallback(scope, dragSettings.onStop, event, ui);
                 },
                 drag: function(event, ui) {
