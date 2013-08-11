@@ -113,6 +113,12 @@ App.controller('OverviewCtrl', function($scope) {
        <td>callback method to be invoked while the mouse is moved during the dragging</td>
      </tr>
      <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;applyFilter</td>
+       <td>string</td>
+       <td></td>
+       <td>applies AngularJS $filter on the list before swapping items. Only applicable, if ngRepeat has any filter (such as orderBy, limitTo) associated with it.</td>
+     </tr>
+     <tr>
        <td>data-drag</td>
        <td>boolean</td>
        <td>true</td>
@@ -185,6 +191,12 @@ App.controller('OverviewCtrl', function($scope) {
        <td>string</td>
        <td></td>
        <td>callback method to be invoked when an accepted draggable is dragged out of the droppable</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;applyFilter</td>
+       <td>string</td>
+       <td></td>
+       <td>requires if both droppable as well as draggable share the same ngModel.</td>
      </tr>
      <tr>
        <td>data-drag</td>

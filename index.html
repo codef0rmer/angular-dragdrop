@@ -39,6 +39,7 @@
                   <li><a href="#/list">Multiple Lists with Animation</a></li>
                   <li><a href="#/mvc">Connect Frameworks</a></li>
                   <li><a href="#/cart">Shopping Cart with cloning enabled</a></li>
+                  <li><a href="#/filter">filters with ngRepeat</a></li>
                 </ul>
               </li>
             </ul>
@@ -66,6 +67,7 @@
           .when('/list', { templateUrl: 'partials/list.html'})
           .when('/mvc', { templateUrl: 'partials/mvc.html'})
           .when('/cart', { templateUrl: 'partials/cart.html'})
+          .when('/filter', { templateUrl: 'partials/filter.html'})
           .otherwise({ redirectTo: '/' });
       }]);
       App.controller('OverviewCtrl', function($scope) {
