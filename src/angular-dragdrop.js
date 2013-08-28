@@ -33,6 +33,12 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         return;
       }
       var args = [event, ui];
+      if (angular.isDefined(angular.element(ui.draggable).attr('ng-model'))) {
+        args.push(scope.$eval(angular.element(ui.draggable).attr('ng-model')));
+      }
+      if (typeof callbackName === 'function') {
+        return callbackName.apply(scope, args);
+      }
       var match = callbackName.match(/^(.+)\((.+)\)$/);
       if (match !== null) {
         callbackName = match[1];
@@ -90,14 +96,14 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
             this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
             this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
-            this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
+            this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui, draggableScope);
           }.bind(this));
         }.bind(this));
       } else {
         $timeout(function() {
           this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
           this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
-          this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
+          this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui, draggableScope);
         }.bind(this));
       }
     };

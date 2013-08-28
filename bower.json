@@ -22,5 +22,8 @@
   },
   "devDependencies": {
     "angular-mocks": "~1.x"
+  },
+  "resolutions": {
+    "jquery": "2.x"
   }
 }
