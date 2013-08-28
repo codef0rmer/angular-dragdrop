@@ -28,13 +28,13 @@
  */
 
 var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$timeout', '$parse', function($timeout, $parse) {
-    this.callEventCallback = function (scope, callbackName, event, ui) {
+    this.callEventCallback = function (scope, callbackName, event, ui, data) {
       if (!callbackName) {
         return;
       }
       var args = [event, ui];
-      if (angular.isDefined(angular.element(ui.draggable).attr('ng-model'))) {
-        args.push(scope.$eval(angular.element(ui.draggable).attr('ng-model')));
+      if (data) {
+        args.push(data);
       }
       if (typeof callbackName === 'function') {
         return callbackName.apply(scope, args);
@@ -56,8 +56,6 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         jqyoui_pos = null,
         dragItem = {},
         dropItem = {},
-        dragModelValue,
-        dropModelValue,
         $droppableDraggable = null,
         droppableScope = $droppable.scope(),
         draggableScope = $draggable.scope();
@@ -86,6 +84,11 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         dropItem = {};
       }
 
+      var data = {
+        dragModel: dragModelValue,
+        dropModel: dropModelValue
+      };
+
       if (dragSettings.animate === true) {
         this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
         this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, function() {
@@ -96,14 +99,14 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
             this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
             this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
-            this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui, draggableScope);
+            this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui, data);
           }.bind(this));
         }.bind(this));
       } else {
         $timeout(function() {
           this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
           this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
-          this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui, draggableScope);
+          this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui, data);
         }.bind(this));
       }
     };
@@ -146,13 +149,17 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     this.mutateDroppable = function(scope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos) {
       var dropModelValue = scope.$eval(dropModel);
 
-      scope.__dragItem = dragItem;
+      if (dropSettings.clone) {
+        scope.__dragItem = angular.copy(dragItem);
+      } else {
+        scope.__dragItem = dragItem;
+      }
 
       if (angular.isArray(dropModelValue)) {
         if (dropSettings && dropSettings.index >= 0) {
-          dropModelValue[dropSettings.index] = dragItem;
+          dropModelValue[dropSettings.index] = scope.__dragItem;
         } else {
-          dropModelValue.push(dragItem);
+          dropModelValue.push(scope.__dragItem);
         }
         if (dragSettings && dragSettings.placeholder === true) {
           dropModelValue[dropModelValue.length - 1]['jqyoui_pos'] = jqyoui_pos;
