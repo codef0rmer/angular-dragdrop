@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="drag-and-drop">  
+<html ng-app="drag-and-drop">
   <head lang="en">
     <meta charset="utf-8">
     <title>Drag &amp; Drop: MVC Frameworks</title>
@@ -9,7 +9,7 @@
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css" rel="stylesheet"> -->
     <script src="../components/jquery/jquery.min.js"></script>
-    <script src="../components/jquery-ui/ui/minified/jquery-ui.min.js"></script> 
+    <script src="../components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
     <script src="../components/angular/angular.min.js"></script>
     <script src="../src/angular-dragdrop.js"></script>
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
@@ -36,8 +36,8 @@
           { 'title': 'Item 4', 'drag': true }
         ];
 
-        $scope.startCallback = function(event, ui) {
-          console.log('You started draggin');
+        $scope.startCallback = function(event, ui, title) {
+          console.log('You started draggin: ' + title.title);
         };
 
         $scope.stopCallback = function(event, ui) {
@@ -61,7 +61,7 @@
         };
       });
     </script>
-  </head>  
+  </head>
   <body>
     <div ng-controller="oneCtrl">
       <div class='contentWrapper ng-cloak'>
@@ -85,7 +85,7 @@
       <div class="navbar-inner">
         <div class="container form-inline" style="text-align: center;">
           <div class="btn btn-droppable" ng-repeat="item in list2" data-drop="true" ng-model='list2' jqyoui-droppable="{index: {{$index}}}">
-            <div class="btn btn-info btn-draggable" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true, onStart:'startCallback', onStop: 'stopCallback', onDrag: 'dragCallback'}" ng-hide="!item.title">{{item.title}}</div>
+            <div class="btn btn-info btn-draggable" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true, onStart:'startCallback({{item}})', onStop: 'stopCallback', onDrag: 'dragCallback'}" ng-hide="!item.title">{{item.title}}</div>
           </div>
         </div>
       </div>
