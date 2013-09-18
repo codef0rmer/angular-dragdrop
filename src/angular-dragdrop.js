@@ -27,6 +27,9 @@
  * (c) 2013 Amit Gharat a.k.a codef0rmer <amit.2006.it@gmail.com> - amitgharat.wordpress.com
  */
 
+(function (window, angular, undefined) {
+'use strict';
+
 var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$timeout', '$parse', function($timeout, $parse) {
     this.callEventCallback = function (scope, callbackName, event, ui) {
       if (!callbackName) {
@@ -36,7 +39,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       var match = callbackName.match(/^(.+)\((.+)\)$/);
       if (match !== null) {
         callbackName = match[1];
-        values = eval('[' + match[0].replace(/^(.+)\(/, '').replace(/\)/, '') + ']');
+        var values = eval('[' + match[0].replace(/^(.+)\(/, '').replace(/\)/, '') + ']');
         args.push.apply(args, values);
       }
       scope[callbackName].apply(scope, args);
@@ -56,8 +59,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         droppableScope = $droppable.scope(),
         draggableScope = $draggable.scope();
 
-      dragModel = $draggable.attr('ng-model');
-      dropModel = $droppable.attr('ng-model');
+      dragModel = $draggable.ngattr('ng-model');
+      dropModel = $droppable.ngattr('ng-model');
       dragModelValue = draggableScope.$eval(dragModel);
       dropModelValue = droppableScope.$eval(dropModel);
 
@@ -117,7 +120,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         wasVisible = $toEl && $toEl.is(':visible');
 
       if (toPos === null && $toEl.length > 0) {
-        if ($toEl.attr('jqyoui-draggable') !== undefined && $toEl.attr('ng-model') !== undefined && $toEl.is(':visible') && dropSettings && dropSettings.multiple) {
+        if ($toEl.attr('jqyoui-draggable') !== undefined && $toEl.ngattr('ng-model') !== undefined && $toEl.is(':visible') && dropSettings && dropSettings.multiple) {
           toPos = $toEl.offset();
           if (dropSettings.stack === false) {
             toPos.left+= $toEl.outerWidth(true);
@@ -267,7 +270,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
                   ngDragDropService.callEventCallback(scope, dropSettings.onOut, event, ui);
                 },
                 drop: function(event, ui) {
-                  if (angular.isDefined(angular.element(ui.draggable).attr('ng-model')) && angular.isDefined(angular.element(this).attr('ng-model'))) {
+                  if (angular.isDefined(angular.element(ui.draggable).ngattr('ng-model')) && angular.isDefined(attrs.ngModel)) {
                     ngDragDropService.invokeDrop(angular.element(ui.draggable), angular.element(this), event, ui);
                   }
                 }
@@ -282,3 +285,10 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       }
     };
   }]);
+
+  $.fn.ngattr = function(name, value) {
+    var element = angular.element(this).get(0);
+
+    return element.getAttribute(name) || element.getAttribute('data-' + name);
+  };
+})(window, window.angular);
