@@ -31,11 +31,11 @@
 'use strict';
 
 var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$timeout', '$parse', function($timeout, $parse) {
-    this.callEventCallback = function (scope, callbackName, event, ui) {
+    this.callEventCallback = function (scope, callbackName, event, ui, ob) {      
       if (!callbackName) {
         return;
       }
-      var args = [event, ui];
+      var args = [event, ui, ob];
       var match = callbackName.match(/^(.+)\((.+)\)$/);
       if (match !== null) {
         callbackName = match[1];
@@ -82,8 +82,9 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       } else {
         dropItem = {};
       }
-
+  
       if (dragSettings.animate === true) {
+
         this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
         this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, function() {
           $timeout(function() {
@@ -93,14 +94,16 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
             this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
             this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
-            this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
+      
+            this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui, dragItem);
           }.bind(this));
         }.bind(this));
       } else {
         $timeout(function() {
           this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
           this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
-          this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
+         
+          this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui, dragItem);
         }.bind(this));
       }
     };
