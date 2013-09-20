@@ -58,7 +58,9 @@
   </div>
   <div class="navbar-inner">
     <div class="container form-inline" style="text-align: center;">
-      <input ng-model="search"/>
+      <form>
+        <input type="text" ng-model="search"/>
+      </form>
       <div class="btn btn-droppable" ng-repeat="item in list2 | filter : search" data-drop="true" ng-model='list2' jqyoui-droppable="{index: {{$index}}, applyFilter: 'filterIt'}">
         <div class="btn btn-info btn-draggable" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},animate:true, applyFilter: 'filterIt'}" ng-hide="!item.title">{{item.title}}</div>
       </div>
