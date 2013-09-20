@@ -31,13 +31,7 @@
 'use strict';
 
 var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$timeout', '$parse', function($timeout, $parse) {
-    this.callEventCallback = function (scope, callbackName, event, ui, ob) {
-
-      if(callbackName == "applyDescriptor")
-      {
-      debugger;  
-      }
-      
+    this.callEventCallback = function (scope, callbackName, event, ui, ob) {      
       if (!callbackName) {
         return;
       }
