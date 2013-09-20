@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html ng-app="drag-and-drop">
+<head lang="en">
+  <meta charset="utf-8">
+  <title>Drag &amp; Drop: Search filters in ngRepeat</title>
+  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.1/angular.min.js"></script>
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css" rel="stylesheet"> -->
+  <script src="../components/jquery/jquery.min.js"></script>
+  <script src="../components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+  <script src="../components/angular/angular.min.js"></script>
+  <script src="../src/angular-dragdrop.js"></script>
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .btn-droppable { width: 180px; height: 30px; padding-left: 4px; }
+    .btn-draggable { width: 160px; }
+  </style>
+
+  <script type="text/javascript">
+    var App = angular.module('drag-and-drop', ['ngDragDrop']);
+
+    App.controller('oneCtrl', function($scope, $timeout, $filter, filterFilter) {
+      $scope.filterIt = function() {
+        return $filter('filter')($scope.list2, $scope.search);
+        // Alternate way
+        // return filterFilter($scope.list2, $scope.search);
+      };
+
+      $scope.list1 = [];
+      $scope.list2 = [
+        { 'title': 'Item 3', 'drag': true },
+        { 'title': 'Item 2', 'drag': true },
+        { 'title': 'Item 1', 'drag': true },
+        { 'title': 'Item 4', 'drag': true }
+      ];
+
+      angular.forEach($scope.list2, function(val, key) {
+        $scope.list1.push({});
+      });
+    });
+  </script>
+</head>
+<body>
+<div ng-controller="oneCtrl">
+  <h2>Search filter with ngRepeat</h2>
+  <div class='contentWrapper ng-cloak'>
+    <div class='content'>
+      <div class="row-fluid">
+        <ul class="thumbnails">
+          <li class="span3" style='margin-left:10px;' ng-repeat="item in list1">
+            <div class="btn btn-droppable" data-drop="true" ng-model='list1' jqyoui-droppable="{index: {{$index}}}">
+              <div class="btn btn-info btn-draggable" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true}">{{item.title}}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <h4 class="control-label">Search the list to find an item and drag it to the above list</h4>
+  <div class="row-fluid">
+    <div class="control-group">
+      <div class="controls">
+        <input type="text" ng-model="search" placeholder="Search below items"/>
+      </div>
+    </div>
+  </div>
+  <div class="navbar-inner">
+    <div class="container form-inline" style="text-align: center;">
+      <div class="btn btn-droppable" ng-repeat="item in list2 | filter : search" data-drop="true" ng-model='list2' jqyoui-droppable="{index: {{$index}}, applyFilter: 'filterIt'}">
+        <div class="btn btn-info btn-draggable" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},animate:true, applyFilter: 'filterIt'}" ng-hide="!item.title">{{item.title}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
