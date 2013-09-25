@@ -38,6 +38,7 @@
 
         $scope.startCallback = function(event, ui, title) {
           console.log('You started draggin: ' + title.title);
+          $scope.draggedTitle = title;
         };
 
         $scope.stopCallback = function(event, ui) {
@@ -49,7 +50,7 @@
         };
 
         $scope.dropCallback = function(event, ui) {
-          console.log('hey, you dumped me :-(');
+          console.log('hey, you dumped me :-(' , $scope.draggedTitle);
         };
 
         $scope.overCallback = function(event, ui) {
