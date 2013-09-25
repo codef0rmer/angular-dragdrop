@@ -89,7 +89,9 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           $timeout(function() {
             // Do not move this into move() to avoid flickering issue
             $draggable.css({'position': 'relative', 'left': '', 'top': ''});
-            $droppableDraggable.css({'position': 'relative', 'left': '', 'top': ''});
+            // Angular v1.2 uses ng-hide to hide an element not display property
+            // so we've to manually remove display:none set in this.move()
+            $droppableDraggable.css({'position': 'relative', 'left': '', 'top': '', 'display': ''});
 
             this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
             this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
@@ -117,7 +119,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
       var zIndex = 9999,
         fromPos = $fromEl.offset(),
-        wasVisible = $toEl && $toEl.is(':visible');
+        wasVisible = $toEl && $toEl.is(':visible'),
+        hadNgHideCls = $toEl.hasClass('ng-hide');
 
       if (toPos === null && $toEl.length > 0) {
         if ($toEl.attr('jqyoui-draggable') !== undefined && $toEl.ngattr('ng-model') !== undefined && $toEl.is(':visible') && dropSettings && dropSettings.multiple) {
@@ -128,14 +131,22 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
             toPos.top+= $toEl.outerHeight(true);
           }
         } else {
+          // Angular v1.2 uses ng-hide to hide an element 
+          // so we've to remove it in order to grab its position
+          if (hadNgHideCls) $toEl.removeClass('ng-hide');
           toPos = $toEl.css({'visibility': 'hidden', 'display': 'block'}).offset();
-          $toEl.css({'visibility': '','display': wasVisible ? '' : 'none'});
+          $toEl.css({'visibility': '','display': wasVisible ? 'block' : 'none'});
         }
       }
 
       $fromEl.css({'position': 'absolute', 'z-index': zIndex})
         .css(fromPos)
         .animate(toPos, duration, function() {
+          // Angular v1.2 uses ng-hide to hide an element
+          // and as we remove it above, we've to put it back to
+          // hide the element (while swapping) if it was hidden already
+          // because we remove the display:none in this.invokeDrop()
+          if (hadNgHideCls) $toEl.addClass('ng-hide');
           if (callback) callback();
         });
     };

@@ -3,6 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <title>Drag &amp; Drop - Shopping Cart</title>
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css" rel="stylesheet"> -->
     <script src="../components/jquery/jquery.min.js"></script>
     <script src="../components/jquery-ui/ui/minified/jquery-ui.min.js"></script> 
     <script src="../components/angular/angular.min.js"></script>
@@ -43,19 +48,19 @@
   <h1 class="ui-widget-header">Products</h1>
   <div id="catalog">
     <h2><a href="#">T-Shirts</a></h2>
-    <div data-drop="true" ng-model='list1' jqyoui-droppable="{multiple:true}">
+    <div>
       <ul>
         <li ng-repeat='item in list1' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list1" jqyoui-draggable="{index: {{$index}}, animate: true, placeholder: 'keep'}">{{item.title}}</li>
       </ul>
     </div>
     <h2><a href="#">Bags</a></h2>
-    <div data-drop="true" ng-model='list2' jqyoui-droppable="{multiple:true}">
+    <div>
       <ul>
         <li ng-repeat='item in list2' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list2" jqyoui-draggable="{index: {{$index}}, placeholder: 'keep'}">{{item.title}}</li>
       </ul>
     </div>
     <h2><a href="#">Gadgets</a></h2>
-    <div data-drop="true" ng-model='list3' jqyoui-droppable="{multiple:true}">
+    <div>
       <ul>
         <li ng-repeat='item in list3' ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list3" jqyoui-draggable="{index: {{$index}}, placeholder: 'keep'}">{{item.title}}</li>
       </ul>
@@ -66,7 +71,7 @@
     <h1 class="ui-widget-header">Shopping Cart</h1>
     <div class="ui-widget-content">
         <ol data-drop="true" ng-model='list4' jqyoui-droppable="{multiple:true}">
-            <li ng-repeat="item in list4" ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list4" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</li>
+            <li ng-repeat="item in list4 track by $index" ng-show="item.title" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="list4" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</li>
             <li class="placeholder" ng-hide="hideMe()">Add your items here</li>
         </ol>
     </div>
