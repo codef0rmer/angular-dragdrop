@@ -42,7 +42,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         var values = eval('[' + match[0].replace(/^(.+)\(/, '').replace(/\)/, '') + ']');
         args.push.apply(args, values);
       }
-      scope[callbackName].apply(scope, args);
+      scope.$apply(scope[callbackName].apply(scope, args));
     };
 
     this.invokeDrop = function ($draggable, $droppable, event, ui) {
