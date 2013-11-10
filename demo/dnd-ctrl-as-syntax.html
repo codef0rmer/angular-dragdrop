@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html ng-app="drag-and-drop">
+  <head lang="en">
+    <meta charset="utf-8">
+    <title>Drag &amp; Drop: Guess A Name</title>
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css" rel="stylesheet"> -->
+    <script src="../components/jquery/jquery.min.js"></script>
+    <script src="../components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../components/angular/angular.min.js"></script>
+    <script src="../src/angular-dragdrop.js"></script>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding: 30px;
+      }
+      .thumbnail {
+        height: 50px;
+        width: 50px;
+        text-align: center;
+        padding-top: 0px;
+        transition: none;
+        -webkit-transition: none;
+        -moz-transition: none;
+        -o-transition: none;
+        cursor: pointer;
+        background: rgb(182, 173, 123);
+      }
+
+      .thumbnail[data-drag="false"] { background: green; }
+
+      li {
+        height: 56px;
+        width: 60px;
+        line-height: 20px;
+        border: 1px solid #ddd;
+        padding: 3px;
+        margin-left: 10px;
+      }
+    </style>
+
+    <script type="text/javascript">
+      var App = angular.module('drag-and-drop', ['ngDragDrop']);
+
+      App.controller('oneCtrl', function($scope) {
+        $scope.list1 = [
+          { 'title': 'L', 'drag': true },
+          { 'title': 'O', 'drag': true },
+          { 'title': 'M', 'drag': true },
+          { 'title': 'L', 'drag': true },
+          { 'title': 'G', 'drag': true },
+          { 'title': 'U', 'drag': true }
+        ];
+
+        this.dropCallback = function(event, ui, title, $index) {
+          if ($scope.list1.map(function(item) { return item.title; }).join('') === 'GOLLUM') {
+            $scope.list1.forEach(function(value, key) { $scope.list1[key].drag = false; });
+          }
+        };
+      });
+    </script>
+  </head>
+  <body>
+    <h2>Whose dialog is it? <em>"What is it, Precious? What is it?"</em></h2>
+    <div ng-controller="oneCtrl as loki">
+      <div class='contentWrapper ng-cloak'>
+        <div class='content'>
+          <div class="row-fluid">
+            <ul class="thumbnails">
+              <li ng-repeat="item in list1" data-drop="true" ng-model='list1' jqyoui-droppable="{index: {{$index}}, onDrop:'loki.dropCallback(item.title, $index)'}">
+                <div class="thumbnail" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{index: {{$index}},animate:true}">
+                  <h1>
+                    {{item.title}}
+                  </h1>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

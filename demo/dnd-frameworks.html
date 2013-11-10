@@ -38,7 +38,7 @@
 
         $scope.startCallback = function(event, ui, title) {
           console.log('You started draggin: ' + title.title);
-          $scope.draggedTitle = title;
+          $scope.draggedTitle = title.title;
         };
 
         $scope.stopCallback = function(event, ui) {
@@ -86,7 +86,7 @@
       <div class="navbar-inner">
         <div class="container form-inline" style="text-align: center;">
           <div class="btn btn-droppable" ng-repeat="item in list2" data-drop="true" ng-model='list2' jqyoui-droppable="{index: {{$index}}}">
-            <div class="btn btn-info btn-draggable" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true, onStart:'startCallback({{item}})', onStop: 'stopCallback', onDrag: 'dragCallback'}" ng-hide="!item.title">{{item.title}}</div>
+            <div class="btn btn-info btn-draggable" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true, onStart:'startCallback(item, $index)', onStop: 'stopCallback', onDrag: 'dragCallback'}" ng-hide="!item.title">{{item.title}}</div>
           </div>
         </div>
       </div>

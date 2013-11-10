@@ -32,17 +32,29 @@
 
 var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$timeout', '$parse', function($timeout, $parse) {
     this.callEventCallback = function (scope, callbackName, event, ui) {
-      if (!callbackName) {
-        return;
+      if (!callbackName) return;
+
+      var objExtract = extract(callbackName),
+          callback = objExtract.callback,
+          constructor = objExtract.constructor,
+          args = [event, ui].concat(objExtract.args);
+      
+      // call either $scoped method i.e. $scope.dropCallback or constructor's method i.e. this.dropCallback
+      scope.$apply((scope[callback] || scope[constructor][callback]).apply(scope, args));
+      
+      function extract(callbackName) {
+        var atStartBracket = callbackName.indexOf('(') !== -1 ? callbackName.indexOf('(') : callbackName.length,
+            atEndBracket = callbackName.lastIndexOf(')') !== -1 ? callbackName.lastIndexOf(')') : callbackName.length,
+            args = callbackName.substring(atStartBracket + 1, atEndBracket), // matching function arguments inside brackets
+            constructor = callbackName.match(/^[^.]+.\s*/)[0].slice(0, -1); // matching a string upto a dot to check ctrl as syntax
+            constructor = scope[constructor] && typeof scope[constructor].constructor === 'function' ? constructor : null;
+
+        return {
+          callback: callbackName.substring(constructor && constructor.length + 1 || 0, atStartBracket),
+          args: (args && args.split(',') || []).map(function(item) { return $parse(item)(scope); }),
+          constructor: constructor
+        }
       }
-      var args = [event, ui];
-      var match = callbackName.match(/^(.+)\((.+)\)$/);
-      if (match !== null) {
-        callbackName = match[1];
-        var values = eval('[' + match[0].replace(/^(.+)\(/, '').replace(/\)/, '') + ']');
-        args.push.apply(args, values);
-      }
-      scope.$apply(scope[callbackName].apply(scope, args));
     };
 
     this.invokeDrop = function ($draggable, $droppable, event, ui) {
