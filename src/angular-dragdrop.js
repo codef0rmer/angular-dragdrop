@@ -166,7 +166,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     this.mutateDroppable = function(scope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos) {
       var dropModelValue = scope.$eval(dropModel);
 
-      scope.__dragItem = dragItem;
+      scope.dndDragItem = dragItem;
 
       if (angular.isArray(dropModelValue)) {
         if (dropSettings && dropSettings.index >= 0) {
@@ -178,7 +178,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           dropModelValue[dropModelValue.length - 1]['jqyoui_pos'] = jqyoui_pos;
         }
       } else {
-        $parse(dropModel + ' = __dragItem')(scope);
+        $parse(dropModel + ' = dndDragItem')(scope);
         if (dragSettings && dragSettings.placeholder === true) {
           dropModelValue['jqyoui_pos'] = jqyoui_pos;
         }
@@ -189,14 +189,14 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       var isEmpty = angular.equals(angular.copy(dropItem), {}),
         dragModelValue = scope.$eval(dragModel);
 
-      scope.__dropItem = dropItem;
+      scope.dndDropItem = dropItem;
 
       if (dragSettings && dragSettings.placeholder) {
         if (dragSettings.placeholder != 'keep'){
           if (angular.isArray(dragModelValue) && dragSettings.index !== undefined) {
             dragModelValue[dragSettings.index] = dropItem;
           } else {
-            $parse(dragModel + ' = __dropItem')(scope);
+            $parse(dragModel + ' = dndDropItem')(scope);
           }
         }
       } else {
@@ -211,9 +211,9 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         } else {
           // Fix: LIST(object) to LIST(array) - model does not get updated using just scope[dragModel] = {...}
           // P.S.: Could not figure out why it happened
-          $parse(dragModel + ' = __dropItem')(scope);
+          $parse(dragModel + ' = dndDropItem')(scope);
           if (scope.$parent) {
-            $parse(dragModel + ' = __dropItem')(scope.$parent);
+            $parse(dragModel + ' = dndDropItem')(scope.$parent);
           }
         }
       }
