@@ -18,6 +18,8 @@
         padding-top: 60px;
         padding-bottom: 40px;
       }
+
+      li { list-style: none; }
     </style>
   </head>
   <body>
@@ -40,6 +42,7 @@
                   <li><a href="#/mvc">Connect Frameworks</a></li>
                   <li><a href="#/cart">Shopping Cart with cloning enabled</a></li>
                   <li><a href="#/filter">filters with ngRepeat</a></li>
+                  <li><a href="#/ctrl">ControllerAs Syntax</a></li>
                 </ul>
               </li>
             </ul>
@@ -68,6 +71,7 @@
           .when('/mvc', { templateUrl: 'partials/mvc.html'})
           .when('/cart', { templateUrl: 'partials/cart.html'})
           .when('/filter', { templateUrl: 'partials/filter.html'})
+          .when('/ctrl', { templateUrl: 'partials/ctrl.html'})
           .otherwise({ redirectTo: '/' });
       }]);
       App.controller('OverviewCtrl', function($scope) {
