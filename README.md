@@ -1,6 +1,18 @@
 #Drag and Drop for AngularJS (with Animation)
 
 ---
+
+###v1.0.5 - breaking change
+Do not pass evaluated expressions in callbacks. For example, 
+####Before:
+```
+<div jqyoui-draggable="{onStart:'startCallback({{item}})'}">{{item.title}}</div>
+```
+####After:
+```
+<div jqyoui-draggable="{onStart:'startCallback(item)'}">{{item.title}}</div>
+```
+
 ##Angular Draggable options
 * **jqyoui-draggable** – A custom angular attribute to make any element draggable. It holds more settings such as:
     * **index** – number – $index of an item of a model (if it is an array) associated with it
