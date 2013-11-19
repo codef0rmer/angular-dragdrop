@@ -31,13 +31,17 @@
 'use strict';
 
 var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$timeout', '$parse', function($timeout, $parse) {
-    this.callEventCallback = function (scope, callbackName, event, ui) {
+    this.callEventCallback = function (scope, callbackName, event, ui, data) {
       if (!callbackName) return;
 
       var objExtract = extract(callbackName),
           callback = objExtract.callback,
           constructor = objExtract.constructor,
           args = [event, ui].concat(objExtract.args);
+
+      if (data) {
+        args.push(data);
+      }
       
       // call either $scoped method i.e. $scope.dropCallback or constructor's method i.e. this.dropCallback
       scope.$apply((scope[callback] || scope[constructor][callback]).apply(scope, args));
@@ -95,6 +99,11 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         dropItem = {};
       }
 
+      var data = {
+        dragModel: dragModelValue,
+        dropModel: dropModelValue
+      };
+
       if (dragSettings.animate === true) {
         this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
         this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, function() {
@@ -107,14 +116,14 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
             this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
             this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
-            this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
+            this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui, data);
           }.bind(this));
         }.bind(this));
       } else {
         $timeout(function() {
           this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
           this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
-          this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
+          this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui, data);
         }.bind(this));
       }
     };
