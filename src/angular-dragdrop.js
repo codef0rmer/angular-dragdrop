@@ -97,8 +97,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
       if (dragSettings.animate === true) {
         this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
-        this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, function() {
-          $timeout(function() {
+        this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, angular.bind(this, function() {
+          $timeout(angular.bind(this, function() {
             // Do not move this into move() to avoid flickering issue
             $draggable.css({'position': 'relative', 'left': '', 'top': ''});
             // Angular v1.2 uses ng-hide to hide an element not display property
@@ -108,14 +108,14 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
             this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
             this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
             this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
-          }.bind(this));
-        }.bind(this));
+          }));
+        }));
       } else {
-        $timeout(function() {
+        $timeout(angular.bind(this, function() {
           this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
           this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
           this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
-        }.bind(this));
+        }));
       }
     };
 
