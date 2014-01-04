@@ -243,22 +243,23 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       require: '?jqyouiDroppable',
       restrict: 'A',
       link: function(scope, element, attrs) {
-        var dragSettings, zIndex;
+        var dragSettings, jqyouiOptions, zIndex;
         var updateDraggable = function(newValue, oldValue) {
           if (newValue) {
-            dragSettings = scope.$eval(element.attr('jqyoui-draggable') || element.attr('data-jqyoui-draggable')) || [];
+            dragSettings = scope.$eval(element.attr('jqyoui-draggable') || element.attr('data-jqyoui-draggable')) || {};
+            jqyouiOptions = scope.$eval(attrs.jqyouiOptions) || {};
             element
               .draggable({disabled: false})
-              .draggable(scope.$eval(attrs.jqyouiOptions) || {})
+              .draggable(jqyouiOptions)
               .draggable({
                 start: function(event, ui) {
-                  zIndex = angular.element(this).css('z-index');
-                  angular.element(this).css('z-index', 99999);
+                  zIndex = angular.element(jqyouiOptions.helper ? ui.helper : this).css('z-index');
+                  angular.element(jqyouiOptions.helper ? ui.helper : this).css('z-index', 9999);
                   jqyoui.startXY = angular.element(this).offset();
                   ngDragDropService.callEventCallback(scope, dragSettings.onStart, event, ui);
                 },
                 stop: function(event, ui) {
-                  angular.element(this).css('z-index', zIndex);
+                  angular.element(jqyouiOptions.helper ? ui.helper : this).css('z-index', zIndex);
                   ngDragDropService.callEventCallback(scope, dragSettings.onStop, event, ui);
                 },
                 drag: function(event, ui) {
@@ -285,7 +286,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         var dropSettings;
         var updateDroppable = function(newValue, oldValue) {
           if (newValue) {
-            dropSettings = scope.$eval(angular.element(this).attr('jqyoui-droppable') || angular.element(this).attr('data-jqyoui-droppable')) || [];
+            dropSettings = scope.$eval(angular.element(this).attr('jqyoui-droppable') || angular.element(this).attr('data-jqyoui-droppable')) || {};
             element
               .droppable({disabled: false})
               .droppable(scope.$eval(attrs.jqyouiOptions) || {})
