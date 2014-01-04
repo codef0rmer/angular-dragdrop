@@ -76,9 +76,9 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       dragModelValue = draggableScope.$eval(dragModel);
       dropModelValue = droppableScope.$eval(dropModel);
 
-      $droppableDraggable = $droppable.find('[jqyoui-draggable]:last');
-      dropSettings = droppableScope.$eval($droppable.attr('jqyoui-droppable')) || [];
-      dragSettings = draggableScope.$eval($draggable.attr('jqyoui-draggable')) || [];
+      $droppableDraggable = $droppable.find('[jqyoui-draggable]:last,[data-jqyoui-draggable]:last');
+      dropSettings = droppableScope.$eval($droppable.attr('jqyoui-droppable') || $droppable.attr('data-jqyoui-droppable')) || [];
+      dragSettings = draggableScope.$eval($draggable.attr('jqyoui-draggable') || $draggable.attr('data-jqyoui-draggable')) || [];
 
       // Helps pick up the right item
       dragSettings.index = this.fixIndex(draggableScope, dragSettings, dragModelValue);
@@ -97,7 +97,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
       if (dragSettings.animate === true) {
         this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
-        this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, angular.bind(this, function() {
+        this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable],[data-jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, angular.bind(this, function() {
           $timeout(angular.bind(this, function() {
             // Do not move this into move() to avoid flickering issue
             $draggable.css({'position': 'relative', 'left': '', 'top': ''});
@@ -135,7 +135,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         hadNgHideCls = $toEl.hasClass('ng-hide');
 
       if (toPos === null && $toEl.length > 0) {
-        if ($toEl.attr('jqyoui-draggable') !== undefined && $toEl.ngattr('ng-model') !== undefined && $toEl.is(':visible') && dropSettings && dropSettings.multiple) {
+        if (($toEl.attr('jqyoui-draggable') || $toEl.attr('data-jqyoui-draggable')) !== undefined && $toEl.ngattr('ng-model') !== undefined && $toEl.is(':visible') && dropSettings && dropSettings.multiple) {
           toPos = $toEl.offset();
           if (dropSettings.stack === false) {
             toPos.left+= $toEl.outerWidth(true);
@@ -246,7 +246,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         var dragSettings, zIndex;
         var updateDraggable = function(newValue, oldValue) {
           if (newValue) {
-            dragSettings = scope.$eval(element.attr('jqyoui-draggable')) || [];
+            dragSettings = scope.$eval(element.attr('jqyoui-draggable') || element.attr('data-jqyoui-draggable')) || [];
             element
               .draggable({disabled: false})
               .draggable(scope.$eval(attrs.jqyouiOptions) || {})
@@ -282,25 +282,25 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       restrict: 'A',
       priority: 1,
       link: function(scope, element, attrs) {
+        var dropSettings;
         var updateDroppable = function(newValue, oldValue) {
           if (newValue) {
+            dropSettings = scope.$eval(angular.element(this).attr('jqyoui-droppable') || angular.element(this).attr('data-jqyoui-droppable')) || [];
             element
               .droppable({disabled: false})
               .droppable(scope.$eval(attrs.jqyouiOptions) || {})
               .droppable({
                 over: function(event, ui) {
-                  var dropSettings = scope.$eval(angular.element(this).attr('jqyoui-droppable')) || [];
                   ngDragDropService.callEventCallback(scope, dropSettings.onOver, event, ui);
                 },
                 out: function(event, ui) {
-                  var dropSettings = scope.$eval(angular.element(this).attr('jqyoui-droppable')) || [];
                   ngDragDropService.callEventCallback(scope, dropSettings.onOut, event, ui);
                 },
                 drop: function(event, ui) {
                   if (angular.element(ui.draggable).ngattr('ng-model') && attrs.ngModel) {
                     ngDragDropService.invokeDrop(angular.element(ui.draggable), angular.element(this), event, ui);
                   } else {
-                    ngDragDropService.callEventCallback(scope, (scope.$eval(angular.element(this).attr('jqyoui-droppable')) || []).onDrop, event, ui);                    
+                    ngDragDropService.callEventCallback(scope, dropSettings.onDrop, event, ui);
                   }
                 }
               });
