@@ -85,7 +85,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       dropSettings.index = this.fixIndex(droppableScope, dropSettings, dropModelValue);
 
       jqyoui_pos = angular.isArray(dragModelValue) ? dragSettings.index : null;
-      dragItem = angular.isArray(dragModelValue) ? dragModelValue[jqyoui_pos] : dragModelValue;
+      dragItem = angular.copy(angular.isArray(dragModelValue) ? dragModelValue[jqyoui_pos] : dragModelValue);
 
       if (angular.isArray(dropModelValue) && dropSettings && dropSettings.index !== undefined) {
         dropItem = dropModelValue[dropSettings.index];
@@ -94,6 +94,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       } else {
         dropItem = {};
       }
+      dropItem = angular.copy(dropItem);
 
       if (dragSettings.animate === true) {
         this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
@@ -186,7 +187,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     };
 
     this.mutateDraggable = function(scope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable) {
-      var isEmpty = angular.equals(angular.copy(dropItem), {}),
+      var isEmpty = angular.equals(dropItem, {}),
         dragModelValue = scope.$eval(dragModel);
 
       scope.dndDropItem = dropItem;
