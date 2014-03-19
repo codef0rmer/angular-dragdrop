@@ -166,6 +166,10 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     this.mutateDroppable = function(scope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos) {
       var dropModelValue = scope.$eval(dropModel);
 
+      if(dropSettings.copy === true || dragSettings.copy === true ){
+        dragItem = angular.copy(dragItem);
+      }
+      
       scope.dndDragItem = dragItem;
 
       if (angular.isArray(dropModelValue)) {
