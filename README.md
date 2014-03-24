@@ -39,6 +39,13 @@ Do not pass evaluated expressions in callbacks. For example,
 * **data-jqyoui-options** – object – should hold all the valid options supported by [jQueryUI Droppable](http://api.jqueryui.com/droppable)
 * **ng-model** – string – An angular model defined in a controller. Should be a JS array or object.
 
+##Set up
+* $ cd angular-dragdrop
+* $ sudo npm install
+* $ sudo bower install
+* $ grunt karma
+
+
 ## Support
 If you're having problems with using the project, use the support forum at CodersClan.
 
