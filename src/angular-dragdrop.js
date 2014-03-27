@@ -131,13 +131,13 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       }
 
       var zIndex = 9999,
-        fromPos = $fromEl.offset(),
+        fromPos = $fromEl[dropSettings.containment || 'offset'](),
         wasVisible = $toEl && $toEl.is(':visible'),
         hadNgHideCls = $toEl.hasClass('ng-hide');
 
       if (toPos === null && $toEl.length > 0) {
         if (($toEl.attr('jqyoui-draggable') || $toEl.attr('data-jqyoui-draggable')) !== undefined && $toEl.ngattr('ng-model') !== undefined && $toEl.is(':visible') && dropSettings && dropSettings.multiple) {
-          toPos = $toEl.offset();
+          toPos = $toEl[dropSettings.containment || 'offset']();
           if (dropSettings.stack === false) {
             toPos.left+= $toEl.outerWidth(true);
           } else {
@@ -147,7 +147,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           // Angular v1.2 uses ng-hide to hide an element 
           // so we've to remove it in order to grab its position
           if (hadNgHideCls) $toEl.removeClass('ng-hide');
-          toPos = $toEl.css({'visibility': 'hidden', 'display': 'block'}).offset();
+          toPos = $toEl.css({'visibility': 'hidden', 'display': 'block'})[dropSettings.containment || 'offset']();
           $toEl.css({'visibility': '','display': wasVisible ? 'block' : 'none'});
         }
       }
@@ -256,7 +256,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
                 start: function(event, ui) {
                   zIndex = angular.element(jqyouiOptions.helper ? ui.helper : this).css('z-index');
                   angular.element(jqyouiOptions.helper ? ui.helper : this).css('z-index', 9999);
-                  jqyoui.startXY = angular.element(this).offset();
+                  jqyoui.startXY = angular.element(this)[dragSettings.containment || 'offset']();
                   ngDragDropService.callEventCallback(scope, dragSettings.onStart, event, ui);
                 },
                 stop: function(event, ui) {
