@@ -171,7 +171,11 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
       if (angular.isArray(dropModelValue)) {
         if (dropSettings && dropSettings.index >= 0) {
-          dropModelValue[dropSettings.index] = dragItem;
+          if(dragSettings.insertInline) {
+            dropModelValue.splice(dropSettings.index, 0, dragItem);
+          } else {
+            dropModelValue[dropSettings.index] = dragItem;
+          }
         } else {
           dropModelValue.push(dragItem);
         }
@@ -195,7 +199,11 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       if (dragSettings && dragSettings.placeholder) {
         if (dragSettings.placeholder != 'keep'){
           if (angular.isArray(dragModelValue) && dragSettings.index !== undefined) {
-            dragModelValue[dragSettings.index] = dropItem;
+            if(dragSettings.swapPositions) {
+              dragModelValue[dragSettings.index] = dropItem;
+            } else {
+              dragModelValue.splice(dragSettings.index, 1);
+            }
           } else {
             $parse(dragModel + ' = dndDropItem')(scope);
           }
@@ -207,7 +215,11 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
               dragModelValue.splice(dragSettings.index, 1);
             }
           } else {
-            dragModelValue[dragSettings.index] = dropItem;
+            if(dragSettings.insertInline) {
+              dragModelValue.splice(dragSettings.index, 1);
+            } else {
+              dragModelValue[dragSettings.index] = dropItem;
+            }
           }
         } else {
           // Fix: LIST(object) to LIST(array) - model does not get updated using just scope[dragModel] = {...}

@@ -18,6 +18,7 @@ Do not pass evaluated expressions in callbacks. For example,
     * **index** – number – $index of an item of a model (if it is an array) associated with it
     * **placeholder** – boolean/string – If true, the place will be occupied even though a dragggable is moved/dropped somewhere else. If 'keep' is supplied, the original item won't be removed from the draggable.
     * **animate** – boolean – If true, draggable will be animated towards droppable when dropped. If multiple is not set to true on droppable then its draggable will swap its position.
+    * **insertInline** – boolean – If true, the dropped item will be inserted after the droppable and the rest of the items will rotate upwards towards the droppable. This will only work when the draggable and droppable use the same model.
     * **onStart** – string – callback method to be invoked (has to be defined in a controller) when dragging starts
     * **onStop** – string – callback method to be invoked when dragging stops
     * **onDrag** – string – callback method to be invoked while the mouse is moved during the dragging
