@@ -171,7 +171,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
       if (angular.isArray(dropModelValue)) {
         if (dropSettings && dropSettings.index >= 0) {
-          if(dragSettings.insertInline) {
+          if(dragSettings.sortable) {
             dropModelValue.splice(dropSettings.index, 0, dragItem);
           } else {
             dropModelValue[dropSettings.index] = dragItem;
@@ -215,7 +215,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
               dragModelValue.splice(dragSettings.index, 1);
             }
           } else {
-            if(dragSettings.insertInline) {
+            if(dragSettings.sortable) {
               dragModelValue.splice(dragSettings.index, 1);
             } else {
               dragModelValue[dragSettings.index] = dropItem;
