@@ -1,3 +1,7 @@
+.idea
+.vagrant
+bootstrap.sh
+Vagrantfile
 node_modules
 components
 todo.TODO
