@@ -189,5 +189,16 @@ describe('Service: ngDragDropService', function() {
       };
       var callbackName = "startDrag("+ expectedFirstArg +","+ JSON.stringify(expectedData) +")";
       ngDragDropService.callEventCallback(localScope, callbackName, {}, {});
-  }); 
+  });
+  
+  it('should parse nested json objects as a single argument', function(){
+      var localScope = rootScope.$new();
+      var expectedData = {r1: 1, r2: {rs1: "someId", rs2: "someother"}};
+      localScope.startDrag = function(event, ui, data){
+        expect(data).toEqual(expectedData);
+      };
+      var callbackName = "startDrag("+ JSON.stringify(expectedData) +")";
+      ngDragDropService.callEventCallback(localScope, callbackName, {}, {});
+  });
+
 });
