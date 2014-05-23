@@ -18,7 +18,8 @@
   "dependencies": {
     "angular": "~1.x",
     "jquery": "2.x",
-    "jquery-ui": "latest"
+    "jquery-ui": "latest",
+	"jison":"git://github.com/zaach/jison.git"
   },
   "devDependencies": {
     "angular-mocks": "~1.x"

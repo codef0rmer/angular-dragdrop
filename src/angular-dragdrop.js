@@ -50,89 +50,10 @@
             constructor = callbackName.match(/^[^.]+.\s*/)[0].slice(0, -1); // matching a string upto a dot to check ctrl as syntax
           constructor = scope[constructor] && typeof scope[constructor].constructor === 'function' ? constructor : null;
           self.joinedArguments = [];
-          self.getLastIndexJSONElement = function (array){
-              for (var i = 0; i < array.length; i++) {
-                var ithEl = array[i];
-                //If this is the closing json element
-                if(ithEl[ithEl.length -1] == "}"){
-                   // If this is not the last element
-                  if(i < (array.length -1)){
-                    // then check the next element for the closing bracket
-                    var nextItem = array[i + 1];
-                    // If the next element does not have a closing bracket                    
-                    if(nextItem.indexOf("}") == -1){
-                      // then the current index is the last
-                      return i;
-                    }
-                    else{
-                      // Then we are not the last closing tail
-                      continue;
-                    }
-                  }
-                  else {
-                    // else return this index
-                    return i;
-                  }
-                }
-              };
-              // if we get this far then we haven't found a closing jsonelement
-              return -1;
-          };
-
-          self.getArgs = function(args) {
-            return (args && args.split(',') || []).map(function(arg, index, array) {
-              // We need to determine if we have a json object in the argument list
-              var firstArg = arg[0],
-                nextIndex = index + 1,
-                isNthItem = nextIndex == array.length;
-
-              if (firstArg == "{" && !isNthItem) {
-                var nextItem = array[nextIndex],
-                  lastChar = nextItem[nextItem.length - 1];
-
-                if (lastChar == "}") {
-                  self.joinedArguments.push(nextItem);
-                  var joinedArg = [arg, nextItem].join();
-                  return joinedArg;
-                } else {
-                  return arg;
-                }
-              } else {
-                if (self.joinedArguments.indexOf(arg) == -1) {
-                  return arg;
-                }
-              }
-            }, self);
-          };
-          var argsArray = self.getArgs(args); 
-          console.log("args: ", argsArray);
-          //(args && args.split(',') || []).map(function(arg, index, array) {
-          //   // We need to determine if we have a json object in the argument list
-          //   var firstArg = arg[0],
-          //     nextIndex = index + 1,
-          //     isNthItem = nextIndex == array.length;
-
-          //   if (firstArg == "{" && !isNthItem) {
-          //     var nextItem = array[nextIndex],
-          //       lastChar = nextItem[nextItem.length - 1];
-
-          //     if (lastChar == "}") {
-          //       self.joinedArguments.push(nextItem);
-          //       var joinedArg = [arg, nextItem].join();
-          //       return joinedArg;
-          //     } else {
-          //       return arg;
-          //     }
-          //   } else {
-          //     if (self.joinedArguments.indexOf(arg) == -1) {
-          //       return arg;
-          //     }
-          //   }
-          // }, self);
-
+          var parsedArgs = Parser.parse(args);
           return {
             callback: callbackName.substring(constructor && constructor.length + 1 || 0, atStartBracket),
-            args: argsArray.map(function(item) {
+            args: parsedArgs.map(function(item) {
               return $parse(item)(scope);
             }),
             constructor: constructor

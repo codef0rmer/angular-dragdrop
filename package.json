@@ -6,7 +6,9 @@
   "license": "MIT",
   "homepage": "http://codef0rmer.github.io/angular-dragdrop",
   "main": "src/angular-dragdrop.js",
-  "dependencies": {},
+  "dependencies": {
+  	"jison":"*"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-karma": "~0.4.4"

@@ -7,6 +7,7 @@ files = [
   'components/angular/angular.js',
   'components/angular-mocks/angular-mocks.js',
   'src/angular-dragdrop.js',
+  'src/Parser.js',
   'test/spec/*.js'
 ];
 singleRun = true;
