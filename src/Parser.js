@@ -74,49 +74,54 @@
 var Parser = (function(){
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"parsedargs":3,"arguments":4,"EOF":5,"stringarg":6,"JSON":7,"LITERAL":8,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",7:"JSON",8:"LITERAL"},
-productions_: [0,[3,2],[4,1],[4,1],[4,2],[4,2],[6,1],[6,2]],
+symbols_: {"error":2,"parsedargs":3,"EOF":4,"arguments":5,"stringarg":6,"JSON":7,"LITERAL":8,"$accept":0,"$end":1},
+terminals_: {2:"error",4:"EOF",7:"JSON",8:"LITERAL"},
+productions_: [0,[3,1],[3,2],[5,1],[5,1],[5,2],[5,2],[6,1],[6,2]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
-case 1: 
+case 1:
+		this.$ = [undefined];
+		return this.$
+	
+break;
+case 2: 
 			this.$ = $$[$0-1];
 			return this.$; 
 		
 break;
-case 2: 
+case 3: 
 			this.$ = [$$[$0]]; 
 		
 break;
-case 3: 
+case 4:
 			this.$ = [$$[$0]];
 		
 break;
-case 4: 
+case 5: 
 			$$[$0-1].push($$[$0]);
 			this.$ = $$[$0-1];
 		
 break;
-case 5: 
+case 6:
 			$$[$0-1].push($$[$0])
 			this.$ = $$[$0-1];
 		
 break;
-case 6: 
+case 7: 
 			this.$ = $$[$0]; 
 		
 break;
-case 7: 
+case 8: 
 			this.$ = $$[$0-1] + $$[$0]; 
 		
 break;
 }
 },
-table: [{3:1,4:2,6:3,7:[1,4],8:[1,5]},{1:[3]},{5:[1,6],6:7,7:[1,8],8:[1,5]},{5:[2,2],7:[2,2],8:[2,2]},{5:[2,3],7:[2,3],8:[2,3]},{5:[2,6],6:9,7:[2,6],8:[1,5]},{1:[2,1]},{5:[2,4],7:[2,4],8:[2,4]},{5:[2,5],7:[2,5],8:[2,5]},{5:[2,7],7:[2,7],8:[2,7]}],
-defaultActions: {6:[2,1]},
+table: [{3:1,4:[1,2],5:3,6:4,7:[1,5],8:[1,6]},{1:[3]},{1:[2,1]},{4:[1,7],6:8,7:[1,9],8:[1,6]},{4:[2,3],7:[2,3],8:[2,3]},{4:[2,4],7:[2,4],8:[2,4]},{4:[2,7],6:10,7:[2,7],8:[1,6]},{1:[2,2]},{4:[2,5],7:[2,5],8:[2,5]},{4:[2,6],7:[2,6],8:[2,6]},{4:[2,8],7:[2,8],8:[2,8]}],
+defaultActions: {2:[2,1],7:[2,2]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -606,7 +611,7 @@ case 2:
 	// do nothing we don't want commas
 
 break;
-case 3:return 5;
+case 3:return 4;
 break;
 case 4:
 	saver.currText = saver.currText + yy_.yytext;
@@ -630,7 +635,7 @@ case 6:
 		yy_.yytext = saver.currText;
 		saver.currText = "";
 		this.popState();
-		return 5;
+		return 4;
 
 break;
 case 7: saver.currText = saver.currText + yy_.yytext; 

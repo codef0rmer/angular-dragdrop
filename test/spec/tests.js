@@ -179,7 +179,7 @@ describe('Service: ngDragDropService', function() {
       var callbackName = "startDrag("+ JSON.stringify(expectedData) +")";
       ngDragDropService.callEventCallback(localScope, callbackName, {}, {});
   });
-  
+
   it('should parse json objects along with non json objects', function(){
       var localScope = rootScope.$new();
       var expectedData = {r1: 1, r2: 2};
@@ -202,5 +202,18 @@ describe('Service: ngDragDropService', function() {
       var callbackName = "startDrag("+ JSON.stringify(expectedData) +")";
       ngDragDropService.callEventCallback(localScope, callbackName, {}, {});
   });
+
+  it('should parse empty arguments', function(){
+      var localScope = rootScope.$new();
+      var expectedEvent = {"foo": "bar"};
+      var expectedUI = {"bar":"baz"};
+      localScope.startDrag = function(event, ui, data){
+        expect(event).toEqual(expectedEvent);
+        expect(expectedUI).toEqual(expectedUI);
+        expect(data).toBe(undefined);
+      };
+      var callbackName = "startDrag()";
+      ngDragDropService.callEventCallback(localScope, callbackName, expectedEvent, expectedUI);
+  }); 
 
 });
