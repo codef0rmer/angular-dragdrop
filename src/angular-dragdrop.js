@@ -157,7 +157,7 @@
               toPos.top += $toEl.outerHeight(true);
             }
           } else {
-            // Angular v1.2 uses ng-hide to hide an element 
+            // Angular v1.2 uses ng-hide to hide an element
             // so we've to remove it in order to grab its position
             if (hadNgHideCls) $toEl.removeClass('ng-hide');
             toPos = $toEl.css({
@@ -306,14 +306,14 @@
           scope.$watch(function() {
             return scope.$eval(attrs.drag);
           }, updateDraggable);
-           var registeredEvents 
+           var registeredEvents
             = $._data( element[0], "events" );
           var destroy = function() {
               element.draggable('destroy');
           };
           // If we have not already registered the event on this element
-          if(!(registeredEvents.$destroy)){
-              element.on('$destroy',destroy);  
+          if(registeredEvents && !(registeredEvents.$destroy)){
+              element.on('$destroy',destroy);
           }
         }
       };
