@@ -47,6 +47,8 @@ Do not pass evaluated expressions in callbacks. For example,
 * $ sudo bower install
 * $ grunt karma
 
+##Demo
+Demo is [here](http://codef0rmer.github.io/angular-dragdrop/#/)
 
 ## Support
 If you're having problems with using the project, use the support forum at CodersClan.
