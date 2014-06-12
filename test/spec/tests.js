@@ -169,4 +169,51 @@ describe('Service: ngDragDropService', function() {
     scope.list = {title: 'Item 1'};
     expect(ngDragDropService.fixIndex(scope, {applyFilter: 'filterIt'}, scope.list)).toBe(undefined);
   });
+  
+  it('should parse json arguments as json', function(){
+      var localScope = rootScope.$new();
+      var expectedData = {r1: 1, r2:2};
+      localScope.startDrag = function(event, ui, data){
+         expect(data).toEqual(expectedData);
+      };
+      var callbackName = "startDrag("+ JSON.stringify(expectedData) +")";
+      ngDragDropService.callEventCallback(localScope, callbackName, {}, {});
+  });
+
+  it('should parse json objects along with non json objects', function(){
+      var localScope = rootScope.$new();
+      var expectedData = {r1: 1, r2: 2};
+      var expectedFirstArg = "arg1";
+      localScope.arg1 = expectedFirstArg;
+      localScope.startDrag = function(event, ui,firstArg, data, thirdArg){
+         expect(firstArg).toEqual(expectedFirstArg);
+         expect(data).toEqual(expectedData);
+      };
+      var callbackName = "startDrag("+ expectedFirstArg +","+ JSON.stringify(expectedData) +")";
+      ngDragDropService.callEventCallback(localScope, callbackName, {}, {});
+  });
+  
+  it('should parse nested json objects as a single argument', function(){
+      var localScope = rootScope.$new();
+      var expectedData = {r1: 1, r2: {rs1: "someId", rs2: "someother"}};
+      localScope.startDrag = function(event, ui, data){
+        expect(data).toEqual(expectedData);
+      };
+      var callbackName = "startDrag("+ JSON.stringify(expectedData) +")";
+      ngDragDropService.callEventCallback(localScope, callbackName, {}, {});
+  });
+
+  it('should parse empty arguments', function(){
+      var localScope = rootScope.$new();
+      var expectedEvent = {"foo": "bar"};
+      var expectedUI = {"bar":"baz"};
+      localScope.startDrag = function(event, ui, data){
+        expect(event).toEqual(expectedEvent);
+        expect(expectedUI).toEqual(expectedUI);
+        expect(data).toBe(undefined);
+      };
+      var callbackName = "startDrag()";
+      ngDragDropService.callEventCallback(localScope, callbackName, expectedEvent, expectedUI);
+  }); 
+
 });
