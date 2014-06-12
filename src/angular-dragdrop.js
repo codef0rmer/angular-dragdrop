@@ -306,15 +306,11 @@
           scope.$watch(function() {
             return scope.$eval(attrs.drag);
           }, updateDraggable);
-           var registeredEvents
-            = $._data( element[0], "events" );
-          var destroy = function() {
-              element.draggable('destroy');
-          };
-          // If we have not already registered the event on this element
-          if(registeredEvents && !(registeredEvents.$destroy)){
-              element.on('$destroy',destroy);
-          }
+          updateDraggable();
+
+          element.on('$destroy', function() {
+            element.draggable('destroy');
+          });
         }
       };
     }
