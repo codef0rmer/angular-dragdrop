@@ -38,10 +38,10 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           callback = objExtract.callback,
           constructor = objExtract.constructor,
           args = [event, ui].concat(objExtract.args);
-      
+
       // call either $scoped method i.e. $scope.dropCallback or constructor's method i.e. this.dropCallback
       scope.$apply((scope[callback] || scope[constructor][callback]).apply(scope, args));
-      
+
       function extract(callbackName) {
         var atStartBracket = callbackName.indexOf('(') !== -1 ? callbackName.indexOf('(') : callbackName.length,
             atEndBracket = callbackName.lastIndexOf(')') !== -1 ? callbackName.lastIndexOf(')') : callbackName.length,
@@ -70,7 +70,6 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         $droppableDraggable = null,
         droppableScope = $droppable.scope(),
         draggableScope = $draggable.scope();
-
       dragModel = $draggable.ngattr('ng-model');
       dropModel = $droppable.ngattr('ng-model');
       dragModelValue = draggableScope.$eval(dragModel);
@@ -87,6 +86,19 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       jqyoui_pos = angular.isArray(dragModelValue) ? dragSettings.index : null;
       dragItem = angular.copy(angular.isArray(dragModelValue) ? dragModelValue[jqyoui_pos] : dragModelValue);
 
+      var resetCSS = angular.bind(this, function () {
+        $timeout(angular.bind(this, function () {
+          // Do not move this into move() to avoid flickering issue
+          $draggable.css({'position': 'relative', 'left': '', 'top': ''});
+          // Angular v1.2 uses ng-hide to hide an element not display property
+          // so we've to manually remove display:none set in this.move()
+          $droppableDraggable.css({'position': 'relative', 'left': '', 'top': '', 'display': ''});
+
+          this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
+          this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
+          this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
+        }));
+      });
       if (angular.isArray(dropModelValue) && dropSettings && dropSettings.index !== undefined) {
         dropItem = dropModelValue[dropSettings.index];
       } else if (!angular.isArray(dropModelValue)) {
@@ -96,21 +108,37 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       }
       dropItem = angular.copy(dropItem);
 
-      if (dragSettings.animate === true) {
-        this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
-        this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable],[data-jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, angular.bind(this, function() {
-          $timeout(angular.bind(this, function() {
-            // Do not move this into move() to avoid flickering issue
-            $draggable.css({'position': 'relative', 'left': '', 'top': ''});
-            // Angular v1.2 uses ng-hide to hide an element not display property
-            // so we've to manually remove display:none set in this.move()
-            $droppableDraggable.css({'position': 'relative', 'left': '', 'top': '', 'display': ''});
 
-            this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
-            this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
-            this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
-          }));
-        }));
+      if (dragSettings.animate === true) {
+        var allDraggables = $('.ui-draggable').toArray();
+        // might be replacement for above line - but ngAnimate could resolve this issue.
+        // $('[ng-model="' + dragModel + '"][data-drag],[ng_model="' + dragModel + '"][data-drag],[ng\\:model="' + dragModel + '"][data-drag]').length
+        if (dragSettings.sortable) {
+          //Left slide
+          if (dropSettings.index > dragSettings.index) {
+            this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
+            for (var i = dropSettings.index ; i > dragSettings.index; i--) {
+              if(i === dragSettings.index + 1){
+                this.move(angular.element(allDraggables[i]), $draggable.parent('[jqyoui-droppable],[data-jqyoui-droppable]'), jqyoui.startXY,'fast', dropSettings, resetCSS);
+              }else{
+                this.move(angular.element(allDraggables[i]), angular.element(allDraggables[i - 1]), null, 'fast', dropSettings, null);
+              }
+            }
+          } else {
+            //Right slide
+            this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
+            for (var i = dropSettings.index ; i < dragSettings.index; i++) {
+              if(i === dragSettings.index - 1){
+                this.move(angular.element(allDraggables[i]), $draggable.parent('[jqyoui-droppable],[data-jqyoui-droppable]'), jqyoui.startXY,'fast', dropSettings, resetCSS);
+              }else{
+                this.move(angular.element(allDraggables[i]), angular.element(allDraggables[i + 1]), null, 'fast', dropSettings, null);
+              }
+            }
+          }
+        } else {
+          this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
+          this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable],[data-jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, resetCSS);
+        }
       } else {
         $timeout(angular.bind(this, function() {
           this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
@@ -171,7 +199,11 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
       if (angular.isArray(dropModelValue)) {
         if (dropSettings && dropSettings.index >= 0) {
-          dropModelValue[dropSettings.index] = dragItem;
+          if (dragSettings.sortable) {
+            dropModelValue.splice(dropSettings.index, 0, dragItem);
+          } else {
+            dropModelValue[dropSettings.index] = dragItem;
+          }
         } else {
           dropModelValue.push(dragItem);
         }
@@ -207,7 +239,11 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
               dragModelValue.splice(dragSettings.index, 1);
             }
           } else {
-            dragModelValue[dragSettings.index] = dropItem;
+            if (dragSettings.sortable) {
+              dragModelValue.splice(dragSettings.index, 1);
+            } else {
+              dragModelValue[dragSettings.index] = dropItem;
+            }
           }
         } else {
           // Fix: LIST(object) to LIST(array) - model does not get updated using just scope[dragModel] = {...}
