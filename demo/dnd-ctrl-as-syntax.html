@@ -70,7 +70,7 @@
         <div class='content'>
           <div class="row-fluid">
             <ul class="thumbnails">
-              <li ng-repeat="item in list1" data-drop="true" ng-model='list1' jqyoui-droppable="{index: {{$index}}, onDrop:'loki.dropCallback(item.title, $index)'}">
+              <li ng-repeat="item in list1" data-drop="true"  ng-model='list1' jqyoui-droppable="{index: {{$index}}, onDrop:'loki.dropCallback(item.title, $index)'}">
                 <div class="thumbnail" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{index: {{$index}},animate:true}">
                   <h1>
                     {{item.title}}
