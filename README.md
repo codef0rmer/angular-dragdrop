@@ -21,6 +21,7 @@ Do not pass evaluated expressions in callbacks. For example,
     * **onStart** – string – callback method to be invoked (has to be defined in a controller) when dragging starts
     * **onStop** – string – callback method to be invoked when dragging stops
     * **onDrag** – string – callback method to be invoked while the mouse is moved during the dragging
+    * **sortable** – boolean – If true, the dropped item will be inserted after the droppable and the rest of the items will rotate upwards towards the droppable. This will only work when the draggable and droppable use the same model.
     * **applyFilter** - string - applies AngularJS $filter on the list before swapping items. Only applicable, if ngRepeat has any filter (such as orderBy, limitTo) associated with it.
     * **containment** – string - position/offset. Offset by default. This forces to use jQuery.position() or jQuery.offset() to calculate proper position with respect to parent element or document respectively. 
 * **data-drag** – boolean – If true, element can be draggable. Disabled otherwise.
