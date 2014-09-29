@@ -321,7 +321,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     };
   }]);
 
-  $.fn.ngattr = function(name, value) {
+  angular.element.prototype.ngattr = function(name, value) {
     var element = angular.element(this).get(0);
 
     return element.getAttribute(name) || element.getAttribute('data-' + name);
