@@ -27,7 +27,7 @@
  * (c) 2013 Amit Gharat a.k.a codef0rmer <amit.2006.it@gmail.com> - amitgharat.wordpress.com
  */
 
-(function (window, angular, undefined) {
+(function (window, angular, $, undefined) {
 'use strict';
 
 var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$timeout', '$parse', function($timeout, $parse) {
@@ -326,4 +326,4 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
     return element.getAttribute(name) || element.getAttribute('data-' + name);
   };
-})(window, window.angular);
+})(window, window.angular, jQuery);
