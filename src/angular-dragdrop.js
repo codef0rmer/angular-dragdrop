@@ -130,7 +130,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         return false;
       }
 
-      var zIndex = 9999,
+      var zIndex = $fromEl.css('z-index'),
         fromPos = $fromEl[dropSettings.containment || 'offset'](),
         wasVisible = $toEl && $toEl.is(':visible'),
         hadNgHideCls = $toEl.hasClass('ng-hide');
@@ -152,7 +152,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         }
       }
 
-      $fromEl.css({'position': 'absolute', 'z-index': zIndex})
+      $fromEl.css({'position': 'absolute', 'z-index': 9999})
         .css(fromPos)
         .animate(toPos, duration, function() {
           // Angular v1.2 uses ng-hide to hide an element
@@ -160,6 +160,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           // hide the element (while swapping) if it was hidden already
           // because we remove the display:none in this.invokeDrop()
           if (hadNgHideCls) $toEl.addClass('ng-hide');
+          $fromEl.css('z-index', zIndex);
           if (callback) callback();
         });
     };
