@@ -104,7 +104,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
             $draggable.css({'position': 'relative', 'left': '', 'top': ''});
             // Angular v1.2 uses ng-hide to hide an element not display property
             // so we've to manually remove display:none set in this.move()
-            $droppableDraggable.css({'position': 'relative', 'left': '', 'top': '', 'display': ''});
+            $droppableDraggable.css({'position': 'relative', 'left': '', 'top': '', 'display': $droppableDraggable.css('display') === 'none' ? '' : $droppableDraggable.css('display')});
 
             this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
             this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
