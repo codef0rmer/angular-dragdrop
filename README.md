@@ -1,5 +1,5 @@
 #Drag and Drop for AngularJS (with Animation)
-
+ 
 ---
 
 ###v1.0.5 - breaking change
@@ -12,6 +12,24 @@ Do not pass evaluated expressions in callbacks. For example,
 ```
 <div jqyoui-draggable="{onStart:'startCallback(item)'}">{{item.title}}</div>
 ```
+
+##How to Use
+
+ * bower install angular-dragdrop (or sudo bower install angular-dragdop --allow-root)
+ * Reference angular-dragdrop.min.js in your application as:
+   ```
+<script src="components/angular-dragdrop/src/angular-dragdrop.min.js"></script>
+```
+ * Resolve the dependency in the main module of your application as:
+```
+angular.module('myApp', ['ngDragDrop'])
+```
+
+ * Drag anything as:
+ ```
+ <span data-drag="true" jqyoui-draggable>So you think you can drag</span>
+ ```
+ * Finally, check out [the cool demos](http://codef0rmer.github.io/angular-dragdrop/#/)
 
 ##Angular Draggable options
 * **jqyoui-draggable** – A custom angular attribute to make any element draggable. It holds more settings such as:
@@ -41,7 +59,8 @@ Do not pass evaluated expressions in callbacks. For example,
 * **data-jqyoui-options** – object – should hold all the valid options supported by [jQueryUI Droppable](http://api.jqueryui.com/droppable)
 * **ng-model** – string – An angular model defined in a controller. Should be a JS array or object.
 
-##Set up
+##How to Contribute
+* $ git clone https://github.com/codef0rmer/angular-dragdrop.git
 * $ cd angular-dragdrop
 * $ sudo npm install
 * $ sudo bower install
