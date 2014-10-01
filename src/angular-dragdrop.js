@@ -188,7 +188,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     };
 
     this.mutateDraggable = function(scope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable) {
-      var isEmpty = angular.equals(dropItem, {}),
+      var isEmpty = angular.equals(dropItem, {}) || !dropItem,
         dragModelValue = scope.$eval(dragModel);
 
       scope.dndDropItem = dropItem;
