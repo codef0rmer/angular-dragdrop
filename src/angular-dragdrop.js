@@ -276,7 +276,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         updateDraggable();
 
         element.on('$destroy', function() {
-          element.draggable('destroy');
+          element.draggable({disabled: true}).draggable('destroy');
         });
       }
     };
@@ -316,7 +316,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         updateDroppable();
 
         element.on('$destroy', function() {
-          element.droppable('destroy');
+          element.droppable({disabled: true}).droppable('destroy');
         });
       }
     };
