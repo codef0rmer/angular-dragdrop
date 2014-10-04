@@ -2,30 +2,24 @@
  
 ---
 
-###v1.0.5 - breaking change
-Do not pass evaluated expressions in callbacks. For example, 
-####Before:
-```
-<div jqyoui-draggable="{onStart:'startCallback({{item}})'}">{{item.title}}</div>
-```
-####After:
-```
-<div jqyoui-draggable="{onStart:'startCallback(item)'}">{{item.title}}</div>
-```
+Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ever which is a wrapper for jQueryUI draggable/droppable components.
 
 ##How to Use
 
- * bower install angular-dragdrop (or sudo bower install angular-dragdop --allow-root)
- * Reference angular-dragdrop.min.js in your application as:
+ * `bower install angular-dragdrop` (or `sudo bower install angular-dragdop --allow-root`)
+ * Reference `angular-dragdrop.min.js` in your application as:
+
    ```
 <script src="components/angular-dragdrop/src/angular-dragdrop.min.js"></script>
 ```
  * Resolve the dependency in the main module of your application as:
+
 ```
 angular.module('myApp', ['ngDragDrop'])
 ```
 
  * Drag anything as:
+
  ```
  <span data-drag="true" jqyoui-draggable>So you think you can drag</span>
  ```
@@ -68,6 +62,17 @@ angular.module('myApp', ['ngDragDrop'])
 
 ##Demo
 Demo is [here](http://codef0rmer.github.io/angular-dragdrop/#/)
+
+###v1.0.5 - breaking change
+Do not pass evaluated expressions in callbacks. For example, 
+####Before:
+```
+<div jqyoui-draggable="{onStart:'startCallback({{item}})'}">{{item.title}}</div>
+```
+####After:
+```
+<div jqyoui-draggable="{onStart:'startCallback(item)'}">{{item.title}}</div>
+```
 
 ## Support
 If you're having problems with using the project, use the support forum at CodersClan.
