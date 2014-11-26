@@ -6,7 +6,7 @@ Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ev
 
 ##How to Use
 
- * `bower install angular-dragdrop` (or `sudo bower install angular-dragdop --allow-root`)
+ * `bower install angular-dragdrop` (or `sudo bower install angular-dragdrop --allow-root`)
  * Reference `angular-dragdrop.min.js` in your application as:
 
    ```
