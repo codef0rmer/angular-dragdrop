@@ -14,6 +14,7 @@ describe('Service: ngDragDropService', function() {
   it('should move item from list1[0]:placeholderTrue to list2[0]:dummy', function() {
     scope.list1 = [{ 'title': 'Item 1', 'drag': true}];
     scope.list2 = [{}];
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
     expect(scope.list1.length).toBe(1);
     expect(scope.list2.length).toBe(1);
     ngDragDropService.invokeDrop(
@@ -32,6 +33,7 @@ describe('Service: ngDragDropService', function() {
   it('should move item from list1[0]:placeholderTrue to list2[0]:nodummy', function() {
     scope.list1 = [{ 'title': 'Item 1', 'drag': true}];
     scope.list2 = [];
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
     expect(scope.list1.length).toBe(1);
     expect(scope.list2.length).toBe(0);
     ngDragDropService.invokeDrop(
@@ -50,6 +52,7 @@ describe('Service: ngDragDropService', function() {
   it('should move item from list1[0]:placeholderFalse to list2[0]:dummy', function() {
     scope.list1 = [{ 'title': 'Item 1', 'drag': true}];
     scope.list2 = [{}];
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
     expect(scope.list1.length).toBe(1);
     expect(scope.list2.length).toBe(1);
     ngDragDropService.invokeDrop(
@@ -67,6 +70,7 @@ describe('Service: ngDragDropService', function() {
   it('should move item from list1[0]:placeholderFalse to list2[0]:nodummy', function() {
     scope.list1 = [{ 'title': 'Item 1', 'drag': true}];
     scope.list2 = [];
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
     expect(scope.list1.length).toBe(1);
     expect(scope.list2.length).toBe(0);
     ngDragDropService.invokeDrop(
@@ -84,6 +88,7 @@ describe('Service: ngDragDropService', function() {
   it('should swap items between list1[0] to list2[0]', function() {
     scope.list1 = [{ 'title': 'Item 1', 'drag': true}];
     scope.list2 = [{ 'title': 'Item 2', 'drag': true}];
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
     expect(scope.list1.length).toBe(1);
     expect(scope.list2.length).toBe(1);
     ngDragDropService.invokeDrop(
@@ -102,6 +107,7 @@ describe('Service: ngDragDropService', function() {
   it('should keep item in list1[0] as well as clone it in list2[0]', function() {
     scope.list1 = [{ 'title': 'Item 1', 'drag': true}];
     scope.list2 = {};
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
     expect(scope.list1.length).toBe(1);
     expect(scope.list2).toEqual({});
     ngDragDropService.invokeDrop(
@@ -121,6 +127,7 @@ describe('Service: ngDragDropService', function() {
       list1: [{ 'title': 'Item 1', 'drag': true}],
       list2: [{}]
     };
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
     expect(scope.foo.list1.length).toBe(1);
     expect(scope.foo.list2.length).toBe(1);
     ngDragDropService.invokeDrop(
@@ -140,6 +147,8 @@ describe('Service: ngDragDropService', function() {
     scope.list = [{'title': 'Item 1', 'drag': true}];
     scope2 = rootScope.$new();
     scope2.list = [{}];
+    ngDragDropService.draggableScope = scope;
+    ngDragDropService.droppableScope = scope2;
     expect(scope.list.length).toBe(1);
     expect(scope2.list.length).toBe(1);
 
@@ -158,6 +167,7 @@ describe('Service: ngDragDropService', function() {
   it('should fix the index in case of filters used with ngRepeat such as orderBy', function() {
     // Applicable only for array models
     scope.list = [{'title': 'Item 2', 'drag': true}, {'title': 'Item 1', 'drag': true}];
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
     scope.filterIt = function() {
       return orderByFilter(scope.list, 'title');
     };
