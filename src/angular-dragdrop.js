@@ -135,7 +135,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
       var zIndex = $fromEl.css('z-index'),
         fromPos = $fromEl[dropSettings.containment || 'offset'](),
-        wasVisible = $toEl && $toEl.is(':visible'),
+        displayProperty = $toEl.css('display'), // sometimes `display` is other than `block`
         hadNgHideCls = $toEl.hasClass('ng-hide');
 
       if (toPos === null && $toEl.length > 0) {
@@ -151,7 +151,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           // so we've to remove it in order to grab its position
           if (hadNgHideCls) $toEl.removeClass('ng-hide');
           toPos = $toEl.css({'visibility': 'hidden', 'display': 'block'})[dropSettings.containment || 'offset']();
-          $toEl.css({'visibility': '','display': wasVisible ? 'block' : 'none'});
+          $toEl.css({'visibility': '','display': displayProperty});
         }
       }
 
