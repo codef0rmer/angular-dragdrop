@@ -4,6 +4,12 @@
 
 Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ever which is a wrapper for jQueryUI draggable/droppable components.
 
+
+###v1.0.9 - breaking change
+  1. Draggable and Droppable will not be [deep copied](https://egghead.io/lessons/angularjs-angular-copy-for-deep-copy) by default unlike previous versions. Use `deepCopy` option if prototypical inheritance is not required.
+  2. Callbacks will not be executed forcefully within the context of scope which requires an extra digest loop for each event (start, stop, over, out, etc), especially drag that fires many times and running a digest loop is performance intensive in such scenario. Call `scope.$apply()` within callback, if needed.
+
+
 ##How to Use
 
  * `bower install angular-dragdrop` (or `sudo bower install angular-dragdrop --allow-root`)
@@ -65,10 +71,6 @@ angular.module('myApp', ['ngDragDrop'])
 
 ##Demo
 Demo is [here](http://codef0rmer.github.io/angular-dragdrop/#/)
-
-
-###v1.0.9 - breaking change
-Draggable and Droppable will not be deep copied by default unlike previous versions. Use deepCopy option, if needed.
 
 
 ###v1.0.5 - breaking change
