@@ -51,6 +51,7 @@ angular.module('myApp', ['ngDragDrop'])
     * **applyFilter** - string - requires if both droppable as well as draggable share the same ngModel.
     * **containment** – string - position/offset. Offset by default. This forces to use jQuery.position() or jQuery.offset() to calculate proper position with respect to parent element or document respectively. 
     * **deepCopy** – boolean (optional) – If true, makes a deep copy of droppable that looses prototypical inheritance.
+    * **beforeDrop** – promise (optional) – Ask for confirmation before dropping. Works with both window.confirm and custom popup. 
 * **data-drop** – boolean – If true, element can be droppable. Disabled otherwise.
 * **data-jqyoui-options** – object – should hold all the valid options supported by [jQueryUI Droppable](http://api.jqueryui.com/droppable)
 * **ng-model** – string – An angular model defined in a controller. Should be a JS array or object.

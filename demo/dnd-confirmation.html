@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html ng-app="drag-and-drop">
+  <head lang="en">
+    <meta charset="utf-8">
+    <title>Drag &amp; Drop: Confirm before drop</title>
+    <script src="../components/jquery/dist/jquery.min.js"></script>
+    <script src="../components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../components/angular/angular.min.js"></script>
+    <script src="../components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
+    <script src="../src/angular-dragdrop.js"></script>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body { padding: 50px; }
+    </style>
+    <script type="text/javascript">
+      var App = angular.module('drag-and-drop', ['ngDragDrop', 'ui.bootstrap']);
+
+      App.controller('oneCtrl', function($scope, $q) {
+        $scope.list1 = {title: 'Drag and Drop with default confirmation'};
+        $scope.list2 = {};
+
+        $scope.beforeDrop = function() {
+          var deferred = $q.defer();
+
+          if (confirm('Are you sure???')) {
+            deferred.resolve();
+          } else {
+            deferred.reject();
+          }
+
+          return deferred.promise;
+        };
+      });
+
+      App.controller('twoCtrl', function($scope, $q, $modal) {
+        $scope.list1 = {title: 'Drag and Drop with custom confirmation'};
+        $scope.list2 = {};
+
+        $scope.beforeDrop = function() {
+          var modalInstance = $modal.open({
+            templateUrl: 'myModalContent.html',
+            controller: 'ModalInstanceCtrl'
+          });
+          
+          return modalInstance.result;
+        };
+      }).controller('ModalInstanceCtrl', function ($scope, $modalInstance) {
+        $scope.ok = function () {
+          $modalInstance.close();
+        };
+
+        $scope.cancel = function () {
+          $modalInstance.dismiss('cancel');
+        };
+      });
+    </script>
+  </head>
+  <body>
+    <h2>Default window.confirmation Vs Custom confirmation</h2>
+    <div ng-controller="oneCtrl">
+      <div class="row-fluid">
+        <div class="span6">
+          <div class="btn btn-primary" data-drag="true" ng-model="list1" jqyoui-draggable="{animate: true}" ng-hide="!list1.title">{{list1.title}}</div>
+        </div>
+        <div class="span6">
+          <div class="thumbnail" data-drop="true" ng-model="list2" jqyoui-droppable="{beforeDrop: 'beforeDrop'}" ng-bind="list2.title ? 'Dropped successfully..!' : 'Drop here...'"></div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div ng-controller="twoCtrl">
+      <div class="row-fluid">
+        <div class="span6">
+          <div class="btn btn-primary" data-drag="true" ng-model="list1" jqyoui-draggable="{animate: true}" ng-hide="!list1.title">{{list1.title}}</div>
+        </div>
+        <div class="span6">
+          <div class="thumbnail" data-drop="true" ng-model="list2" jqyoui-droppable="{beforeDrop: 'beforeDrop'}" ng-bind="list2.title ? 'Dropped successfully..!' : 'Drop here...'"></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/ng-template" id="myModalContent.html">
+      <div class="modal-body">
+        <b>Are you sure???</b>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+      </div>
+    </script>
+  </body>
+</html>

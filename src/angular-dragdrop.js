@@ -45,7 +45,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       // call either $scoped method i.e. $scope.dropCallback or constructor's method i.e. this.dropCallback.
       // Removing scope.$apply call that was performance intensive (especially onDrag) and does not require it
       // always. So call it within the callback if needed.
-      (scope[callback] || scope[constructor][callback]).apply(scope, args);
+      return (scope[callback] || scope[constructor][callback]).apply(scope, args);
       
       function extract(callbackName) {
         var atStartBracket = callbackName.indexOf('(') !== -1 ? callbackName.indexOf('(') : callbackName.length,
@@ -293,7 +293,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         });
       }
     };
-  }]).directive('jqyouiDroppable', ['ngDragDropService', function(ngDragDropService) {
+  }]).directive('jqyouiDroppable', ['ngDragDropService', '$q', function(ngDragDropService, $q) {
     return {
       restrict: 'A',
       priority: 1,
@@ -313,12 +313,28 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
                   ngDragDropService.callEventCallback(scope, dropSettings.onOut, event, ui);
                 },
                 drop: function(event, ui) {
-                  if (angular.element(ui.draggable).ngattr('ng-model') && attrs.ngModel) {
-                    ngDragDropService.droppableScope = scope;
-                    ngDragDropService.invokeDrop(angular.element(ui.draggable), angular.element(this), event, ui);
+                  var beforeDropPromise = null;
+
+                  if (dropSettings.beforeDrop) {
+                    beforeDropPromise = ngDragDropService.callEventCallback(scope, dropSettings.beforeDrop, event, ui);
                   } else {
-                    ngDragDropService.callEventCallback(scope, dropSettings.onDrop, event, ui);
+                    beforeDropPromise = (function() {
+                      var deferred = $q.defer();
+                      deferred.resolve();
+                      return deferred.promise;
+                    })();
                   }
+
+                  beforeDropPromise.then(angular.bind(this, function() {
+                    if (angular.element(ui.draggable).ngattr('ng-model') && attrs.ngModel) {
+                      ngDragDropService.droppableScope = scope;
+                      ngDragDropService.invokeDrop(angular.element(ui.draggable), angular.element(this), event, ui);
+                    } else {
+                      ngDragDropService.callEventCallback(scope, dropSettings.onDrop, event, ui);
+                    }
+                  }), function() {
+                    ui.draggable.css({left: '', top: ''});
+                  });
                 }
               });
           } else {
