@@ -43,6 +43,7 @@
                   <li><a href="#/cart">Shopping Cart with cloning enabled</a></li>
                   <li><a href="#/filter">filters with ngRepeat</a></li>
                   <li><a href="#/ctrl">ControllerAs Syntax</a></li>
+                  <li><a href="#/confirm">Confirmation before Drop</a></li>
                 </ul>
               </li>
             </ul>
@@ -72,6 +73,7 @@
           .when('/cart', { templateUrl: 'partials/cart.html'})
           .when('/filter', { templateUrl: 'partials/filter.html'})
           .when('/ctrl', { templateUrl: 'partials/ctrl.html'})
+          .when('/confirm', { templateUrl: 'partials/confirm.html'})
           .otherwise({ redirectTo: '/' });
       }]);
       App.controller('OverviewCtrl', function($scope) {

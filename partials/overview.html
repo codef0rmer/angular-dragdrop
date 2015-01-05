@@ -126,8 +126,8 @@ App.controller('OverviewCtrl', function($scope) {
      </tr>
      <tr>
        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deepCopy</td>
-       <td>boolean (optional)</td>
-       <td></td>
+       <td>boolean</td>
+       <td>false</td>
        <td>If true, makes a deep copy of draggable that looses prototypical inheritance.</td>
      </tr>
      <tr>
@@ -218,9 +218,15 @@ App.controller('OverviewCtrl', function($scope) {
      </tr>
      <tr>
        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deepCopy</td>
-       <td>boolean (optional)</td>
-       <td></td>
+       <td>boolean</td>
+       <td>false</td>
        <td>If true, makes a deep copy of droppable that looses prototypical inheritance.</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beforeDrop</td>
+       <td>promise</td>
+       <td>promise</td>
+       <td>Ask for confirmation before dropping. Works with both window.confirm and custom popup.</td>
      </tr>
      <tr>
        <td>data-drop</td>
