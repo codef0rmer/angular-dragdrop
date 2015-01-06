@@ -56,7 +56,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
         return {
           callback: callbackName.substring(constructor && constructor.length + 1 || 0, atStartBracket),
-          args: $.map(args && args.split(',') || [], function(item) { return $parse(item)(scope); }),
+          args: $.map(args && args.split(',') || [], function(item) { return [$parse(item)(scope)]; }),
           constructor: constructor
         }
       }
