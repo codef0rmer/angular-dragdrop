@@ -335,7 +335,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
                   }), function() {
                     ui.draggable.css({left: '', top: ''});
                   });
-                }
+                },
+                tolerance: dropSettings.tolerance || 'intersect'
               });
           } else {
             element.droppable({disabled: true});
