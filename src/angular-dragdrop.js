@@ -257,7 +257,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       require: '?jqyouiDroppable',
       restrict: 'A',
       link: function(scope, element, attrs) {
-        var dragSettings, jqyouiOptions, zIndex;
+        var dragSettings, jqyouiOptions, zIndex, killWatcher;
         var updateDraggable = function(newValue, oldValue) {
           if (newValue) {
             dragSettings = scope.$eval(element.attr('jqyoui-draggable') || element.attr('data-jqyoui-draggable')) || {};
@@ -284,8 +284,14 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           } else {
             element.draggable({disabled: true});
           }
+
+          if (killWatcher && angular.isDefined(newValue) && (angular.equals(attrs.drag, 'true') || angular.equals(attrs.drag, 'false'))) {
+            killWatcher();
+            killWatcher = null;
+          }
         };
-        scope.$watch(function() { return scope.$eval(attrs.drag); }, updateDraggable);
+
+        killWatcher = scope.$watch(function() { return scope.$eval(attrs.drag); }, updateDraggable);
         updateDraggable();
 
         element.on('$destroy', function() {
@@ -298,7 +304,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       restrict: 'A',
       priority: 1,
       link: function(scope, element, attrs) {
-        var dropSettings;
+        var dropSettings, killWatcher;
         var updateDroppable = function(newValue, oldValue) {
           if (newValue) {
             dropSettings = scope.$eval(angular.element(element).attr('jqyoui-droppable') || angular.element(element).attr('data-jqyoui-droppable')) || {};
@@ -340,11 +346,16 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           } else {
             element.droppable({disabled: true});
           }
+
+          if (killWatcher && angular.isDefined(newValue) && (angular.equals(attrs.drop, 'true') || angular.equals(attrs.drop, 'false'))) {
+            killWatcher();
+            killWatcher = null;
+          }
         };
 
-        scope.$watch(function() { return scope.$eval(attrs.drop); }, updateDroppable);
+        killWatcher = scope.$watch(function() { return scope.$eval(attrs.drop); }, updateDroppable);
         updateDroppable();
-
+        
         element.on('$destroy', function() {
           element.droppable({disabled: true}).droppable('destroy');
         });
