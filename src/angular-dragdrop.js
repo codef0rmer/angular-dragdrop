@@ -34,6 +34,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     this.draggableScope = null;
     this.droppableScope = null;
 
+    angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";.angular-dragdrop-hide{display: none !important;}</style>');
+
     this.callEventCallback = function (scope, callbackName, event, ui) {
       if (!callbackName) return;
 
@@ -75,6 +77,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         $droppableDraggable = null,
         droppableScope = this.droppableScope,
         draggableScope = this.draggableScope,
+        $helper = null,
         promises = [];
 
       dragModel = $draggable.ngattr('ng-model');
@@ -115,11 +118,17 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
       $q.all(promises).then(angular.bind(this, function() {
         if (dragSettings.animate === true) {
-          this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
+          // be nice with absolutely positioned brethren :-)
+          $helper = $draggable.clone();
+          $helper.css({'position': 'absolute'}).css($draggable.offset());
+          angular.element(document).find('body').append($helper);
+          $draggable.addClass('angular-dragdrop-hide');
+
+          this.move($helper, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, function() { $helper.remove(); });
           this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable],[data-jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, angular.bind(this, function() {
             $timeout(angular.bind(this, function() {
               // Do not move this into move() to avoid flickering issue
-              $draggable.css({'position': 'relative', 'left': '', 'top': ''});
+              $draggable.css({'position': 'relative', 'left': '', 'top': ''}).removeClass('angular-dragdrop-hide');
               // Angular v1.2 uses ng-hide to hide an element not display property
               // so we've to manually remove display:none set in this.move()
               $droppableDraggable.css({'position': 'relative', 'left': '', 'top': '', 'display': $droppableDraggable.css('display') === 'none' ? '' : $droppableDraggable.css('display')});
