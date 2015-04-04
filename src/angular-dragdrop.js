@@ -30,7 +30,7 @@
 (function (window, angular, $, undefined) {
 'use strict';
 
-var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$timeout', '$parse', function($timeout, $parse) {
+var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$timeout', '$parse', '$q', function($timeout, $parse, $q) {
     this.draggableScope = null;
     this.droppableScope = null;
 
@@ -51,7 +51,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         var atStartBracket = callbackName.indexOf('(') !== -1 ? callbackName.indexOf('(') : callbackName.length,
             atEndBracket = callbackName.lastIndexOf(')') !== -1 ? callbackName.lastIndexOf(')') : callbackName.length,
             args = callbackName.substring(atStartBracket + 1, atEndBracket), // matching function arguments inside brackets
-            constructor = callbackName.match(/^[^.]+.\s*/)[0].slice(0, -1); // matching a string upto a dot to check ctrl as syntax
+            constructor = callbackName.indexOf('.') !== -1 ? callbackName.substr(0, callbackName.indexOf('.')) : null; // matching a string upto a dot to check ctrl as syntax
             constructor = scope[constructor] && typeof scope[constructor].constructor === 'function' ? constructor : null;
 
         return {
@@ -74,7 +74,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         dropModelValue,
         $droppableDraggable = null,
         droppableScope = this.droppableScope,
-        draggableScope = this.draggableScope;
+        draggableScope = this.draggableScope,
+        promises = [];
 
       dragModel = $draggable.ngattr('ng-model');
       dropModel = $droppable.ngattr('ng-model');
@@ -108,28 +109,36 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         dropItem = angular.copy(dropItem);
       }
 
-      if (dragSettings.animate === true) {
-        this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
-        this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable],[data-jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, angular.bind(this, function() {
-          $timeout(angular.bind(this, function() {
-            // Do not move this into move() to avoid flickering issue
-            $draggable.css({'position': 'relative', 'left': '', 'top': ''});
-            // Angular v1.2 uses ng-hide to hide an element not display property
-            // so we've to manually remove display:none set in this.move()
-            $droppableDraggable.css({'position': 'relative', 'left': '', 'top': '', 'display': $droppableDraggable.css('display') === 'none' ? '' : $droppableDraggable.css('display')});
+      if (dragSettings.beforeDrop) {
+        promises.push(this.callEventCallback(draggableScope, dragSettings.beforeDrop, event, ui));
+      }
 
+      $q.all(promises).then(angular.bind(this, function() {
+        if (dragSettings.animate === true) {
+          this.move($draggable, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, null);
+          this.move($droppableDraggable.length > 0 && !dropSettings.multiple ? $droppableDraggable : [], $draggable.parent('[jqyoui-droppable],[data-jqyoui-droppable]'), jqyoui.startXY, 'fast', dropSettings, angular.bind(this, function() {
+            $timeout(angular.bind(this, function() {
+              // Do not move this into move() to avoid flickering issue
+              $draggable.css({'position': 'relative', 'left': '', 'top': ''});
+              // Angular v1.2 uses ng-hide to hide an element not display property
+              // so we've to manually remove display:none set in this.move()
+              $droppableDraggable.css({'position': 'relative', 'left': '', 'top': '', 'display': $droppableDraggable.css('display') === 'none' ? '' : $droppableDraggable.css('display')});
+
+              this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
+              this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
+              this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
+            }));
+          }));
+        } else {
+          $timeout(angular.bind(this, function() {
             this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
             this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
             this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
           }));
-        }));
-      } else {
-        $timeout(angular.bind(this, function() {
-          this.mutateDraggable(draggableScope, dropSettings, dragSettings, dragModel, dropModel, dropItem, $draggable);
-          this.mutateDroppable(droppableScope, dropSettings, dragSettings, dropModel, dragItem, jqyoui_pos);
-          this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
-        }));
-      }
+        }
+      }), function() {
+        ui.draggable.css({left: '', top: ''});
+      });
     };
 
     this.move = function($fromEl, $toEl, toPos, duration, dropSettings, callback) {

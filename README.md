@@ -42,6 +42,7 @@ angular.module('myApp', ['ngDragDrop'])
     * **applyFilter** - string - applies AngularJS $filter on the list before swapping items. Only applicable, if ngRepeat has any filter (such as orderBy, limitTo) associated with it.
     * **containment** – string - position/offset. Offset by default. This forces to use jQuery.position() or jQuery.offset() to calculate proper position with respect to parent element or document respectively. 
     * **deepCopy** - boolean (optional) – If true, makes a deep copy of draggable that looses prototypical inheritance.
+    * **beforeDrop** – promise (optional) – Ask for confirmation before swapping. Works with both window.confirm and custom popup. 
 * **data-drag** – boolean – If true, element can be draggable. Disabled otherwise.
 * **data-jqyoui-options** – object – should hold all the valid options supported by [jQueryUI Draggable](http://api.jqueryui.com/draggable)
 * **ng-model** – string – An angular model defined in a controller. Should be a JS array or object
