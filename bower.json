@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "angular-mocks": "latest",
-    "angular-ui-bootstrap-bower": "latest"
+    "angular-ui-bootstrap-bower": "latest",
+    "angular-animate": "latest"
   }
 }

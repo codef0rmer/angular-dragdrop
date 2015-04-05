@@ -179,4 +179,25 @@ describe('Service: ngDragDropService', function() {
     scope.list = {title: 'Item 1'};
     expect(ngDragDropService.fixIndex(scope, {applyFilter: 'filterIt'}, scope.list)).toBe(undefined);
   });
+
+  it('should support insertInline option', function() {
+    scope.list = [
+      { 'title': 'N' },
+      { 'title': 'L' },
+      { 'title': 'I' },
+      { 'title': 'I' },
+      { 'title': 'E' },
+      { 'title': 'N' }
+    ];
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
+    expect(scope.list.map(function(item) { return item.title; }).join('')).toBe('NLIIEN');
+    ngDragDropService.invokeDrop(
+      $('<div data-drop="true" data-drag="true" ng-model="list" jqyoui-droppable="{index: 5}" jqyoui-draggable="{index: 5, insertInline: true, direction:\'jqyouiDirection\'}">' + scope.list[5].title + '</div>').data('$scope', scope),
+      $('<div data-drop="true" data-drag="true" ng-model="list" jqyoui-droppable="{index: 0}" jqyoui-draggable="{index: 0, insertInline: true, direction:\'jqyouiDirection\'}">' + scope.list[0].title + '</div>').data('$scope', scope),
+      document.createEvent('Event'),
+      {}
+    );
+    timeout.flush();
+    expect(scope.list.map(function(item) { return item.title; }).join('')).toBe('NNLIIE');
+  });
 });

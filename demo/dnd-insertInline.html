@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html ng-app="drag-and-drop">
+  <head lang="en">
+    <meta charset="utf-8">
+    <title>Drag &amp; Drop: Guess A Name</title>
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.min.css" rel="stylesheet"> -->
+    <script src="../components/jquery/dist/jquery.min.js"></script>
+    <script src="../components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../components/angular/angular.min.js"></script>
+    <script src="../components/angular-animate/angular-animate.js"></script>
+    <script src="../src/angular-dragdrop.js"></script>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding: 30px;
+      }
+      .thumbnails[jqyoui-droppable], .thumbnail[jqyoui-droppable] { border: 1px solid red; }
+      .thumbnail {
+        height: 50px;
+        width: 50px;
+        text-align: center;
+        padding-top: 0px;
+        cursor: pointer;
+        background: rgb(182, 173, 123);
+        position: relative;
+        -webkit-transition: none;
+        transition: none;
+      }
+
+      .thumbnail[data-drag="false"] { background: green; }
+
+      .thumbnail.ng-leave {
+        -webkit-transition-duration: 0s;
+        transition-duration: 0s;
+        opacity: 1;
+      }
+
+      .thumbnail.ng-leave.ng-leave-active {
+        opacity: 0;
+      }
+
+      .thumbnail.ng-enter {
+        -webkit-transition: left 0.3s;
+        transition: left 0.3s;
+      }
+      .thumbnail.ng-enter[data-direction="left"] {
+        left: -80px;
+      }
+      .thumbnail.ng-enter[data-direction="right"] {
+        left: 80px;
+      }
+      .thumbnail.ng-enter.ng-enter-active {
+        left: 0px;
+      }
+    </style>
+
+    <script type="text/javascript">
+      var App = angular.module('drag-and-drop', ['ngAnimate', 'ngDragDrop']);
+
+      App.controller('oneCtrl', function($scope) {
+        $scope.list1 = [
+          { 'title': 'N', 'drag': true },
+          { 'title': 'L', 'drag': true },
+          { 'title': 'I', 'drag': true },
+          { 'title': 'I', 'drag': true },
+          { 'title': 'E', 'drag': true },
+          { 'title': 'N', 'drag': true }
+        ];
+      });
+    </script>
+  </head>
+  <body>
+    <div ng-controller="oneCtrl">
+      <div class='contentWrapper ng-cloak'>
+        <div class='content'>
+          <div class="row-fluid">
+            <ul class="thumbnails">
+              <li class="thumbnail" ng-repeat="item in list1" data-drop="true" data-drag="true" ng-model="list1" jqyoui-droppable="{index: {{$index}}}" jqyoui-draggable="{index: {{$index}}, insertInline: true, direction:'jqyouiDirection'}" data-jqyoui-options="{revert: 'invalid'}" data-direction="{{item.jqyouiDirection}}">
+                <h1>{{item.title}}</h1>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

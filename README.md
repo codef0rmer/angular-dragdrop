@@ -5,11 +5,6 @@
 Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ever which is a wrapper for jQueryUI draggable/droppable components.
 
 
-###v1.0.9 - breaking change
-  1. Draggable and Droppable will not be [deep copied](https://egghead.io/lessons/angularjs-angular-copy-for-deep-copy) by default unlike previous versions. Use `deepCopy` option if prototypical inheritance is not required.
-  2. Callbacks will not be executed forcefully within the context of scope which requires an extra digest loop for each event (start, stop, over, out, etc), especially drag that fires many times and running a digest loop is performance intensive in such scenario. Call `scope.$apply()` within callback, if needed.
-
-
 ##How to Use
 
  * `bower install angular-dragdrop` (or `sudo bower install angular-dragdrop --allow-root`)
@@ -44,6 +39,8 @@ Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ev
     * **containment** – string - position/offset. Offset by default. This forces to use jQuery.position() or jQuery.offset() to calculate proper position with respect to parent element or document respectively. 
     * **deepCopy** - boolean (optional) – If true, makes a deep copy of draggable that looses prototypical inheritance.
     * **beforeDrop** – promise (optional) – Ask for confirmation before swapping. Works with both window.confirm and custom popup. 
+    * **insertInline** – boolean(optional) – Make a list sortable. Same model is mandatory for draggable and droppable.
+    * **direction** – string(optional) – Property name that will be created on each scope to manage animation direction. 
 * **data-drag** – boolean – If true, element can be draggable. Disabled otherwise.
 * **data-jqyoui-options** – object – should hold all the valid options supported by [jQueryUI Draggable](http://api.jqueryui.com/draggable)
 * **ng-model** – string – An angular model defined in a controller. Should be a JS array or object
@@ -74,6 +71,11 @@ Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ev
 
 ##Demo
 Demo is [here](http://codef0rmer.github.io/angular-dragdrop/#/)
+
+
+###v1.0.9 - breaking change
+  1. Draggable and Droppable will not be [deep copied](https://egghead.io/lessons/angularjs-angular-copy-for-deep-copy) by default unlike previous versions. Use `deepCopy` option if prototypical inheritance is not required.
+  2. Callbacks will not be executed forcefully within the context of scope which requires an extra digest loop for each event (start, stop, over, out, etc), especially drag that fires many times and running a digest loop is performance intensive in such scenario. Call `scope.$apply()` within callback, if needed.
 
 
 ###v1.0.5 - breaking change

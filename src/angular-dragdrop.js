@@ -78,7 +78,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         droppableScope = this.droppableScope,
         draggableScope = this.draggableScope,
         $helper = null,
-        promises = [];
+        promises = [],
+        temp;
 
       dragModel = $draggable.ngattr('ng-model');
       dropModel = $droppable.ngattr('ng-model');
@@ -117,7 +118,26 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       }
 
       $q.all(promises).then(angular.bind(this, function() {
-        if (dragSettings.animate === true) {
+        if (dragSettings.insertInline && dragModel === dropModel) {
+          if (dragSettings.index > dropSettings.index) {
+            temp = dragModelValue[dragSettings.index];
+            for (var i = dragSettings.index; i > dropSettings.index; i--) {
+              dropModelValue[i] = angular.copy(dropModelValue[i - 1]);
+              dropModelValue[i - 1] = {};
+              dropModelValue[i][dragSettings.direction] = 'left';
+            }
+            dropModelValue[dropSettings.index] = temp;
+          } else {
+            temp = dragModelValue[dragSettings.index];
+            for (var i = dragSettings.index; i < dropSettings.index; i++) {
+              dropModelValue[i] = angular.copy(dropModelValue[i + 1]);
+              dropModelValue[i + 1] = {};
+              dropModelValue[i][dragSettings.direction] = 'right';
+            }
+            dropModelValue[dropSettings.index] = temp;
+          }
+          this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
+        } else if (dragSettings.animate === true) {
           // be nice with absolutely positioned brethren :-)
           $helper = $draggable.clone();
           $helper.css({'position': 'absolute'}).css($draggable.offset());
@@ -145,9 +165,9 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
             this.callEventCallback(droppableScope, dropSettings.onDrop, event, ui);
           }));
         }
-      }), function() {
-        ui.draggable.css({left: '', top: ''});
-      });
+      })).finally(angular.bind(this, function() {
+        this.restore($draggable);
+      }));
     };
 
     this.move = function($fromEl, $toEl, toPos, duration, dropSettings, callback) {
@@ -250,6 +270,10 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         }
       }
 
+      this.restore($draggable);
+    };
+
+    this.restore = function($draggable) {
       $draggable.css({'z-index': '', 'left': '', 'top': ''});
     };
 
