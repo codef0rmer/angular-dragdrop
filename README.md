@@ -1,4 +1,4 @@
-#Drag and Drop for AngularJS (with Animation)
+#Drag and Drop for AngularJS (with Animation) [![Build Status](https://api.travis-ci.org/codef0rmer/angular-dragdrop.svg?branch=master)](https://travis-ci.org/codef0rmer/angular-dragdrop)
  
 ---
 
@@ -66,9 +66,10 @@ angular.module('myApp', ['ngDragDrop'])
 ##How to Contribute
 * $ git clone https://github.com/codef0rmer/angular-dragdrop.git
 * $ cd angular-dragdrop
+* $ npm install --quiet -g karma-cli bower
 * $ sudo npm install
-* $ sudo bower install
-* $ grunt karma
+* $ sudo bower install --force-latest
+* $ npm test
 
 ##Demo
 Demo is [here](http://codef0rmer.github.io/angular-dragdrop/#/)

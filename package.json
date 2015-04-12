@@ -8,10 +8,15 @@
   "main": "src/angular-dragdrop.js",
   "dependencies": {},
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-karma": "^0.4.6"
+    "jasmine-core": "^2.2.0",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.5"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "npm run test-unit",
+    "test-unit": "karma start karma.conf.js"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/codef0rmer/angular-dragdrop.git"

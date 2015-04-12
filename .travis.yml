@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "0.10"
+
+before_script:
+  - export CHROME_BIN=chromium-browser
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - npm install --quiet -g grunt-cli karma-cli bower
+  - npm install
+  - bower install --force-latest
+
+script:
+  - karma start karma.conf.js
