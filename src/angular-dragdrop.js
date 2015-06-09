@@ -280,6 +280,9 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           if (newValue) {
             dragSettings = scope.$eval(element.attr('jqyoui-draggable') || element.attr('data-jqyoui-draggable')) || {};
             jqyouiOptions = scope.$eval(attrs.jqyouiOptions) || {};
+
+            scope.settings = dragSettings;
+
             element
               .draggable({disabled: false})
               .draggable(jqyouiOptions)
