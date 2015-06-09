@@ -199,6 +199,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       var dropModelValue = scope.$eval(dropModel);
 
       scope.dndDragItem = dragItem;
+      scope.dragSettings = dragSettings;
+      scope.dropSettings = dropSettings;
 
       if (angular.isArray(dropModelValue)) {
         if (dropSettings && dropSettings.index >= 0) {
@@ -222,6 +224,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         dragModelValue = scope.$eval(dragModel);
 
       scope.dndDropItem = dropItem;
+      scope.dragSettings = dragSettings;
+      scope.dropSettings = dropSettings;
 
       if (dragSettings && dragSettings.placeholder) {
         if (dragSettings.placeholder != 'keep'){
@@ -280,6 +284,9 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           if (newValue) {
             dragSettings = scope.$eval(element.attr('jqyoui-draggable') || element.attr('data-jqyoui-draggable')) || {};
             jqyouiOptions = scope.$eval(attrs.jqyouiOptions) || {};
+
+            scope.settings = dragSettings;
+
             element
               .draggable({disabled: false})
               .draggable(jqyouiOptions)
@@ -326,6 +333,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         var updateDroppable = function(newValue, oldValue) {
           if (newValue) {
             dropSettings = scope.$eval(angular.element(element).attr('jqyoui-droppable') || angular.element(element).attr('data-jqyoui-droppable')) || {};
+            scope.settings = dropSettings;
+
             element
               .droppable({disabled: false})
               .droppable(scope.$eval(attrs.jqyouiOptions) || {})
