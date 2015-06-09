@@ -326,6 +326,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         var updateDroppable = function(newValue, oldValue) {
           if (newValue) {
             dropSettings = scope.$eval(angular.element(element).attr('jqyoui-droppable') || angular.element(element).attr('data-jqyoui-droppable')) || {};
+            scope.settings = dropSettings;
+
             element
               .droppable({disabled: false})
               .droppable(scope.$eval(attrs.jqyouiOptions) || {})
