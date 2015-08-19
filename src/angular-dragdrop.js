@@ -34,7 +34,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     this.draggableScope = null;
     this.droppableScope = null;
 
-    angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";.angular-dragdrop-hide{display: none !important;}</style>');
+    $('head').prepend('<style type="text/css">@charset "UTF-8";.angular-dragdrop-hide{display: none !important;}</style>');
 
     this.callEventCallback = function (scope, callbackName, event, ui) {
       if (!callbackName) return;
@@ -121,7 +121,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           // be nice with absolutely positioned brethren :-)
           $helper = $draggable.clone();
           $helper.css({'position': 'absolute'}).css($draggable.offset());
-          angular.element(document).find('body').append($helper);
+          $('body').append($helper);
           $draggable.addClass('angular-dragdrop-hide');
 
           this.move($helper, $droppableDraggable.length > 0 ? $droppableDraggable : $droppable, null, 'fast', dropSettings, function() { $helper.remove(); });
@@ -274,7 +274,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     return {
       require: '?jqyouiDroppable',
       restrict: 'A',
-      link: function(scope, element, attrs) {
+      link: function(scope, elem, attrs) {
+        var element = $(elem);
         var dragSettings, jqyouiOptions, zIndex, killWatcher;
         var updateDraggable = function(newValue, oldValue) {
           if (newValue) {
@@ -286,13 +287,13 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
               .draggable({
                 start: function(event, ui) {
                   ngDragDropService.draggableScope = scope;
-                  zIndex = angular.element(jqyouiOptions.helper ? ui.helper : this).css('z-index');
-                  angular.element(jqyouiOptions.helper ? ui.helper : this).css('z-index', 9999);
-                  jqyoui.startXY = angular.element(this)[dragSettings.containment || 'offset']();
+                  zIndex = $(jqyouiOptions.helper ? ui.helper : this).css('z-index');
+                  $(jqyouiOptions.helper ? ui.helper : this).css('z-index', 9999);
+                  jqyoui.startXY = $(this)[dragSettings.containment || 'offset']();
                   ngDragDropService.callEventCallback(scope, dragSettings.onStart, event, ui);
                 },
                 stop: function(event, ui) {
-                  angular.element(jqyouiOptions.helper ? ui.helper : this).css('z-index', zIndex);
+                  $(jqyouiOptions.helper ? ui.helper : this).css('z-index', zIndex);
                   ngDragDropService.callEventCallback(scope, dragSettings.onStop, event, ui);
                 },
                 drag: function(event, ui) {
@@ -321,11 +322,12 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     return {
       restrict: 'A',
       priority: 1,
-      link: function(scope, element, attrs) {
+      link: function(scope, elem, attrs) {
+        var element = $(elem);
         var dropSettings, killWatcher;
         var updateDroppable = function(newValue, oldValue) {
           if (newValue) {
-            dropSettings = scope.$eval(angular.element(element).attr('jqyoui-droppable') || angular.element(element).attr('data-jqyoui-droppable')) || {};
+            dropSettings = scope.$eval($(element).attr('jqyoui-droppable') || $(element).attr('data-jqyoui-droppable')) || {};
             element
               .droppable({disabled: false})
               .droppable(scope.$eval(attrs.jqyouiOptions) || {})
@@ -350,9 +352,9 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
                   }
 
                   beforeDropPromise.then(angular.bind(this, function() {
-                    if (angular.element(ui.draggable).ngattr('ng-model') && attrs.ngModel) {
+                    if ($(ui.draggable).ngattr('ng-model') && attrs.ngModel) {
                       ngDragDropService.droppableScope = scope;
-                      ngDragDropService.invokeDrop(angular.element(ui.draggable), angular.element(this), event, ui);
+                      ngDragDropService.invokeDrop($(ui.draggable), $(this), event, ui);
                     } else {
                       ngDragDropService.callEventCallback(scope, dropSettings.onDrop, event, ui);
                     }
@@ -381,8 +383,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     };
   }]);
 
-  angular.element.prototype.ngattr = function(name, value) {
-    var element = angular.element(this).get(0);
+  $.fn.ngattr = function(name, value) {
+    var element = this[0];
 
     return element.getAttribute(name) || element.getAttribute('data-' + name);
   };
