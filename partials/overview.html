@@ -131,6 +131,24 @@ App.controller('OverviewCtrl', function($scope) {
        <td>If true, makes a deep copy of draggable that looses prototypical inheritance.</td>
      </tr>
      <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beforeDrop</td>
+       <td>promise</td>
+       <td>false</td>
+       <td>Ask for confirmation before swapping. Works with both window.confirm and custom popup.</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;insertInline</td>
+       <td>boolean</td>
+       <td>false</td>
+       <td>Make a list sortable. Same model is mandatory for draggable and droppable.</td>
+     </tr>
+     <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</td>
+       <td>string</td>
+       <td>false</td>
+       <td>Property name that will be created on each scope to manage animation direction.</td>
+     </tr>
+     <tr>
        <td>data-drag</td>
        <td>boolean</td>
        <td>true</td>
