@@ -4,6 +4,11 @@
 
 Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ever which is a wrapper for jQueryUI draggable/droppable components.
 
+###v1.0.12
+  1. Supports insertInline option to simulate sortable functionality.
+  2. Relies on ngAnimate for sortable animation from left/right.
+  3. Checkout the demo in demo/dnd-insertInline.html
+
 
 ##How to Use
 
