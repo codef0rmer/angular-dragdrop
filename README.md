@@ -20,9 +20,9 @@ Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ev
 ```
  * Resolve the dependency in the main module of your application as:
 
-```
-angular.module('myApp', ['ngDragDrop'])
-```
+ ```
+ angular.module('myApp', ['ngDragDrop'])
+ ```
 
  * Drag anything as:
 
@@ -30,6 +30,7 @@ angular.module('myApp', ['ngDragDrop'])
  <span data-drag="true" jqyoui-draggable>So you think you can drag</span>
  ```
  * Finally, check out [the cool demos](http://codef0rmer.github.io/angular-dragdrop/#/)
+ * Note, use [touchpunch.js](http://touchpunch.furf.com/) to enable drag/drop on touch devices.
 
 ##Angular Draggable options
 * **jqyoui-draggable** – A custom angular attribute to make any element draggable. It holds more settings such as:
