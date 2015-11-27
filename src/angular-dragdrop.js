@@ -50,7 +50,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       return (scope[constructor] && scope[constructor][callback]
               ? scope[constructor][callback]
               : scope[callback]
-        ).apply([scope[constructor] || scope], args);
+        ).apply((scope[constructor] || scope), args);
 
       function extract(callbackName) {
         var atStartBracket = callbackName.indexOf('(') !== -1 ? callbackName.indexOf('(') : callbackName.length,
@@ -197,7 +197,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
             toPos.top+= $toEl.outerHeight(true);
           }
         } else {
-          // Angular v1.2 uses ng-hide to hide an element 
+          // Angular v1.2 uses ng-hide to hide an element
           // so we've to remove it in order to grab its position
           if (hadNgHideCls) $toEl.removeClass('ng-hide');
           toPos = $toEl.css({'visibility': 'hidden', 'display': 'block'})[dropSettings.containment || 'offset']();
@@ -402,7 +402,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
         killWatcher = scope.$watch(function() { return scope.$eval(attrs.drop); }, updateDroppable);
         updateDroppable();
-        
+
         element.on('$destroy', function() {
           element.droppable({disabled: true}).droppable('destroy');
         });
