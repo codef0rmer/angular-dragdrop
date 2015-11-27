@@ -200,4 +200,47 @@ describe('Service: ngDragDropService', function() {
     timeout.flush();
     expect(scope.list.map(function(item) { return item.title; }).join('')).toBe('NNLIIE');
   });
+
+  describe("controller as support", function() {
+    var Controller;
+    beforeEach(function() {
+      Controller = (function(){
+        var ctrl = function(){
+          this.list = [
+            { 'title': 'N' },
+            { 'title': 'L' },
+            { 'title': 'I' },
+            { 'title': 'I' },
+            { 'title': 'E' },
+            { 'title': 'N' }
+          ];
+        };
+        ctrl.prototype.onDrop = function() {
+          return "ctrl";
+        };
+        return ctrl;
+      })();
+      scope.vm = new Controller();
+      scope.onDrop = function() {
+        return "scope";
+      }
+    });
+
+    it('should use controller method when prefixed with constructor', function() {
+      var callbackResult = ngDragDropService.callEventCallback(scope, "vm.onDrop");
+      expect(callbackResult).toEqual("ctrl");
+    });
+
+    it('should use scope method when not prefixed with constructor', function() {
+      var callbackResult = ngDragDropService.callEventCallback(scope, "onDrop");
+      expect(callbackResult).toEqual("scope");
+    });
+
+    it('should use scope method when prefix does not exist on scope', function() {
+      var callbackResult = ngDragDropService.callEventCallback(scope, "this.onDrop");
+      expect(callbackResult).toEqual("scope");
+      callbackResult = ngDragDropService.callEventCallback(scope, "self.onDrop");
+      expect(callbackResult).toEqual("scope");
+    })
+  });
 });

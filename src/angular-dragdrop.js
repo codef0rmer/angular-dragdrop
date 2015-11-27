@@ -43,23 +43,26 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           callback = objExtract.callback,
           constructor = objExtract.constructor,
           args = [event, ui].concat(objExtract.args);
-      
+
       // call either $scoped method i.e. $scope.dropCallback or constructor's method i.e. this.dropCallback.
       // Removing scope.$apply call that was performance intensive (especially onDrag) and does not require it
       // always. So call it within the callback if needed.
-      return (scope[callback] || scope[constructor][callback]).apply(scope, args);
-      
+      return (scope[constructor] && scope[constructor][callback]
+              ? scope[constructor][callback]
+              : scope[callback]
+        ).apply([scope[constructor] || scope], args);
+
       function extract(callbackName) {
         var atStartBracket = callbackName.indexOf('(') !== -1 ? callbackName.indexOf('(') : callbackName.length,
             atEndBracket = callbackName.lastIndexOf(')') !== -1 ? callbackName.lastIndexOf(')') : callbackName.length,
             args = callbackName.substring(atStartBracket + 1, atEndBracket), // matching function arguments inside brackets
             constructor = callbackName.indexOf('.') !== -1 ? callbackName.substr(0, callbackName.indexOf('.')) : null; // matching a string upto a dot to check ctrl as syntax
-            constructor = scope[constructor] && typeof scope[constructor].constructor === 'function' ? constructor : null;
+            //constructor = scope[constructor] && typeof scope[constructor].constructor === 'function' ? constructor : null;
 
         return {
           callback: callbackName.substring(constructor && constructor.length + 1 || 0, atStartBracket),
           args: $.map(args && args.split(',') || [], function(item) { return [$parse(item)(scope)]; }),
-          constructor: constructor
+          constructor: scope[constructor] && typeof scope[constructor].constructor === 'function' ? constructor : null
         }
       }
     };
