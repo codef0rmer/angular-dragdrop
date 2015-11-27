@@ -205,15 +205,18 @@ describe('Service: ngDragDropService', function() {
     var Controller;
     beforeEach(function() {
       Controller = (function(){
-        var ctrl = function(){};
+        var ctrl = function(){
+          this.message = "ctrl";
+        };
         ctrl.prototype.onDrop = function() {
-          return "ctrl";
+          return this.message;
         };
         return ctrl;
       })();
       scope.vm = new Controller();
+      scope.message = "scope";
       scope.onDrop = function() {
-        return "scope";
+        return this.message;
       }
     });
 
