@@ -171,7 +171,7 @@ describe('Service: ngDragDropService', function() {
     scope.filterIt = function() {
       return orderByFilter(scope.list, 'title');
     };
-    
+
     expect(ngDragDropService.fixIndex(scope, {index: 1, applyFilter: 'filterIt'}, scope.list)).toBe(0);
     expect(ngDragDropService.fixIndex(scope, {index: 0, applyFilter: 'filterIt'}, scope.list)).toBe(1);
 
@@ -205,16 +205,7 @@ describe('Service: ngDragDropService', function() {
     var Controller;
     beforeEach(function() {
       Controller = (function(){
-        var ctrl = function(){
-          this.list = [
-            { 'title': 'N' },
-            { 'title': 'L' },
-            { 'title': 'I' },
-            { 'title': 'I' },
-            { 'title': 'E' },
-            { 'title': 'N' }
-          ];
-        };
+        var ctrl = function(){};
         ctrl.prototype.onDrop = function() {
           return "ctrl";
         };
