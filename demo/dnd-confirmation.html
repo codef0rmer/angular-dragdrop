@@ -74,7 +74,7 @@
           <div class="btn btn-primary" data-drag="true" ng-model="list1" jqyoui-draggable="{animate: true}" ng-hide="!list1.title">{{list1.title}}</div>
         </div>
         <div class="span6">
-          <div class="thumbnail" data-drop="true" ng-model="list2" jqyoui-droppable="{beforeDrop: 'beforeDrop'}" ng-bind="list2.title ? 'Dropped successfully..!' : 'Drop here...'"></div>
+          <div class="thumbnail" data-drop="true" ng-model="list2" jqyoui-droppable="{beforeDrop: 'beforeDrop'}" jqyoui-options="{revertDuration: 1000}" ng-bind="list2.title ? 'Dropped successfully..!' : 'Drop here...'"></div>
         </div>
       </div>
     </div>
