@@ -383,7 +383,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
                       ngDragDropService.callEventCallback(scope, dropSettings.onDrop, event, ui);
                     }
                   }), function() {
-                    ui.draggable.css({left: '', top: ''});
+                    ui.draggable.animate({left: '', top: ''});
                   });
                 }
               });
