@@ -183,7 +183,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       var zIndex = $fromEl.css('z-index'),
         fromPos = $fromEl[dropSettings.containment || 'offset'](),
         displayProperty = $toEl.css('display'), // sometimes `display` is other than `block`
-        hadNgHideCls = $toEl.hasClass('ng-hide');
+        hadNgHideCls = $toEl.hasClass('ng-hide'),
+        hadDNDHideCls = $toEl.hasClass('angular-dragdrop-hide');
 
       if (toPos === null && $toEl.length > 0) {
         if (($toEl.attr('jqyoui-draggable') || $toEl.attr('data-jqyoui-draggable')) !== undefined && $toEl.ngattr('ng-model') !== undefined && $toEl.is(':visible') && dropSettings && dropSettings.multiple) {
@@ -197,6 +198,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           // Angular v1.2 uses ng-hide to hide an element 
           // so we've to remove it in order to grab its position
           if (hadNgHideCls) $toEl.removeClass('ng-hide');
+          if (hadDNDHideCls) $toEl.removeClass('angular-dragdrop-hide');
           toPos = $toEl.css({'visibility': 'hidden', 'display': 'block'})[dropSettings.containment || 'offset']();
           $toEl.css({'visibility': '','display': displayProperty});
         }
@@ -210,6 +212,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           // hide the element (while swapping) if it was hidden already
           // because we remove the display:none in this.invokeDrop()
           if (hadNgHideCls) $toEl.addClass('ng-hide');
+          if (hadDNDHideCls) $toEl.addClass('angular-dragdrop-hide');
           $fromEl.css('z-index', zIndex);
           if (callback) callback();
         });
