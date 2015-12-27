@@ -18,8 +18,9 @@
       body {
         padding: 30px;
       }
-      .thumbnails[jqyoui-droppable], .thumbnail[jqyoui-droppable] { border: 1px solid red; }
-      .thumbnail {
+      /* Horizontal Sortable */
+      .hthumbnail[jqyoui-droppable] { border: 1px solid red; }
+      .hthumbnail {
         height: 50px;
         width: 50px;
         text-align: center;
@@ -30,31 +31,62 @@
         -webkit-transition: none;
         transition: none;
       }
-
-      .thumbnail[data-drag="false"] { background: green; }
-
-      .thumbnail.ng-leave {
+      .hthumbnail.ng-leave {
         -webkit-transition-duration: 0s;
         transition-duration: 0s;
         opacity: 1;
       }
-
-      .thumbnail.ng-leave.ng-leave-active {
+      .hthumbnail.ng-leave.ng-leave-active {
         opacity: 0;
       }
-
-      .thumbnail.ng-enter {
+      .hthumbnail.ng-enter {
         -webkit-transition: left 0.3s;
         transition: left 0.3s;
       }
-      .thumbnail.ng-enter[data-direction="left"] {
-        left: -80px;
+      .hthumbnail.ng-enter[data-direction="left"] {
+        left: -80px; /* 60px width + 20px marginLeft */
       }
-      .thumbnail.ng-enter[data-direction="right"] {
-        left: 80px;
+      .hthumbnail.ng-enter[data-direction="right"] {
+        left: 80px; /* 60px width + 20px marginLeft */
       }
-      .thumbnail.ng-enter.ng-enter-active {
+      .hthumbnail.ng-enter.ng-enter-active {
         left: 0px;
+      }
+
+      /* Vertical Sortable */
+      .vthumbnail[jqyoui-droppable] { border: 1px solid red; }
+      .vthumbnail {
+        height: 50px;
+        width: 50px;
+        text-align: center;
+        padding-top: 0px;
+        cursor: pointer;
+        background: rgb(182, 173, 123);
+        position: relative;
+        -webkit-transition: none;
+        transition: none;
+        float: none !important;
+      }
+      .vthumbnail.ng-leave {
+        -webkit-transition-duration: 0s;
+        transition-duration: 0s;
+        opacity: 1;
+      }
+      .vthumbnail.ng-leave.ng-leave-active {
+        opacity: 0;
+      }
+      .vthumbnail.ng-enter {
+        -webkit-transition: top 0.3s;
+        transition: top 0.3s;
+      }
+      .vthumbnail.ng-enter[data-direction="left"] {
+        top: -76px; /* 56px width + 20px marginBottom */
+      }
+      .vthumbnail.ng-enter[data-direction="right"] {
+        top: 76px; /* 56px width + 20px marginBottom */
+      }
+      .vthumbnail.ng-enter.ng-enter-active {
+        top: 0px;
       }
     </style>
 
@@ -71,15 +103,41 @@
           { 'title': 'N', 'drag': true }
         ];
       });
+
+      App.controller('twoCtrl', function($scope) {
+        $scope.list1 = [
+          { 'title': 'N', 'drag': true },
+          { 'title': 'L', 'drag': true },
+          { 'title': 'I', 'drag': true },
+          { 'title': 'I', 'drag': true },
+          { 'title': 'E', 'drag': true },
+          { 'title': 'N', 'drag': true }
+        ];
+      });
     </script>
   </head>
   <body>
+    <h1>Horizontal Sortable:</h1>
     <div ng-controller="oneCtrl">
       <div class='contentWrapper ng-cloak'>
         <div class='content'>
           <div class="row-fluid">
             <ul class="thumbnails">
-              <li class="thumbnail" ng-repeat="item in list1" data-drop="true" data-drag="true" ng-model="list1" jqyoui-droppable="{index: {{$index}}}" jqyoui-draggable="{index: {{$index}}, insertInline: true, direction:'jqyouiDirection'}" data-jqyoui-options="{revert: 'invalid'}" data-direction="{{item.jqyouiDirection}}">
+              <li class="thumbnail hthumbnail" ng-repeat="item in list1" data-drop="true" data-drag="true" ng-model="list1" jqyoui-droppable="{index: {{$index}}}" jqyoui-draggable="{index: {{$index}}, insertInline: true, direction:'jqyouiDirection'}" data-jqyoui-options="{revert: 'invalid'}" data-direction="{{item.jqyouiDirection}}">
+                <h1>{{item.title}}</h1>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h1>Vertical Sortable:</h1>
+    <div ng-controller="twoCtrl">
+      <div class='contentWrapper ng-cloak'>
+        <div class='content'>
+          <div class="row-fluid">
+            <ul class="thumbnails">
+              <li class="thumbnail vthumbnail" ng-repeat="item in list1" data-drop="true" data-drag="true" ng-model="list1" jqyoui-droppable="{index: {{$index}}}" jqyoui-draggable="{index: {{$index}}, insertInline: true, direction:'jqyouiDirection'}" data-jqyoui-options="{revert: 'invalid'}" data-direction="{{item.jqyouiDirection}}">
                 <h1>{{item.title}}</h1>
               </li>
             </ul>
