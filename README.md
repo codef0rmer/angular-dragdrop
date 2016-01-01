@@ -8,10 +8,10 @@
 
 Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ever which is a wrapper for jQueryUI draggable/droppable components.
 
-###v1.0.12
-  1. Supports insertInline option to simulate sortable functionality.
-  2. Relies on ngAnimate for sortable animation from left/right.
-  3. Checkout the demo in demo/dnd-insertInline.html
+###v1.0.13
+  1. Allow to animate back on beforeDrop-cancel event if jqyouioptions.revertDuration is set
+  2. Pass right context in case of CtrlAs syntax
+  3. Add vertical sortable example in demo/dnd-insertInline.html
 
 
 ##How to Use
@@ -81,6 +81,10 @@ Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ev
 ##Demo
 Demo is [here](http://codef0rmer.github.io/angular-dragdrop/#/)
 
+###v1.0.12
+  1. Supports insertInline option to simulate sortable functionality.
+  2. Relies on ngAnimate for sortable animation from left/right.
+  3. Checkout the demo in demo/dnd-insertInline.html
 
 ###v1.0.9 - breaking change
   1. Draggable and Droppable will not be [deep copied](https://egghead.io/lessons/angularjs-angular-copy-for-deep-copy) by default unlike previous versions. Use `deepCopy` option if prototypical inheritance is not required.
