@@ -122,7 +122,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           if (dragSettings.index > dropSettings.index) {
             temp = dragModelValue[dragSettings.index];
             for (var i = dragSettings.index; i > dropSettings.index; i--) {
-              dropModelValue[i] = angular.copy(dropModelValue[i - 1]);
+              dropModelValue[i] = dragSettings.deepCopy ? angular.copy(dropModelValue[i - 1]) : dropModelValue[i - 1];
               dropModelValue[i - 1] = {};
               dropModelValue[i][dragSettings.direction] = 'left';
             }
@@ -130,7 +130,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           } else {
             temp = dragModelValue[dragSettings.index];
             for (var i = dragSettings.index; i < dropSettings.index; i++) {
-              dropModelValue[i] = angular.copy(dropModelValue[i + 1]);
+              dropModelValue[i] = dragSettings.deepCopy ? angular.copy(dropModelValue[i + 1]) : dropModelValue[i + 1];
               dropModelValue[i + 1] = {};
               dropModelValue[i][dragSettings.direction] = 'right';
             }
