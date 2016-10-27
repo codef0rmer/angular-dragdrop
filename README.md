@@ -6,7 +6,7 @@
  
 ---
 
-Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ever which is a wrapper for jQueryUI draggable/droppable components.
+Implementing jQueryUI Drag and Drop functionality in AngularJS is easier than ever with this wrapper for jQueryUI draggable/droppable components.
 
 ###v1.0.13
   1. Allow to animate back on beforeDrop-cancel event if jqyouioptions.revertDuration is set
