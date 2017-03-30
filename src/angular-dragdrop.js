@@ -340,7 +340,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         killWatcher = scope.$watch(function() { return scope.$eval(attrs.drag); }, updateDraggable);
         updateDraggable();
 
-        element.on('$destroy', function() {
+        scope.$on('$destroy', function() {
           element.draggable({disabled: true}).draggable('destroy');
         });
       }
@@ -404,7 +404,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         killWatcher = scope.$watch(function() { return scope.$eval(attrs.drop); }, updateDroppable);
         updateDroppable();
         
-        element.on('$destroy', function() {
+        scope.$on('$destroy', function() {
           element.droppable({disabled: true}).droppable('destroy');
         });
       }
