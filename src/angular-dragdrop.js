@@ -43,12 +43,12 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           callback = objExtract.callback,
           constructor = objExtract.constructor,
           args = [event, ui].concat(objExtract.args);
-      
+
       // call either $scoped method i.e. $scope.dropCallback or constructor's method i.e. this.dropCallback.
       // Removing scope.$apply call that was performance intensive (especially onDrag) and does not require it
       // always. So call it within the callback if needed.
       return (scope[callback] || scope[constructor][callback]).apply(scope[callback] ? scope : scope[constructor], args);
-      
+
       function extract(callbackName) {
         var atStartBracket = callbackName.indexOf('(') !== -1 ? callbackName.indexOf('(') : callbackName.length,
             atEndBracket = callbackName.lastIndexOf(')') !== -1 ? callbackName.lastIndexOf(')') : callbackName.length,
@@ -184,7 +184,9 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         fromPos = $fromEl[dropSettings.containment || 'offset'](),
         displayProperty = $toEl.css('display'), // sometimes `display` is other than `block`
         hadNgHideCls = $toEl.hasClass('ng-hide'),
-        hadDNDHideCls = $toEl.hasClass('angular-dragdrop-hide');
+        hadDNDHideCls = $toEl.hasClass('angular-dragdrop-hide'),
+        jqyouiOptions = this.draggableScope.$eval($fromEl.attr('data-jqyoui-options')) || {},
+        zIndexDragged = jqyouiOptions.zIndex != null ? jqyouiOptions.zIndex : 9999;
 
       if (toPos === null && $toEl.length > 0) {
         if (($toEl.attr('jqyoui-draggable') || $toEl.attr('data-jqyoui-draggable')) !== undefined && $toEl.ngattr('ng-model') !== undefined && $toEl.is(':visible') && dropSettings && dropSettings.multiple) {
@@ -195,7 +197,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
             toPos.top+= $toEl.outerHeight(true);
           }
         } else {
-          // Angular v1.2 uses ng-hide to hide an element 
+          // Angular v1.2 uses ng-hide to hide an element
           // so we've to remove it in order to grab its position
           if (hadNgHideCls) $toEl.removeClass('ng-hide');
           if (hadDNDHideCls) $toEl.removeClass('angular-dragdrop-hide');
@@ -204,7 +206,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
         }
       }
 
-      $fromEl.css({'position': 'absolute', 'z-index': 9999})
+      $fromEl.css({'position': 'absolute', 'z-index': zIndexDragged || 9999})
         .css(fromPos)
         .animate(toPos, duration, function() {
           // Angular v1.2 uses ng-hide to hide an element
@@ -303,11 +305,12 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       restrict: 'A',
       link: function(scope, elem, attrs) {
         var element = $(elem);
-        var dragSettings, jqyouiOptions, zIndex, killWatcher;
+        var dragSettings, jqyouiOptions, zIndex, zIndexDragged, killWatcher;
         var updateDraggable = function(newValue, oldValue) {
           if (newValue) {
             dragSettings = scope.$eval(element.attr('jqyoui-draggable') || element.attr('data-jqyoui-draggable')) || {};
             jqyouiOptions = scope.$eval(attrs.jqyouiOptions) || {};
+            zIndexDragged = jqyouiOptions.zIndex != null ? jqyouiOptions.zIndex : 9999;
             element
               .draggable({disabled: false})
               .draggable(jqyouiOptions)
@@ -315,7 +318,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
                 start: function(event, ui) {
                   ngDragDropService.draggableScope = scope;
                   zIndex = $(jqyouiOptions.helper ? ui.helper : this).css('z-index');
-                  $(jqyouiOptions.helper ? ui.helper : this).css('z-index', 9999);
+                  $(jqyouiOptions.helper ? ui.helper : this).css('z-index', zIndexDragged);
                   jqyoui.startXY = $(this)[dragSettings.containment || 'offset']();
                   ngDragDropService.callEventCallback(scope, dragSettings.onStart, event, ui);
                 },
@@ -403,7 +406,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
         killWatcher = scope.$watch(function() { return scope.$eval(attrs.drop); }, updateDroppable);
         updateDroppable();
-        
+
         element.on('$destroy', function() {
           element.droppable({disabled: true}).droppable('destroy');
         });
