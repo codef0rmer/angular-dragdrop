@@ -389,7 +389,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
                   }), function() {
                     ui.draggable.animate({left: '', top: ''}, jqyouiOptions.revertDuration || 0);
                   });
-                }
+                },
+                tolerance: dropSettings.tolerance || 'intersect'
               });
           } else {
             element.droppable({disabled: true});
