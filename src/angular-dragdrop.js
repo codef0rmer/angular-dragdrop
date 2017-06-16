@@ -387,7 +387,14 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
                       ngDragDropService.callEventCallback(scope, dropSettings.onDrop, event, ui);
                     }
                   }), function() {
-                    ui.draggable.animate({left: '', top: ''}, jqyouiOptions.revertDuration || 0);
+                 	 var originalPosition=ui.draggable.data('uiDraggable').originalPosition;
+                 	 if(!originalPosition){
+                 		 originalPosition={
+                 				 left:'',
+                 				 top:'',
+                 		 }
+                 	 }
+                     ui.draggable.animate(originalPosition, jqyouiOptions.revertDuration || 0);
                   });
                 }
               });
