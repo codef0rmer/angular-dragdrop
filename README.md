@@ -1,6 +1,7 @@
 # Drag and Drop for AngularJS (with Animation)
 [![Build Status](https://api.travis-ci.org/codef0rmer/angular-dragdrop.svg?branch=master)](https://travis-ci.org/codef0rmer/angular-dragdrop)
 [![npm](https://img.shields.io/npm/dt/angular-dragdrop.svg)](https://www.npmjs.com/package/angular-dragdrop)
+[![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/angular-dragdrop/badge?style=rounded)](https://www.jsdelivr.com/package/npm/angular-dragdrop)
 [![npm version](https://img.shields.io/npm/v/angular-dragdrop.svg)](https://www.npmjs.com/package/angular-dragdrop)
 [![Bower version](https://img.shields.io/bower/v/angular-dragdrop.svg)](https://github.com/codef0rmer/angular-dragdrop)
 
