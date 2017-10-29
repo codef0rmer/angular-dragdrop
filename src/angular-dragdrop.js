@@ -27,6 +27,10 @@
  * (c) 2013 Amit Gharat a.k.a codef0rmer <amit.2006.it@gmail.com> - amitgharat.wordpress.com
  */
 
+
+ // indicates if environment is or emulates commonjs
+ var commonJsLikeEnv = typeof require === 'function';
+
 (function (angular, $, undefined) {
 'use strict';
 
@@ -416,4 +420,4 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
     return element.getAttribute(name) || element.getAttribute('data-' + name);
   };
-})(window.angular, window.jQuery);
+})(commonJsLikeEnv ? require('angular') : window.angular, commonJsLikeEnv ? require('jquery') : window.jQuery);
