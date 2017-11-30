@@ -356,6 +356,8 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           if (newValue) {
             dropSettings = scope.$eval($(element).attr('jqyoui-droppable') || $(element).attr('data-jqyoui-droppable')) || {};
             jqyouiOptions = scope.$eval(attrs.jqyouiOptions) || {};
+
+            var wasDropped = false
             element
               .droppable({disabled: false})
               .droppable(jqyouiOptions)
@@ -366,7 +368,14 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
                 out: function(event, ui) {
                   ngDragDropService.callEventCallback(scope, dropSettings.onOut, event, ui);
                 },
+                deactivate: function(event, ui) {
+                  if (!wasDropped && dropSettings.revertFromOutside) {
+                    ui.draggable.animate({left: '', top: ''}, jqyouiOptions.revertDuration || 0);
+                  }
+                  wasDropped = false
+                },
                 drop: function(event, ui) {
+                  wasDropped = true
                   var beforeDropPromise = null;
 
                   if (dropSettings.beforeDrop) {
@@ -417,3 +426,4 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
     return element.getAttribute(name) || element.getAttribute('data-' + name);
   };
 })(window, window.angular, window.jQuery);
+
