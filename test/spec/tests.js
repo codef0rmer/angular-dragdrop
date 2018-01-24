@@ -200,4 +200,70 @@ describe('Service: ngDragDropService', function() {
     timeout.flush();
     expect(scope.list.map(function(item) { return item.title; }).join('')).toBe('NNLIIE');
   });
+
+  it('should not deep copy dragged element by default', function(){
+    var itemA = { 'title': 'A' };
+    var itemB = { 'title': 'B' };
+    var itemC = { 'title': 'C' };
+    scope.list = [
+      itemA,
+      itemB,
+      itemC
+    ];
+    var copy = scope.list.slice();
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
+    ngDragDropService.invokeDrop(
+      $('<div data-drop="true" data-drag="true" ng-model="list" jqyoui-droppable="{index: 2}" jqyoui-draggable="{index: 2, insertInline: true, direction:\'jqyouiDirection\'}">' + scope.list[2].title + '</div>').data('$scope', scope),
+      $('<div data-drop="true" data-drag="true" ng-model="list" jqyoui-droppable="{index: 0}" jqyoui-draggable="{index: 0, insertInline: true, direction:\'jqyouiDirection\'}">' + scope.list[0].title + '</div>').data('$scope', scope),
+      document.createEvent('Event'),
+      {}
+    );
+    timeout.flush();
+    expect(copy[0]).toBe(scope.list[1]);
+  });
+
+  it('should not deep copy dragged element when settings specify not to', function(){
+    var itemA = { 'title': 'A' };
+    var itemB = { 'title': 'B' };
+    var itemC = { 'title': 'C' };
+    scope.list = [
+      itemA,
+      itemB,
+      itemC
+    ];
+    var copy = scope.list.slice();
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
+    ngDragDropService.invokeDrop(
+      $('<div data-drop="true" data-drag="true" ng-model="list" jqyoui-droppable="{index: 2}" jqyoui-draggable="{index: 2, insertInline: true, direction:\'jqyouiDirection\', deepCopy:false}">' + scope.list[2].title + '</div>').data('$scope', scope),
+      $('<div data-drop="true" data-drag="true" ng-model="list" jqyoui-droppable="{index: 0}" jqyoui-draggable="{index: 0, insertInline: true, direction:\'jqyouiDirection\', deepCopy:false}">' + scope.list[0].title + '</div>').data('$scope', scope),
+      document.createEvent('Event'),
+      {}
+    );
+    timeout.flush();
+    expect(copy[0]).toBe(scope.list[1]);
+  });
+
+  it('should deep copy dragged element when settings specify so', function(){
+    var itemA = { 'title': 'A' };
+    var itemB = { 'title': 'B' };
+    var itemC = { 'title': 'C' };
+    scope.list = [
+      itemA,
+      itemB,
+      itemC
+    ];
+    var copy = scope.list.slice();
+    ngDragDropService.draggableScope = ngDragDropService.droppableScope = scope;
+    ngDragDropService.invokeDrop(
+      $('<div data-drop="true" data-drag="true" ng-model="list" jqyoui-droppable="{index: 2}" jqyoui-draggable="{index: 2, insertInline: true, direction:\'jqyouiDirection\', deepCopy:true}">' + scope.list[2].title + '</div>').data('$scope', scope),
+      $('<div data-drop="true" data-drag="true" ng-model="list" jqyoui-droppable="{index: 0}" jqyoui-draggable="{index: 0, insertInline: true, direction:\'jqyouiDirection\', deepCopy:true}">' + scope.list[0].title + '</div>').data('$scope', scope),
+      document.createEvent('Event'),
+      {}
+    );
+    timeout.flush();
+    expect(copy[0]).not.toBe(scope.list[1]);
+    for(var prop in copy[0]){
+      expect(copy[0][prop]).toBe(scope.list[1][prop]);
+    }
+  });
 });
