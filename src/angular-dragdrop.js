@@ -43,12 +43,12 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
           callback = objExtract.callback,
           constructor = objExtract.constructor,
           args = [event, ui].concat(objExtract.args);
-      
+
       // call either $scoped method i.e. $scope.dropCallback or constructor's method i.e. this.dropCallback.
       // Removing scope.$apply call that was performance intensive (especially onDrag) and does not require it
       // always. So call it within the callback if needed.
       return (scope[callback] || scope[constructor][callback]).apply(scope[callback] ? scope : scope[constructor], args);
-      
+
       function extract(callbackName) {
         var atStartBracket = callbackName.indexOf('(') !== -1 ? callbackName.indexOf('(') : callbackName.length,
             atEndBracket = callbackName.lastIndexOf(')') !== -1 ? callbackName.lastIndexOf(')') : callbackName.length,
@@ -195,7 +195,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
             toPos.top+= $toEl.outerHeight(true);
           }
         } else {
-          // Angular v1.2 uses ng-hide to hide an element 
+          // Angular v1.2 uses ng-hide to hide an element
           // so we've to remove it in order to grab its position
           if (hadNgHideCls) $toEl.removeClass('ng-hide');
           if (hadDNDHideCls) $toEl.removeClass('angular-dragdrop-hide');
@@ -302,9 +302,34 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
       require: '?jqyouiDroppable',
       restrict: 'A',
       link: function(scope, elem, attrs) {
+        function touchHandler(event) {
+            var touch = event.changedTouches[0];
+
+            var simulatedEvent = document.createEvent("MouseEvent");
+            simulatedEvent.initMouseEvent({
+                touchstart: "mousedown",
+                touchmove: "mousemove",
+                touchend: "mouseup"
+            }[event.type], true, true, window, 1,
+                touch.screenX, touch.screenY,
+                touch.clientX, touch.clientY, false,
+                false, false, false, 0, null);
+
+            touch.target.dispatchEvent(simulatedEvent);
+            event.preventDefault();
+        }
+        function touchable_events_bridge(elem) {
+            elem.addEventListener("touchstart", touchHandler, true);
+            elem.addEventListener("touchmove", touchHandler, true);
+            elem.addEventListener("touchend", touchHandler, true);
+            elem.addEventListener("touchcancel", touchHandler, true);
+        }
+
+
         var element = $(elem);
         var dragSettings, jqyouiOptions, zIndex, killWatcher;
         var updateDraggable = function(newValue, oldValue) {
+          touchable_events_bridge(element[0])
           if (newValue) {
             dragSettings = scope.$eval(element.attr('jqyoui-draggable') || element.attr('data-jqyoui-draggable')) || {};
             jqyouiOptions = scope.$eval(attrs.jqyouiOptions) || {};
@@ -403,7 +428,7 @@ var jqyoui = angular.module('ngDragDrop', []).service('ngDragDropService', ['$ti
 
         killWatcher = scope.$watch(function() { return scope.$eval(attrs.drop); }, updateDroppable);
         updateDroppable();
-        
+
         element.on('$destroy', function() {
           element.droppable({disabled: true}).droppable('destroy');
         });
